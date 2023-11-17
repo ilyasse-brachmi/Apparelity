@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import MainLayout from "../layouts/mainLayout.vue"
 </script>
-<template>
-<MainLayout>
-  <h1 class="text-red-700">this is a home page</h1>
-</MainLayout>
+<template lang="pug">
+MainLayout
+  h1.text-center.text-xl.text-red-500 Langing page
 </template>

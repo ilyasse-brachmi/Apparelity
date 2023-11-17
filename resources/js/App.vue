@@ -1,5 +1,4 @@
-<template>
-<div>
-  <router-view />
-</div>
+<template lang="pug">
+div
+  router-view
 </template>
