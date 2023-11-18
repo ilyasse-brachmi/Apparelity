@@ -1,4 +1,8 @@
+<script setup lang="ts">
+import Navbar from "../components/navbar.vue";
+</script>
 <template lang="pug">
 div
-  router-view 
+  Navbar
+  slot
 </template>
