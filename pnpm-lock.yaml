@@ -25,6 +25,9 @@ devDependencies:
   '@volar/vue-language-plugin-pug':
     specifier: ^1.6.5
     version: 1.6.5
+  '@vue/tsconfig':
+    specifier: ^0.4.0
+    version: 0.4.0
   autoprefixer:
     specifier: ^10.4.16
     version: 10.4.16(postcss@8.4.31)
@@ -43,6 +46,9 @@ devDependencies:
   tailwindcss:
     specifier: ^3.3.5
     version: 3.3.5
+  typescript:
+    specifier: ^5.2.2
+    version: 5.2.2
   vite:
     specifier: ^4.0.0
     version: 4.5.0
@@ -508,6 +514,10 @@ packages:
 
   /@vue/shared@3.2.36:
     resolution: {integrity: sha512-JtB41wXl7Au3+Nl3gD16Cfpj7k/6aCroZ6BbOiCMFCMvrOpkg/qQUXTso2XowaNqBbnkuGHurLAqkLBxNGc1hQ==}
+
+  /@vue/tsconfig@0.4.0:
+    resolution: {integrity: sha512-CPuIReonid9+zOG/CGTT05FXrPYATEqoDGNrEaqS4hwcw5BUNM2FguC0mOwJD4Jr16UpRVl9N0pY3P+srIbqmg==}
+    dev: true
 
   /@webassemblyjs/ast@1.11.6:
     resolution: {integrity: sha512-IN1xI7PwOvLPgjcf180gC1bqn3q/QaOCwYUahIOhbYUu8KA/3tw2RT/T0Gidi1l7Hhj5D/INhJxiICObqpMu4Q==}
@@ -1791,6 +1801,12 @@ packages:
     resolution: {integrity: sha512-FD5uYQSNkVTX4b3lvtifP+SR3bARWGmKe/uyp5BfuW2ZUCYG7vHKPddrteLU06Uh68woRaYIX+Sbs2nnySpGLw==}
     dependencies:
       semver: 7.5.4
+    dev: true
+
+  /typescript@5.2.2:
+    resolution: {integrity: sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==}
+    engines: {node: '>=14.17'}
+    hasBin: true
     dev: true
 
   /undici-types@5.26.5:

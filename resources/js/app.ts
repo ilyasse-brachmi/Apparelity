@@ -1,4 +1,4 @@
-import './bootstrap';
+import './bootstrap.js';
 import router from './routes.js'
 import { createApp } from 'vue';
 import App from './App.vue';
