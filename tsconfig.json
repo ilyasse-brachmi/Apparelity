@@ -11,5 +11,10 @@
     "paths": {
       "@/*": ["resources/js/*"]
     }
+  },
+  "vueCompilerOptions": {
+    "plugins": [
+      "@volar/vue-language-plugin-pug"
+    ]
   }
 }

@@ -6,7 +6,7 @@ declare interface Advantages {
   icon: string;
 }
 
-export const advantages = computed(() => [
+export const advantages = computed<Advantages[]>(() => [
   {
     title: 'Transparency and Information access',
     description: 'Consumers access transparent information on raw material origins, fostering trust and informed choices',
@@ -37,4 +37,4 @@ export const advantages = computed(() => [
     description: 'Traceability enhances company credibility, streamlining the establishment of strategic partnerships with organizations sharing common values',
     icon: 'codicon:workspace-trusted'
   }
-] as Advantages[])
+])

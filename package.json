@@ -3,7 +3,8 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vite build"
+        "build": "vite build",
+        "type-check": "vue-tsc --noEmit" 
     },
     "devDependencies": {
         "@iconify/vue": "^4.1.1",
@@ -17,7 +18,8 @@
         "tailwindcss": "^3.3.5",
         "typescript": "^5.2.2",
         "vite": "^4.0.0",
-        "vue-pug-plugin": "^2.0.3"
+        "vue-pug-plugin": "^2.0.3",
+        "vue-tsc": "^1.8.22"
     },
     "dependencies": {
         "@vitejs/plugin-vue": "^4.5.0",

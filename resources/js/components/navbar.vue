@@ -1,5 +1,3 @@
-<script>
-</script>
 <template lang="pug">
 header(class="flex items-center justify-between container mx-auto py-8")
   div 
