@@ -2,11 +2,6 @@
 import { Icon } from '@iconify/vue';
 import { advantages } from '../data/advantages.data';
 
-declare interface Advantages {
-  title: string;
-  description: string;
-  icon: string;
-}
 </script>
 <template lang="pug">
 div(class="container mx-auto p-8 lg:p-16")
