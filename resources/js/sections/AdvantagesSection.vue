@@ -9,10 +9,10 @@ declare interface Advantages {
 }
 </script>
 <template lang="pug">
-div(class="container mx-auto p-16")
-  h1(class="font-semibold text-5xl text-center") Advantages
+div(class="container mx-auto p-8 lg:p-16")
+  h1(class="text-4xl sm:text-5xl font-semibold text-center") Advantages
   div(class="flex items-center justify-center")
-    div(class="grid grid-cols-2 gap-x-16 p-16")
+    div(class="grid grid-cols-1 sm:grid-cols-2 sm:gap-x-8 md:gap-x-16 p-4 md:p-8 lg:p-16")
       div(v-for="(advantage, index) in advantages" :key="index")
         div(class="flex items-start gap-4 py-4")
           div(class="flex items-start gap-4")
@@ -20,5 +20,5 @@ div(class="container mx-auto p-16")
           div(class="py-2")
             h1(class="text-primary text-xl font-semibold") {{ advantage.title }}
             div(class="max-w-[30rem]")
-              p.py-8.text-gray-500 {{ advantage.description }}
+              p(class="py-2 md:py-4 lg:py-8 text-gray-500") {{ advantage.description }}
 </template>
