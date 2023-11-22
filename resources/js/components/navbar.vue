@@ -9,7 +9,7 @@ header(class="flex items-center justify-between p-4 top-0 bg-gray-100 sticky sha
         li
           a(href="#" class="px-14 py-2.5 border-2 m-1 border-primary text-primary rounded-sm font-medium hover:bg-primary/20 hover:shadow-md duration-300") Home
         li
-          a(href="#" class="px-12 py-2.5 text-white m-1 bg-primary rounded-sm hover:bg-primary/40 font-medium hover:shadow-md duration-300") Sign Up
+          a(href="#" class="px-12 py-2.5 text-white m-1 bg-primary rounded-sm hover:bg-primary/40 font-medium hover:shadow-md duration-300") Sign In
     a.dz-btn.dz-btn-ghost.text-xl(href='/') LOGO
 
   div(class="dz-navbar-center hidden lg:flex")
