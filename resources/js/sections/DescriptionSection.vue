@@ -3,8 +3,8 @@ import { Icon } from '@iconify/vue';
 </script>
 <template lang="pug">
 div(class="container mx-auto p-8 lg:p-16")
-  h1(class="text-4xl sm:text-5xl font-semibold text-center") Description
-  div(class="flex items-center gap-4 justify-center py-8 text-sm lg:text-lg")
+  h1(class="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-semibold text-center") Description
+  div(class="flex items-center sm:gap-4 justify-center py-8 text-[10px] sm:text-sm lg:text-lg")
     div(class="flex items-center")
       Icon(icon="fluent-mdl2:accept-medium" class="mx-1  font-semibold")
       span(class="font-semibold") Traceability
