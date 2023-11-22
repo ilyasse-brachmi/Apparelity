@@ -21,7 +21,7 @@ div
             Icon(icon="ri:eye-off-line" class="text-3xl sm:text-4xl text-primary cursor-pointer")
             //- ri:eye-line
         div(class="flex justify-center mt-16")
-          button(type="Submit" class="border font-bold text-2xl text-white border-white rounded-full px-16 sm:px-48 py-4 bg-primary hover:shadow-md duration-300") Sign Up
+          button(type="Submit" class="border font-bold text-2xl text-white border-white rounded-full px-16 sm:px-48 py-4 bg-primary hover:shadow-md duration-300") Sign In
       div(class="flex flex-col lg:flex-row items-center justify-center gap-2 justify-center mt-4")
         p(class="text-lg sm:text-xl") Don't have an account ? 
         a(href="/register" class="text-lg sm:text-xl font-semibold text-primary") Sign Up
