@@ -2,8 +2,6 @@
 import { useRoute } from 'vue-router'
 const route = useRoute()
 const authPage = (route.name?.toString().includes('register') || route.name?.toString().includes('login') )? true: false
-console.log(route.name?.toString())
-console.log(authPage)
 </script>
 <template lang="pug">
 header(class="flex items-center justify-between p-4 top-0 bg-gray-100 sticky shadow-md")
