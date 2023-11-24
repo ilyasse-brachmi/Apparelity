@@ -7,10 +7,6 @@ use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
-    public function index()
-    {
-        Company::selection()->orderBy('id')->get();
-    }
     public function adding(Request $request){
         $items=new Company();
         $items->name=$request->name;

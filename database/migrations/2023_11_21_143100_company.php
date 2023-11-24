@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('company', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users');
+            $table->bigInteger('user_id')->unique()->unsigned()->index();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('name')->unique();
             $table->string('address');
             $table->string('description')->nullable();
