@@ -18,6 +18,5 @@ header(class="flex items-center justify-between p-4 top-0 bg-gray-100 sticky sha
     a.dz-btn.dz-btn-ghost.text-xl(href='/') LOGO
 
   div(v-if="!authPage" class="dz-navbar-center hidden lg:flex")
-    a(href="/" class="px-14 py-2 border-2 border-primary m-2 text-primary rounded-sm hover:bg-primary/20 hover:shadow-md duration-300") Home
     a( href="/login" class="px-14 py-2 text-white m-2 bg-primary rounded-sm hover:bg-primary/90  hover:shadow-md duration-300") Sign In
 </template>

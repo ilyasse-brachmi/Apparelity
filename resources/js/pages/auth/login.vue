@@ -4,8 +4,7 @@ import Navbar from "../../components/navbar.vue";
 </script>
 <template lang="pug">
 div
-  Navbar
-  div(class="flex items-center justify-center my-8")
+  div(class="flex items-center justify-center my-8 h-[90vh]")
     div(class="container w-[26rem] sm:w-[40rem] max-h-[40rem] py-2 px-8 sm:p-8 border-2 border-gray-200 rounded-lg shadow-lg shadow-gray-200/50")
       h1(class="text-center text-4xl sm:text-5xl font-semibold text-primary") Hey There!
       p(class="text-center text-lg sm:text-xl mt-8") Welcome back.

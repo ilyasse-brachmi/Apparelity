@@ -2,7 +2,7 @@
 import { Icon } from '@iconify/vue';
 </script>
 <template lang="pug">
-div(class="bg-gray-100")
+div(id="searchProduct" class="bg-gray-100")
   div(class="container mx-auto p-8 lg:p-16")
     h1(class="text-2xl sm:text-4xl lg:text-5xl xl:text-6xl font-semibold text-center") Find Your Product
     div(class="flex justify-center my-8 sm:my-16")
