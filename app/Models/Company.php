@@ -15,11 +15,19 @@ class Company extends Model
     use Notifiable;
 
     protected $fillable = [
-        'id','name', 'address','description'
+        'id','name', 'address','description','user_id'
     ];
 
     public function scopeSelection($query)
     {
         return $query->select('id', 'name', 'address','description');
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'company_id');
+    }
+    public function user(){
+        return $this->belongsTo(User::class);
     }
 }

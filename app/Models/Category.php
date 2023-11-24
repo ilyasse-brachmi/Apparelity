@@ -21,7 +21,10 @@ class Category extends Model
 
     public function scopeSelection($query)
     {
-
         return $query->select('id', 'name');
+    }
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'category_id');
     }
 }

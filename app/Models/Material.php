@@ -17,12 +17,16 @@ class Material extends Model
     use Notifiable;
 
     protected $fillable = [
-        'id','name', 'origin','supplier','address'
+        'id','name', 'origin','supplier','address','product_id'
     ];
 
     public function scopeSelection($query)
     {
 
         return $query->select('id','name', 'origin','supplier','address');
+    }
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
     }
 }
