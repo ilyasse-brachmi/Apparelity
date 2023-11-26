@@ -2,6 +2,8 @@
 import { Icon } from '@iconify/vue';
 import Navbar from "../../components/navbar.vue";
 import Input from '@/components/input.vue';
+import { ref } from 'vue';
+
 </script>
 <template lang="pug">
 div

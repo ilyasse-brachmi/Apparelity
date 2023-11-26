@@ -18,8 +18,13 @@ const props = defineProps({
   type: {
     type: String,
     default: "text"
+  },
+  inputError: {
+    type: String,
+    required: false
   }
 })
+defineEmits(['update:modelValue'])
 const passwordIcon = ref(props.type !== 'password' ? false : true)
 const typeInput = ref(props.type)
 const switchType = () => {
@@ -27,12 +32,14 @@ const switchType = () => {
 } 
 </script>
 <template lang="pug">
-div(class="conatiner relative leading-normal w-full")
-  input(:type="typeInput" class="p-4 outline-none relative w-full text-black bg-transparent duration-100 z-[9999]" required)
-  p(class="labelInput z-0 text-lg text-gray-400 px-2 absolute top-4 duration-300 whitespace-pre") {{ props.labelName }}
-  Icon(v-if="passwordIcon" icon="ri:eye-off-line" @click="switchType" class="IconColor absolute end-4 top-4 text-3xl z-[999999] cursor-pointer")
-  div(v-else)
-    Icon(v-if="icon" :icon="icon" class="IconColor absolute end-4 top-4 text-3xl z-[999999] cursor-pointer")
+div.w-full
+  div(class="conatiner relative leading-normal w-full")
+    input(:type="typeInput" @input="$emit('update:modelValue', $event.target.value)" class="p-4 outline-none relative w-full text-black bg-transparent duration-100 z-[9999]" required)
+    p(class="labelInput z-0 text-lg text-gray-400 px-2 absolute top-4 duration-300 whitespace-pre") {{ props.labelName }}
+    Icon(v-if="passwordIcon" icon="ri:eye-off-line" @click="switchType" class="IconColor absolute end-4 top-4 text-3xl z-[999999] cursor-pointer")
+    div(v-else)
+      Icon(v-if="icon" :icon="icon" class="IconColor absolute end-4 top-4 text-3xl z-[999999] cursor-pointer")
+  label(v-if="inputError" class="text-red-500 font-medium text-lg") {{ props.inputError }}
 </template>
 <style scoped>
 input:focus {
