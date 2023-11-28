@@ -10,7 +10,4 @@ import StoreLayout from '@/layouts/storeLayout.vue';
 StoreLayout
     div(class="grid grid-cols-4 gap-4 p-8")
         Card(:imageProduct="Product" :productName="'Jacket'" :companyName="'Example Company Name Nike'" :price="'199'")
-        //- Card(:imageProduct="Product" :productName="'Jacket'" :companyName="'Example Company Name Nike'" :price="'199'")
-        //- Card(:imageProduct="Product" :productName="'Jacket'" :companyName="'Example Company Name Nike'" :price="'199'")
-        //- Card(:imageProduct="Product" :productName="'Jacket'" :companyName="'Example Company Name Nike'" :price="'199'")
 </template>
