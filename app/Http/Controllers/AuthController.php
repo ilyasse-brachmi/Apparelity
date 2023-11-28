@@ -15,11 +15,11 @@ class AuthController extends Controller
         $password=$request->password;
         $credentials=['email'=>$email,'password'=>$password];
         if(!auth()->attempt($credentials)) {
-            return response()->json(['message' => 'données invalide'],201); 
+            return response()->json(['errorMessage' => 'email or password not valid'] ,400); 
         }
         $user=Auth::User();
         $token=$user->createToken('user')->plainTextToken;
-        return response(['user'=>$user,'token'=>$token]);     
+        return response()->json(['user'=>$user,'token'=>$token] ,200);
     }
 
     public function register(Request $request){
