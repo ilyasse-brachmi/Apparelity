@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Icon } from '@iconify/vue';
 import Navbar from "../../components/navbar.vue";
 import Input from '@/components/AppInput.vue';
 import { computed } from 'vue';
@@ -45,4 +46,7 @@ div
       div(class="flex flex-col lg:flex-row items-center gap-2 justify-center mt-4")
         p(class="text-lg sm:text-xl") Don't have an account ? 
         a(href="/register" class="text-lg sm:text-xl font-semibold text-primary") Sign Up
+      div(class="flex items-center justify-center gap-2 w-full mt-4 hover:underline")
+        Icon(icon="lets-icons:back" class="text-primary text-base sm:text-lg")
+        a(href="/" class="text-primary text-base sm:text-lg") Back to home
 </template>
