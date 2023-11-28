@@ -17,7 +17,7 @@ class AuthController extends Controller
             return response()->json(['message' => 'données invalide'],201); 
         }
         $user=Auth::User();
-        $token=$user->createToken('main')->plainTextToken;
+        $token=$user->createToken('user')->plainTextToken;
         return response(['user'=>$user,'token'=>$token]);     
     }
 
@@ -33,10 +33,9 @@ class AuthController extends Controller
         $Company->address=$request->input('address');
         $Company->description=$request->input('description');
         $Company->save();
-        $token=$Company->createToken('main')->plainTextToken;
+        $token=$Company->createToken('company')->plainTextToken;
         return response(['company'=>$Company,'token'=>$token]);
     }
-
     public function logout(){
         $user=Auth::User();
         $user->currentAccessToken()->delete();

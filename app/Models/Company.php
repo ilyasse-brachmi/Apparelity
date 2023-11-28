@@ -26,7 +26,7 @@ class Company extends Model
 
     public function products()
     {
-        return $this->hasMany(Product::class, 'company_id');
+        return $this->hasMany(Product::class,'company_id');
     }
     public function user(){
         return $this->belongsTo(User::class);
