@@ -35,11 +35,11 @@ const borderColor = computed(() => props.inputError ? 'red' : props.color)
 <template lang="pug">
 div.w-full
   div(class="conatiner relative leading-normal w-full" )
-    input(:type="typeInput" @input="$emit('update:modelValue', $event.target.value)" class="p-4 outline-none relative w-full text-black bg-transparent duration-100 z-[9999]" required)
+    input(:type="typeInput" @input="$emit('update:modelValue', $event.target.value)" class="p-4 outline-none relative w-full text-black bg-transparent duration-100 z-[9]" required)
     p(class="labelInput z-0 text-lg text-gray-400 px-2 absolute top-4 duration-300 whitespace-pre") {{ props.labelName }}
     Icon(v-if="isPassword" :icon="passwordIcon" @click="switchType" class="IconColor absolute end-4 top-4 text-3xl z-[999999] cursor-pointer")
     div(v-else)
-      Icon(v-if="icon" :icon="icon" class="IconColor absolute end-4 top-4 text-3xl z-[999999] cursor-pointer")
+      Icon(v-if="icon" :icon="icon" class="IconColor absolute end-4 top-4 text-3xl cursor-pointer")
   label(v-if="inputError" class="text-red-500 font-medium text-lg") {{ props.inputError }}
 </template>
 <style scoped>
@@ -70,7 +70,7 @@ input:focus + .container
 input:focus+.labelInput,
 input:valid+.labelInput {
   transform: translate(10px, -30px) scale(0.88);
-  z-index: 99999;
+  z-index: 10;
   background-color: white;
   color: v-bind(borderColor);
 }

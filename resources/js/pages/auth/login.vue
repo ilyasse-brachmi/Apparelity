@@ -1,9 +1,16 @@
 <script setup lang="ts">
 import Navbar from "../../components/navbar.vue";
 import Input from '@/components/AppInput.vue';
+import { $AppAxios } from "@/utils/axiosSingleton";
 import { computed } from 'vue';
+import { useAuth } from '@/stores/auth.store'
+import Swal from 'sweetalert2'
 import { useField, useForm } from 'vee-validate'
+import { useRouter } from "vue-router";
 import * as yup from 'yup';
+
+const router = useRouter()
+const store = useAuth()
 
 const scheme = computed(() => {
   return yup.object({
@@ -26,6 +33,33 @@ const {
   value: password
 } = useField<string>('password')
 
+const submit = handleSubmit(async () => {
+  const data = { email: email.value, password: password.value }
+  await $AppAxios.post('/api/login', data)
+  .then((response) => {
+    store.fetchUser(response.data.token, response.data.user)
+    Swal.fire({
+      text: 'You are logged in !',
+      icon: 'success',
+      toast: true,
+      position: 'top-end',
+      timer: 3000,
+      showConfirmButton: false
+    })
+    router.push('/store')
+  })
+  .catch((e) => 
+    Swal.fire({
+      text: e.response.data.errorMessage || 'Error !!',
+      icon: 'error',
+      toast: true,
+      position: 'top-end',
+      timer: 3000,
+      showConfirmButton: false
+    })
+  )
+})
+
 </script>
 <template lang="pug">
 div
@@ -34,7 +68,7 @@ div
       h1(class="text-center text-4xl sm:text-5xl font-semibold text-primary") Hey There!
       p(class="text-center text-lg sm:text-xl mt-8") Welcome back.
       p(class="text-center text-lg sm:text-xl my-2") Your are just one step away to your feed.
-      form(method="POST" class="flex-col items-center justify-center px-12")
+      form(method="POST" @submit.prevent="submit" class="flex-col items-center justify-center px-12")
         div(class="mt-8")
           Input(:labelName="'Email'" name="email" :type="'text'" :icon="'ic:outline-email'" :color="'#1d6795'" @input="mailError" :inputError="errors.email")
         div(class="mt-8")
