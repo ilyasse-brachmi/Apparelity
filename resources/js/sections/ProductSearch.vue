@@ -1,6 +1,3 @@
-<script setup lang="ts">
-import { Icon } from '@iconify/vue';
-</script>
 <template lang="pug">
 div(id="searchProduct" class="bg-gray-100")
   div(class="container mx-auto p-8 lg:p-16")

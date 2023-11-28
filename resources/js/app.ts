@@ -10,4 +10,5 @@ const pinia = createPinia()
 createApp(App)
   .use(router)
   .use(pinia)
+  .component("Icon", Icon)
   .mount("#app");
