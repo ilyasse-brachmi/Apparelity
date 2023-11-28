@@ -5,16 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use Plank\Mediable\Mediable;
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory, Notifiable,Mediable;
 
     public $timestamps = true;
 
 
     protected $table = 'product';
-    use Notifiable;
 
     protected $fillable = [
         'id','name', 'price','description','production_date','company_id','category_id'
@@ -36,6 +36,13 @@ class Product extends Model
     }
     public function category(){
         return $this->belongsTo(Category::class);
+    }
+    public function getPicAttribute()
+    {
+        if ($this->hasMedia('image_product')) {
+            return $this->firstMedia('image_product')->getUrl();
+        }
+        return 0;
     }
 
 }

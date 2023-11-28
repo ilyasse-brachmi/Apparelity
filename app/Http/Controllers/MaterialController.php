@@ -2,39 +2,41 @@
 
 namespace App\Http\Controllers;
 
-use  App\Models\Company;
+use App\Models\Material;
 use Illuminate\Http\Request;
 
-class CompanyController extends Controller
+class MaterialController extends Controller
 {
     public function adding(Request $request){
 
-        Company::create([
+        Material::create([
             'name'=>$request->name,
+            'origin'=>$request->origin,
+            'supplier'=>$request->supplier,
             'address'=>$request->address,
-            'description'=>$request->description,
-            'user_id'=>$request->user_id,
+            'product_id'=>$request->product_id
         ]);
         return response()->json('Added Successfully');
 
     }
     public function edit(Request $request){
-        $category=Company::findorfail($request->id);
+        $category=Material::findorfail($request->id);
         $category->update([
             'name'=>$request->name,
+            'origin'=>$request->origin,
+            'supplier'=>$request->supplier,
             'address'=>$request->address,
-            'description'=>$request->description,
-            'user_id'=>$request->user_id,
+            'product_id'=>$request->product_id
         ]);
         return response()->json('Updated Successfully');
     }
     public function delete(Request $request){
-        $company=Company::findorfail($request->id);
-        $company->delete();
+        $material=Material::findorfail($request->id);
+        $material->delete();
         return response()->json('Deleted Successfully');
     }
     public function getData(){
-        $company=Company::all();
-        return response()->json($company);
+        $material=Material::all();
+        return response()->json($material);
     }
 }
