@@ -5,7 +5,6 @@ import Sidebar from "../components/sidebar.vue";
 </script>
 <template lang="pug">
 MainLayout
-	div(class="flex items-center")
-		Sidebar
+	Sidebar()
 		slot
 </template>

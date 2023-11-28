@@ -4,7 +4,7 @@ const route = useRoute()
 const authPage = (route.name?.toString().includes('register') || route.name?.toString().includes('login') )? true: false
 </script>
 <template lang="pug">
-header(class="flex items-center justify-between p-4 top-0 bg-gray-100 sticky shadow-md")
+header(class="flex items-center justify-between p-4 top-0 bg-gray-100 sticky shadow-md z-[999999]")
   .dz-navbar-start
     div(v-if="!authPage")
       a.dz-btn.dz-btn-ghost.text-xl(href='/') LOGO
