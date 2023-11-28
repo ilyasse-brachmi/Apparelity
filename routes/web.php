@@ -20,8 +20,10 @@ Route::get('/store', function () {
     return view('welcome');
 });
 
-Route::get('/login',[App\Http\Controllers\LoginController::class,'show'])->name('login.show');
-Route::post('/login',[App\Http\Controllers\LoginController::class,'login'])->name('login');
+Route::get('/login', function () {
+    return view('welcome');
+});
 
-Route::get('/register',[App\Http\Controllers\RegisterController::class,'show'])->name('register.show');
-Route::post('/register',[App\Http\Controllers\RegisterController::class,'register'])->name('register');
+Route::get('/register', function () {
+    return view('welcome');
+});

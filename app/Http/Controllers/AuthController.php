@@ -9,6 +9,10 @@ use App\Models\Company;
 
 class AuthController extends Controller
 {
+    public function show() {
+        return view('welcome');
+    }
+
     public function login(Request $request){
         $email=$request->email;
         $password=$request->password;
