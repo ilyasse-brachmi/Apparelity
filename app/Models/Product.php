@@ -29,6 +29,7 @@ class Product extends Model
     {
         return $this->hasMany(Material::class, 'product_id');
     }
+        
     public function company()
     {
         return $this->belongsTo(Company::class);

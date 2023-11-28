@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class Company extends Model
 {
-    use HasFactory;
+    use HasFactory,HasApiTokens;
 
     public $timestamps = true;
     protected $table = 'company';
@@ -25,7 +26,7 @@ class Company extends Model
 
     public function products()
     {
-        return $this->hasMany(Product::class, 'company_id');
+        return $this->hasMany(Product::class,'company_id');
     }
     public function user(){
         return $this->belongsTo(User::class);
