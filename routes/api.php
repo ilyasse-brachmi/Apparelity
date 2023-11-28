@@ -15,8 +15,8 @@ use App\Http\Controllers\SearchController;
 // });
 
 //-----------------------AuthController-----------------//
-Route::get('register',[AuthController::class,'register']);
-Route::get('login',[AuthController::class,'login']);
+Route::post('register',[AuthController::class,'register']);
+Route::post('login',[AuthController::class,'login']);
 Route::middleware('auth:sanctum')->group(function () {
 Route::post('/logout', [AuthController::class, 'logout']);
 });
@@ -26,33 +26,33 @@ Route::get('getReviews',[ReviewController::class,'getReviews']);
 //-----------------------Start Company Controller-----------------//
 
 //-----------------------Start Company Controller route-----------------//
-Route::post('add-company',[CompanyController::class,'adding']);
-Route::put('edit-company',[CompanyController::class,'edit']);
-Route::delete('delete-company',[CompanyController::class,'delete']);
-Route::get('get-company',[CompanyController::class,'getData']);
+Route::post('company',[CompanyController::class,'add']);
+Route::put('company',[CompanyController::class,'edit']);
+Route::delete('company',[CompanyController::class,'delete']);
+Route::get('company',[CompanyController::class,'get']);
 //-----------------------End Company Controller-----------------//
 
 //-----------------------SearchController-----------------//
-Route::get('searchProduct',[SearchController::class,'searchProducts']);
+Route::get('product',[SearchController::class,'searchProducts']);
 //-----------------------End Company Controller route-----------------//
 
 //-----------------------Start Category Controller route-----------------//
-Route::post('add-category',[CategoryController::class,'adding']);
-Route::put('edit-category',[CategoryController::class,'edit']);
-Route::delete('delete-category',[CategoryController::class,'delete']);
-Route::get('get-category',[CategoryController::class,'getData']);
+Route::post('category',[CategoryController::class,'add']);
+Route::put('category',[CategoryController::class,'edit']);
+Route::delete('category',[CategoryController::class,'delete']);
+Route::get('category',[CategoryController::class,'get']);
 //-----------------------End Category Controller route-------------//
 
 //-----------------------Start Product Controller route-----------------//
-Route::post('add-product',[ProductController::class,'adding']);
-Route::put('edit-product',[ProductController::class,'edit']);
-Route::delete('delete-product',[ProductController::class,'delete']);
-Route::get('get-product',[ProductController::class,'getData']);
+Route::post('product',[ProductController::class,'add']);
+Route::put('product',[ProductController::class,'edit']);
+Route::delete('product',[ProductController::class,'delete']);
+Route::get('product',[ProductController::class,'get']);
 //-----------------------End Product Controller route-------------//
 
 //-----------------------Start Material Controller route-----------------//
-Route::post('add-material',[MaterialController::class,'adding']);
-Route::put('edit-material',[MaterialController::class,'edit']);
-Route::delete('delete-material',[MaterialController::class,'delete']);
-Route::get('get-material',[MaterialController::class,'getData']);
+Route::post('material',[MaterialController::class,'add']);
+Route::put('material',[MaterialController::class,'edit']);
+Route::delete('material',[MaterialController::class,'delete']);
+Route::get('material',[MaterialController::class,'get']);
 //-----------------------End Material Controller route-------------//

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
-    public function adding(Request $request){
+    public function add(Request $request){
 
         Company::create([
             'name'=>$request->name,
@@ -33,7 +33,7 @@ class CompanyController extends Controller
         $company->delete();
         return response()->json('Deleted Successfully');
     }
-    public function getData(){
+    public function get(){
         $company=Company::all();
         return response()->json($company);
     }

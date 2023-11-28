@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class MaterialController extends Controller
 {
-    public function adding(Request $request){
+    public function add(Request $request){
 
         Material::create([
             'name'=>$request->name,
@@ -35,7 +35,7 @@ class MaterialController extends Controller
         $material->delete();
         return response()->json('Deleted Successfully');
     }
-    public function getData(){
+    public function get(){
         $material=Material::all();
         return response()->json($material);
     }

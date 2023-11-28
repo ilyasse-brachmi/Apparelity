@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    public function adding(Request $request){
+    public function add(Request $request){
        Category::create([
            'name'=>$request->name,
        ]);
@@ -26,7 +26,7 @@ class CategoryController extends Controller
         $category->delete();
         return response()->json('Deleted Successfully');
     }
-    public function getData(){
+    public function get(){
         $category=Category::all();
         return response()->json($category);
     }

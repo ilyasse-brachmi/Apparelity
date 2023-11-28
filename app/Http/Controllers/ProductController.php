@@ -11,7 +11,7 @@ use MediaUploader;
 
 class ProductController extends Controller
 {
-    public function adding(Request $request){
+    public function add(Request $request){
         $product=Product::create([
             'name'=>$request->name,
             'price'=>$request->price,
@@ -55,7 +55,7 @@ class ProductController extends Controller
         $product->delete();
         return response()->json('Deleted Successfully');
     }
-    public function getData(){
+    public function get(){
         $items=Product::all();
         return response()->json($items);
     }
