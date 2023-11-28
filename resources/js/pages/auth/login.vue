@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Icon } from '@iconify/vue';
 import Navbar from "../../components/navbar.vue";
 import Input from '@/components/input.vue';
 </script>
