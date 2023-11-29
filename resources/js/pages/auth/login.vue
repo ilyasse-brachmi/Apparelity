@@ -36,17 +36,20 @@ const {
 const submit = handleSubmit(async () => {
   const data = { email: email.value, password: password.value }
   await $AppAxios.post('/api/login', data)
-  .then((response) => {
-    store.fetchUser(response.data.token, response.data.user)
+  .then(async (response) => {
+    await store.fetchUser(response.data.token, response.data.user)
+    // router.push('/store')
     Swal.fire({
       text: 'You are logged in !',
       icon: 'success',
       toast: true,
       position: 'top-end',
       timer: 3000,
-      showConfirmButton: false
+      showConfirmButton: false,
     })
-    router.push('/store')
+    .then(function() {
+      router.push('/store')
+    });
   })
   .catch((e) => 
     Swal.fire({

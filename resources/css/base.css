@@ -8,7 +8,10 @@
 	main {
 		@apply bg-white;
 	}
-
+	.my-swal{
+		margin-top: 6rem;
+		margin-right: 1rem;
+	}
 	/* section {
 		@apply max-w-7xl mx-auto;
 	} */

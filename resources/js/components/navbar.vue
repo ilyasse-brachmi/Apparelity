@@ -1,13 +1,35 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
+import { useAuth } from '@/stores/auth.store'
+import Swal from 'sweetalert2'
+
 const route = useRoute()
-const authPage = (route.name?.toString().includes('register') || route.name?.toString().includes('login') )? true: false
+const store = useAuth()
+const authPage = route.meta.auth === 'Auth' ? true: false
+const logout = () => {
+  store.logout()
+  Swal.fire({
+      text: 'You are logged out !',
+      icon: 'success',
+      toast: true,
+      position: 'top-end',
+      timer: 2000,
+      showConfirmButton: false,
+      customClass: {
+        container: 'my-swal'
+      }
+    })
+}
 </script>
 <template lang="pug">
-header(class="flex items-center justify-between p-4 top-0 bg-gray-100 sticky shadow-md z-[999999]")
+header(class="flex items-center justify-between p-4 top-0 bg-gray-100 sticky shadow-md z-[99999]")
   .dz-navbar-start
-    div(v-if="!authPage")
+    div()
       a.dz-btn.dz-btn-ghost.text-xl(href='/') LOGO
-  div(v-if="!authPage" class="dz-navbar-center")
-    a( href="/login" class="px-4 md:px-8 lg:px-14 py-2 text-white m-2 bg-primary rounded-sm hover:bg-primary/90  hover:shadow-md duration-300") Sign In
+  div(class="dz-navbar-center")
+    div(v-if="!authPage")
+      a( href="/login" class="px-4 md:px-8 lg:px-14 py-2 text-white m-2 bg-primary rounded-sm hover:bg-primary/90  hover:shadow-md duration-300") Sign In
+    div(v-else class="flex items-center justify-center text-white cursor-pointer font-medium px-4 md:px-8 lg:px-14 py-2 m-2 bg-primary rounded-sm hover:bg-primary/90  hover:shadow-md duration-300" @click="logout")
+      a(href="/" class="mx-2") Logout
+      Icon(icon="material-symbols:logout")
 </template>
