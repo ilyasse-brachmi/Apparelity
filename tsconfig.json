@@ -1,4 +1,7 @@
 {
+  "vueCompilerOptions": {
+    "plugins": ["@vue/language-plugin-pug"]
+  },
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig to read more about this file */
 
