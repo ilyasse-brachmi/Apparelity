@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  js-cookie:
+    specifier: ^3.0.5
+    version: 3.0.5
   pinia:
     specifier: ^2.1.7
     version: 2.1.7(typescript@5.3.2)(vue@3.3.9)
@@ -13,7 +16,7 @@ dependencies:
     version: 11.10.1
   vee-validate:
     specifier: ^4.12.0
-    version: 4.12.0(vue@3.3.9)
+    version: 4.12.1(vue@3.3.9)
   vue:
     specifier: ^3.2.36
     version: 3.3.9(typescript@5.3.2)
@@ -42,7 +45,7 @@ devDependencies:
     version: 1.6.2
   daisyui:
     specifier: ^4.4.2
-    version: 4.4.10(postcss@8.4.31)
+    version: 4.4.14(postcss@8.4.31)
   laravel-vite-plugin:
     specifier: ^0.8.0
     version: 0.8.1(vite@4.5.0)
@@ -854,7 +857,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001565
-      electron-to-chromium: 1.4.594
+      electron-to-chromium: 1.4.596
       node-releases: 2.0.13
       update-browserslist-db: 1.0.13(browserslist@4.22.1)
     dev: true
@@ -977,8 +980,8 @@ packages:
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     dev: true
 
-  /daisyui@4.4.10(postcss@8.4.31):
-    resolution: {integrity: sha512-NGDsOLtCQ9UzfeOUlKn1lwneQte4UoINmAaDBcrMAbZviu/jWm7PSR9DqH3eE/AY/TpkImdAPVK+kGsZlpEFkQ==}
+  /daisyui@4.4.14(postcss@8.4.31):
+    resolution: {integrity: sha512-1g37QzzDFM0QLQe+qRBswkGKyaGijk84t01UMg1ytkFhQxru3zeMh5nWcpC9KnqzKgnITkpSebpGqq4gP8zRrg==}
     engines: {node: '>=16.9.0'}
     dependencies:
       css-selector-tokenizer: 0.8.0
@@ -1019,8 +1022,8 @@ packages:
     resolution: {integrity: sha512-LLBi6pEqS6Do3EKQ3J0NqHWV5hhb78Pi8vvESYwyOy2c31ZEZVdtitdzsQsKb7878PEERhzUk0ftqGhG6Mz+pQ==}
     dev: true
 
-  /electron-to-chromium@1.4.594:
-    resolution: {integrity: sha512-xT1HVAu5xFn7bDfkjGQi9dNpMqGchUkebwf1GL7cZN32NSwwlHRPMSDJ1KN6HkS0bWUtndbSQZqvpQftKG2uFQ==}
+  /electron-to-chromium@1.4.596:
+    resolution: {integrity: sha512-zW3zbZ40Icb2BCWjm47nxwcFGYlIgdXkAx85XDO7cyky9J4QQfq8t0W19/TLZqq3JPQXtlv8BPIGmfa9Jb4scg==}
     dev: true
 
   /enhanced-resolve@5.15.0:
@@ -1343,6 +1346,11 @@ packages:
     resolution: {integrity: sha512-gFqAIbuKyyso/3G2qhiO2OM6shY6EPP/R0+mkDbyspxKazh8BXDC5FiFsUjlczgdNz/vfra0da2y+aHrusLG/Q==}
     hasBin: true
     dev: true
+
+  /js-cookie@3.0.5:
+    resolution: {integrity: sha512-cEiJEAEoIbWfCZYKWhVwFuvPX1gETRYPw6LlaTKoxD3s2AkXzkCjnp6h0V77ozyqj0jakteJ4YqDJT830+lVGw==}
+    engines: {node: '>=14'}
+    dev: false
 
   /js-stringify@1.0.2:
     resolution: {integrity: sha512-rtS5ATOo2Q5k1G+DADISilDA6lv79zIiwFd6CcjuIxGKLFm5C+RLImRscVap9k55i+MOZwgliw+NejvkLuGD5g==}
@@ -2033,8 +2041,8 @@ packages:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
     dev: true
 
-  /vee-validate@4.12.0(vue@3.3.9):
-    resolution: {integrity: sha512-hQtSziTN/l70uq8Y8X4ZayGwHtJo0VPLXImzUbvl0OqEdX6jlgrnePSmQIZlu1HeEjDfOVvCJCDACKerJzRVSw==}
+  /vee-validate@4.12.1(vue@3.3.9):
+    resolution: {integrity: sha512-CPqBfJwWGePCPzhtwLZ7mFLGn45V2i+C/S0+nBybD+o+btsH1W6Ri8p1sNtbTtESQ5HJTYfCrzX/Mf6uFWH8Fw==}
     peerDependencies:
       vue: ^3.3.8
     dependencies:
