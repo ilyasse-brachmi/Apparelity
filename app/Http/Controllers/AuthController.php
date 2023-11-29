@@ -24,18 +24,13 @@ class AuthController extends Controller
 
     public function register(Request $request){
         $user = new User;
-        $user->email=$request->input('email');
-        $user->phone=$request->input('phone');
-        $user->password=bcrypt($request->input('password'));
+        $user->name=$request->name;
+        $user->email=$request->email;
+        $user->phone=$request->phone;
+        $user->password=bcrypt($request->password);
         $user->save();
-        $Company = new Company;
-        $Company->user_id=$user->id;
-        $Company->name=$request->input('name');
-        $Company->address=$request->input('address');
-        $Company->description=$request->input('description');
-        $Company->save();
-        $token=$Company->createToken('company')->plainTextToken;
-        return response(['company'=>$Company,'token'=>$token]);
+        $token=$user->createToken('user')->plainTextToken;
+        return response(['user'=>$user,'token'=>$token]);
     }
     public function logout(){
         $user=Auth::User();

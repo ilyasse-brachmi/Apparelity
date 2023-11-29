@@ -24,7 +24,7 @@ const routes = [
   },
   {
     path: '/login',
-    name: 'login',
+    name: 'Login',
     component: Login,
     meta: {
       auth: 'Guest'
@@ -32,7 +32,7 @@ const routes = [
   },
   {
     path: '/register',
-    name: 'register',
+    name: 'Register',
     component: Register,
     meta: {
       auth: 'Guest'
@@ -48,9 +48,8 @@ const router = createRouter({
 router.beforeEach((to, from) => {
   const store = useAuth()
 
-  if(to.meta.auth === 'Auth' && !store.isAuth){
-    return { name: 'login' }
-  }
+  if(to.meta.auth === 'Auth' && !store.isAuth) return { name: 'Login' }
+  if(to.meta.auth === 'Guest' && store.isAuth) return { name: 'Store' }
 })
 
 export default router;
