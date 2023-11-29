@@ -19,7 +19,12 @@ Route::get('/', function () {
 Route::get('/store', function () {
     return view('welcome');
 });
-
+Route::get('/privacy-policy', function () {
+    return view('welcome');
+});
+Route::get('/terms-of-service', function () {
+    return view('welcome');
+});
 Route::get('/login', function () {
     return view('welcome');
 });

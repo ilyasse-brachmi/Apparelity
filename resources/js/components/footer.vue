@@ -15,5 +15,6 @@ footer(class="bg-gradient-to-r from-secondary to-primary")
                 textarea(rows="4" cols="" placeholder="Message..." class="px-4 py-2 text-lg outline-none border-none rouned bg-transparent w-full")
         div.flex.justify-center.text-white.font-medium.text-lg.gap-4(class="col-span-1 sm:col-span-2 mt-8 xl:col-span-1")
             a(href="/").mt-2 Home 
-            a(href="#").mt-2 Terms & Privacy
+            a(href="/privacy-policy").mt-2 Privacy Policy
+            a(href="/terms-of-service").mt-2 Terms of Service
 </template>
