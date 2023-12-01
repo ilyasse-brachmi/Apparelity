@@ -3,7 +3,7 @@ import MainLayout from "../layouts/mainLayout.vue";
 </script>
 <template lang="pug">
 MainLayout
-    div(class="container mx-auto w-[60rem] my-12")
+    div(class="container mx-auto max-w-[60rem] px-4 my-12")
         h1.text-4xl.text-primary.font-bold.text-center.my-4 Privacy Policy
         h3.text-gray-500 Last Updated: December 2023
         p Thank you for visiting Apparelity ("us," "we," or "our"). This Privacy Policy outlines the types of personal information we collect, how it is used, and your choices regarding your data. By using our website, you agree to the terms outlined in this policy.

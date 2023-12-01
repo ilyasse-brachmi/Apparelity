@@ -21,7 +21,7 @@ const routes = [
     name: 'Store',
     component: Store,
     meta: {
-      auth: 'Auth'
+      auth: 'Guest'
     }
   },
   {
