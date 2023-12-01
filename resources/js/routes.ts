@@ -5,6 +5,7 @@ import Privacy from "./pages/privacy.vue"
 import Terms from "./pages/terms.vue"
 import Login from "./pages/auth/login.vue"
 import Register from "./pages/auth/register.vue"
+import CompleteAccount from "@/pages/auth/completeAccount.vue"
 import { useAuth } from '@/stores/auth.store'
 
 const routes = [
@@ -41,19 +42,27 @@ const routes = [
     }
   },
   {
+    path: '/complete-account',
+    name: 'CompleteAccount',
+    component: CompleteAccount,
+    meta: {
+      auth: 'Auth'
+    }
+  },
+  {
     path: '/privacy-policy',
-    name: 'Privacy Policy',
+    name: 'PrivacyPolicy',
     component: Privacy,
     meta: {
-      auth: 'Guest'
+      auth: 'Both'
     }
   },
   {
     path: '/terms-of-service',
-    name: 'Terms of Service',
+    name: 'TermsOfService',
     component: Terms,
     meta: {
-      auth: 'Guest'
+      auth: 'Both'
     }
   }
 ]
@@ -63,7 +72,7 @@ const router = createRouter({
   routes
 })
 
-router.beforeEach((to, from) => {
+router.beforeEach((to) => {
   const store = useAuth()
 
   if(to.meta.auth === 'Auth' && !store.isAuth) return { name: 'Login' }

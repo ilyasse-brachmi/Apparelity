@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { useAuth } from '@/stores/auth.store'
 import Swal from 'sweetalert2'
 
-const route = useRoute()
+const router = useRouter()
 const store = useAuth()
-const authPage = route.meta.auth === 'Auth' ? true: false
 const logout = () => {
   store.logout()
   Swal.fire({
@@ -19,6 +18,7 @@ const logout = () => {
         container: 'my-swal'
       }
     })
+    .then(() => router.push('/'))
 }
 </script>
 <template lang="pug">
@@ -27,7 +27,7 @@ header(class="flex items-center justify-between p-4 top-0 bg-gray-100 sticky sha
     div()
       a.dz-btn.dz-btn-ghost.text-xl(href='/') LOGO
   div(class="dz-navbar-center")
-    div(v-if="!authPage")
+    div(v-if="!store.isAuth")
       a( href="/login" class="px-4 md:px-8 lg:px-14 py-2 text-white m-2 bg-primary rounded-sm hover:bg-primary/90  hover:shadow-md duration-300") Sign In
     div(v-else class="flex items-center justify-center text-white cursor-pointer font-medium px-4 md:px-8 lg:px-14 py-2 m-2 bg-primary rounded-sm hover:bg-primary/90  hover:shadow-md duration-300" @click="logout")
       a(href="/" class="mx-2") Logout

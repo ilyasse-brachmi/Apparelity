@@ -25,6 +25,9 @@ Route::get('/privacy-policy', function () {
 Route::get('/terms-of-service', function () {
     return view('welcome');
 });
+Route::get('/complete-account', function () {
+    return view('welcome');
+});
 Route::get('/login', function () {
     return view('welcome');
 });
