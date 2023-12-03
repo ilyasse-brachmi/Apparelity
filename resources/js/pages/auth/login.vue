@@ -37,6 +37,7 @@ const submit = handleSubmit(async () => {
   const data = { email: email.value, password: password.value }
   await $AppAxios.post('/api/login', data)
   .then(async (response) => {
+    console.log(response)
     await store.fetchUser(response.data.token, response.data.user)
     // router.push('/store')
     Swal.fire({

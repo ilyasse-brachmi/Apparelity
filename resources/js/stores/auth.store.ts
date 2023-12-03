@@ -10,8 +10,9 @@ declare interface User {
 
 export const useAuth = defineStore('Auth', {
   state: () => {
+    const userCookie = Cookies.get('user');
     return {
-      user: ref({} as User),
+      user:  ref(userCookie ? (JSON.parse(userCookie) as User) : {} as User),
       token: ref(Cookies.get('token') || ''),
       isAuth: ref(!!Cookies.get('token'))
     }
@@ -19,11 +20,15 @@ export const useAuth = defineStore('Auth', {
   actions: {
     setToken(newToken: string) {
       this.token = newToken;
-      Cookies.set('token', newToken, { expires: 1 })
+      Cookies.set('token', newToken, { expires: 1})
+    },
+    setUser(newUser: User) {
+      this.user = newUser;
+      Cookies.set('user', JSON.stringify(newUser), { expires: 1})
     },
     fetchUser(token: string, newUser: User) {
       this.setToken(token)
-      this.user = newUser
+      this.setUser(newUser)
       this.isAuth = true
     },
     logout(){
