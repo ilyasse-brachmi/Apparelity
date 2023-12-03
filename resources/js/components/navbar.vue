@@ -2,6 +2,7 @@
 import { useRouter } from 'vue-router'
 import { useAuth } from '@/stores/auth.store'
 import Swal from 'sweetalert2'
+import { provide, ref } from 'vue';
 
 const router = useRouter()
 const store = useAuth()
@@ -20,11 +21,18 @@ const logout = () => {
     })
     .then(() => router.push('/'))
 }
+const opened = ref(false)
+const emit = defineEmits(['sidebarToggle'])
+const toggleSidebarEvent = () => {
+  opened.value = !opened.value
+  emit('sidebarToggle', opened.value)
+}
 </script>
 <template lang="pug">
 header(class="flex items-center justify-between p-4 top-0 bg-gray-100 sticky shadow-md z-[99999]")
   .dz-navbar-start
-    div()
+    div(class="flex items-center")
+      Icon(icon="mingcute:menu-fill" class="lg:hidden text-2xl cursor-pointer" @click="toggleSidebarEvent")
       a.dz-btn.dz-btn-ghost.text-xl(href='/') LOGO
   div(class="dz-navbar-center")
     div(v-if="!store.isAuth")

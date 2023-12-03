@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+
 const props = defineProps({
   materials: {
     type: Array,
@@ -8,22 +10,29 @@ const props = defineProps({
     type: Array,
     required: true
   },
+	sidebarToggle: {
+		type: Boolean,
+		default: false
+	}
+
 //   price: {
 //     type: Number,
 //     required: true
 //   }
 })
+// defineProps(['modelValue'])
+// defineEmits(['update:modelValue'])
+const opened = computed(() => props.sidebarToggle)
 </script>
 <template lang="pug">
-div(class="lg:flex lg:items-center lg:bg-white lg:h-screen lg:overflow-hidden")
-	div(class="lg:max-h-screen ltr:left-0 rtl:right-0 lg:shadow-xl lg:overflow-y-auto lg:h-screen lg:text-gray-600 lg:min-w-[20rem] lg:w-fit dz-drawer lg:dz-drawer-open")
-		input(id="my-drawer" type="checkbox" class="dz-drawer-toggle")
-		div(class="dz-drawer-content flex flex-col items-center justify-center")
-			//- Normaly this div for page content (cards..) it should be placed here but i got some issues with it
-			//- div.max-h-screen.h-full.w-full.overflow-y-auto
-			//- 	slot
-			label(for="my-drawer" class="lg:hidden") test 
-		div(class="dz-drawer-side")
+div(class="lg:max-h-screen w-full dz-drawer lg:dz-drawer-open")
+	input(id="my-drawer" type="checkbox" v-model="opened" class="dz-drawer-toggle")
+	div(class="dz-drawer-content flex flex-col items-center justify-center")
+		div.max-h-screen.h-full.w-full.overflow-y-auto
+			slot
+	div(class="dz-drawer-side min-w-[20rem] shadow-md")
+		label(for="my-drawer" aria-label="close sidebar" class="dz-drawer-overlay")
+		div(class="bg-white min-w-[20rem] shadow-md lg:pt-0 pt-24 h-full z-[999999]")
 			div.flex.items-enter.justify-between.p-4.border-b-2
 				p.text-xl.font-semibold Filter 
 				p(class="text-primary/70 mx-6 cursor-pointer text-lg") Clear All
@@ -38,8 +47,5 @@ div(class="lg:flex lg:items-center lg:bg-white lg:h-screen lg:overflow-hidden")
 			div.mx-4
 				p(class="text-base sm:text-lg text-primary font-semibold") Materials
 				ul(class="mt-2 ml-2")
-					li(v-for="material in materials" class="hover:text-primary/70") {{ material }} 
-	//- Also in this place it gave me some issues as in the screen
-	div.max-h-screen.h-full.w-full.overflow-y-auto
-		slot
+					li(v-for="material in materials" class="hover:text-primary/70") {{ material }}
 </template>

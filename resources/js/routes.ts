@@ -22,7 +22,7 @@ const routes = [
     name: 'Store',
     component: Store,
     meta: {
-      auth: 'Guest'
+      auth: 'Auth'
     }
   },
   {
