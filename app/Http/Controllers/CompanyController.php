@@ -14,13 +14,10 @@ class CompanyController extends Controller
             'address'=>$request->address,
             'description'=>$request->description,
             'user_id'=>$request->user_id,
-<<<<<<< Updated upstream
-=======
             'zipCode'=>$request->zipCode,
             'county'=>$request->county,
             'city'=>$request->city,
             'phone'=>$request->phone, 
->>>>>>> Stashed changes
         ]);
         return response()->json('Added Successfully');
 
@@ -32,13 +29,10 @@ class CompanyController extends Controller
             'address'=>$request->address,
             'description'=>$request->description,
             'user_id'=>$request->user_id,
-<<<<<<< Updated upstream
-=======
             'zipCode'=>$request->zipCode,
             'county'=>$request->county,
             'city'=>$request->city,
             'phone'=>$request->phone, 
->>>>>>> Stashed changes
         ]);
         return response()->json('Updated Successfully');
     }
