@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductRequest;
 use App\Models\Product;
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use MediaUploader;
 
@@ -11,7 +11,7 @@ use MediaUploader;
 
 class ProductController extends Controller
 {
-    public function add(Request $request){
+    public function add(ProductRequest $request){
         $product=Product::create([
             'name'=>$request->name,
             'price'=>$request->price,
@@ -35,9 +35,9 @@ class ProductController extends Controller
             $product->attachMedia($media, 'image_product');
         }
         return response()->json('Added Successfully');
-
     }
-    public function edit(Request $request){
+
+    public function edit(ProductRequest $request){
         $product=Product::findorfail($request->id);
         $product->update([
             'name'=>$request->name,
@@ -49,7 +49,7 @@ class ProductController extends Controller
         ]);
         return response()->json('Updated Successfully');
     }
-    public function delete(Request $request){
+    public function delete(ProductRequest $request){
         $product=Product::findorfail($request->id);
         $product->materials()->delete();
         $product->delete();
