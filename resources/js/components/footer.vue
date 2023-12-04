@@ -5,7 +5,8 @@ footer(class="bg-gradient-to-r from-secondary to-primary")
             div 
                 a(href="/" class="text-5xl font-medium text-white") LOGO
             div
-                p(class="mt-8 text-white text-justify") Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem ad sit incidunt, illo ipsa qui cupiditate totam architecto, ratione repellendus aut, provident voluptatem rerum eligendi tempore at quas cumque alias?
+                p.text-lg.text-white.mt-4 Join us in revolutionizing traceability
+                p.text-sm.text-white.text-justify.mt-2 At Apparelity, we are dedicated to transforming the way industries approach product traceability. Together, we can build a future based on transparency, responsibility, and ethical practices.
         div 
             div(class="mt-8 lg:mt-0")
                 p(class="text-3xl font-medium text-white") Contact Us

@@ -23,7 +23,7 @@ const routes = [
     name: 'Store',
     component: Store,
     meta: {
-      auth: 'Auth'
+      auth: 'Guest'
     }
   },
   {
@@ -47,7 +47,7 @@ const routes = [
     name: 'CompleteAccount',
     component: CompleteAccount,
     meta: {
-      auth: 'Auth'
+      auth: 'Guest'
     }
   },
   {
