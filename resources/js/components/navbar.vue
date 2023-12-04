@@ -2,7 +2,7 @@
 import { useRouter } from 'vue-router'
 import { useAuth } from '@/stores/auth.store'
 import Swal from 'sweetalert2'
-import { provide, ref } from 'vue';
+import { ref } from 'vue';
 
 const router = useRouter()
 const store = useAuth()

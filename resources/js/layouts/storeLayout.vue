@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import MainLayout from './mainLayout.vue';
 import Sidebar from "../components/sidebar.vue";
-import { provide, ref } from 'vue';
+import { ref } from 'vue';
 import Navbar from '@/components/navbar.vue';
 import Footer from '@/components/footer.vue';
 const categories = ['Headwear','Shoes','Bags','Clothes'];
