@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import Cookies from 'js-cookie';
+import Cookies from 'js-cookie'
 
 declare interface User {
   name: string,
