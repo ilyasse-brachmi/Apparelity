@@ -122,8 +122,8 @@ div(class="h-screen w-screen flex items-center justify-center")
     div(class="container w-[30rem] sm:w-[60rem] max-h-[68rem] py-2 px-2 sm:px-8 sm:py-4 border-2 border-gray-200 rounded-lg shadow-lg shadow-gray-200/50")
       h1(class="text-center text-4xl sm:text-5xl font-semibold text-primary") Complete Your account
       p(class="text-center text-lg sm:text-xl my-2 sm:mx-8") Fill Up your Company informations.
-      form(method="POST" @submit.prevent="addCompanySubmit" class="flex-col items-center justify-center px-4 sm:px-12")
-        div(class="grid sm:grid-rows-5 sm:grid-cols-2 gap-x-6")
+      form(method="POST" @submit.prevent="addCompanySubmit" class="flex-col items-center justify-center px-4 sm:px-8")
+        div(class="grid md:grid-rows-5 md:grid-cols-2 gap-x-6")
           div(class="mt-4")
             Input(:labelName="'Company Name'" name="Company Name" :type="'text'" :color="'#1d6795'" @input="nameError" :inputError="errors.companyName")
           div(class="mt-4")
@@ -131,10 +131,13 @@ div(class="h-screen w-screen flex items-center justify-center")
           div(class="mt-4")
             Input(:labelName="'Company Email'" name="email" :type="'text'" :icon="'ic:outline-email'" :color="'#1d6795'" @input="mailError" :inputError="errors.email")
           div(class="mt-4")
-            Input(:labelName="'Company Address'" name="aposiakodddress" :type="'text'" :icon="'entypo:address'" :color="'#1d6795'" @input="addressError" :inputError="errors.address")
-          div(class="w-full rounded max-w-[40rem] bg-white mt-4 row-span-3 col-span-1")
-            label(for="description" class="text-primary") Company Description
-            textarea(rows="7" cols="" id="description" placeholder="Optional Description of Your Company..." class="px-4 py-2 text-lg border-primary border-2 rouned bg-transparent w-full")
+            Input(:labelName="'Company Address'" name="address" :type="'text'" :icon="'entypo:address'" :color="'#1d6795'" @input="addressError" :inputError="errors.address")
+          div(class="w-full rounded max-w-[40rem] bg-white mt-4 row-span-3 col-span-1 mt-10")
+            label(for="description" class="text-primary ml-2 text-lg") Company Description
+            div(class="w-full rounded max-w-[40rem] bg-white mt-2")
+              textarea(rows="8" cols="" id="description" placeholder="Optional Description of Your Company..." @input="descriptionError" class="px-2 mt-2 text-sm border-primary border-2 rounded-lg bg-transparent w-full")
+            div(v-if="errors.description" class="mt-4 bg-red text-black")
+              p {{ errors.description }}
           div(class="mt-4")
             Input(:labelName="'Zip Code'" name="zip" :type="'text'" :icon="'icon-park-outline:zip'" :color="'#1d6795'" @input="zipError" :inputError="errors.zip")
           div(class="mt-4")
@@ -142,11 +145,13 @@ div(class="h-screen w-screen flex items-center justify-center")
           div(class="mt-4")
             Input(:labelName="'Country'" name="country" :type="'text'" :icon="'gis:search-country'" :color="'#1d6795'" @input="countryError" :inputError="errors.country")
         div(class="mt-4 flex justify-center gap-1 whitespace-nowrap")
-          input(type="checkbox" id="acceptTermsPrivacy" name="acceptTermsPrivacy" value="true" @input="acceptTermsPrivacyError" :inputError="errors.acceptTermsPrivacy")
+          input(type="checkbox" id="acceptTermsPrivacy" name="acceptTermsPrivacy" v-model="acceptTermsPrivacyError")
           label(for="acceptTermsPrivacy" class="ml-1") I have read and accept 
           a(href="/terms-of-service" target="_blank" class="text-primary") terms of Service 
           span , 
           a(href="/privacy-policy" target="_blank" class="text-primary") Privacy Policy
+        div(v-if="errors.acceptTermsPrivacy" class="mt-4 bg-red text-black")
+          p {{errors.acceptTermsPrivacy}}
         div(class="flex justify-center mt-4")
           button(type="submit" class="border font-bold text-2xl text-white border-white rounded-full w-full py-4 bg-primary hover:shadow-md duration-300") Complete
 </template>
