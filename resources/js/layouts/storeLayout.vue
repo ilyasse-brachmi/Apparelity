@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import MainLayout from './mainLayout.vue';
 import Sidebar from "../components/sidebar.vue";
 import { ref } from 'vue';
 import Navbar from '@/components/navbar.vue';

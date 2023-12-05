@@ -48,7 +48,7 @@ const routes = [
     name: 'CompleteAccount',
     component: CompleteAccount,
     meta: {
-      auth: 'Auth'
+      auth: 'Guest'
     }
   },
   {
