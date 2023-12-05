@@ -13,7 +13,7 @@ class AuthController extends Controller
     public function login(Request $request){
         $request->validate([
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8|max:30',
+            'password' => 'required|string|min:8|max:30'
         ]);
         $email=$request->email;
         $password=$request->password;
@@ -30,10 +30,6 @@ class AuthController extends Controller
         $request->validate([
             'name' => 'required|string',
             'email' => 'required|email|unique:users,email',
-<<<<<<< Updated upstream
-            'phone' => 'required|string',
-=======
->>>>>>> Stashed changes
             'password' => 'required|string|min:8|max:30',
         ]);
         $user = new User;
