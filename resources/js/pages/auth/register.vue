@@ -102,9 +102,9 @@ div
         div(class="mt-8")
           Input(:labelName="'Tel'" name="tel" :type="'text'" :icon="'ic:baseline-phone'" :color="'#1d6795'" @input="telError" :inputError="errors.tel")
         div(class="mt-8")
-          Input(:labelName="'Password'" name="password" :type="'password'" :color="'#1d6795'" @input="passwordError" :inputError="errors.password")
+          Input(:labelName="'Password'" name="password" :type="'password'" :color="'#1d6795'" :enbaleCopyPast="false" @input="passwordError" :inputError="errors.password")
         div(class="mt-8")
-          Input(:labelName="'Confirm Password'" name="confirmPassword" :type="'password'" :color="'#1d6795'" @input="confirmPasswordError" :inputError="errors.confirmPassword")
+          Input(:labelName="'Confirm Password'" name="confirmPassword" :type="'password'" :color="'#1d6795'" :enbaleCopyPast="false" @input="confirmPasswordError" :inputError="errors.confirmPassword")
         div(class="flex justify-center mt-12")
           button(type="submit" class="border font-bold text-2xl text-white border-white rounded-full w-full py-4 bg-primary hover:shadow-md duration-300") Sign Up
       div(class="flex flex-col lg:flex-row items-center gap-2 justify-center mt-4")

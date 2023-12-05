@@ -15,13 +15,7 @@ const props = defineProps({
 		default: false
 	}
 
-//   price: {
-//     type: Number,
-//     required: true
-//   }
 })
-// defineProps(['modelValue'])
-// defineEmits(['update:modelValue'])
 const opened = computed(() => props.sidebarToggle)
 </script>
 <template lang="pug">
