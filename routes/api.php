@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SearchController;
-
+use App\Http\Controllers\LocationController;
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
@@ -56,3 +56,8 @@ Route::put('material',[MaterialController::class,'edit']);
 Route::delete('material',[MaterialController::class,'delete']);
 Route::get('material',[MaterialController::class,'get']);
 //-----------------------End Material Controller route-------------//
+
+//-----------------------List of countries-----------------//
+Route::get('countries',[LocationController::class,'countries']);
+ //-----------------------List of states-----------------//
+ Route::get('states',[LocationController::class,'states']);
