@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\MaterialRequest;
 use App\Models\Material;
-use Illuminate\Http\Request;
-
 class MaterialController extends Controller
 {
-    public function add(Request $request){
+    public function add(MaterialRequest $request){
 
         Material::create([
             'name'=>$request->name,
@@ -19,7 +18,7 @@ class MaterialController extends Controller
         return response()->json('Added Successfully');
 
     }
-    public function edit(Request $request){
+    public function edit(MaterialRequest $request){
         $category=Material::findorfail($request->id);
         $category->update([
             'name'=>$request->name,
@@ -30,7 +29,7 @@ class MaterialController extends Controller
         ]);
         return response()->json('Updated Successfully');
     }
-    public function delete(Request $request){
+    public function delete(MaterialRequest $request){
         $material=Material::findorfail($request->id);
         $material->delete();
         return response()->json('Deleted Successfully');

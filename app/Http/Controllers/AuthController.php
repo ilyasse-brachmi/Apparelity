@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AuthRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
@@ -10,7 +11,7 @@ use App\Models\Company;
 class AuthController extends Controller
 {
 
-    public function login(Request $request){
+    public function login(AuthRequest $request){
         $request->validate([
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8|max:30'
@@ -19,7 +20,7 @@ class AuthController extends Controller
         $password=$request->password;
         $credentials=['email'=>$email,'password'=>$password];
         if(!auth()->attempt($credentials)) {
-            return response()->json(['errorMessage' => 'email or password not valid'] ,400); 
+            return response()->json(['errorMessage' => 'email or password not valid'] ,400);
         }
         $user=Auth::User();
         $token=$user->createToken('user')->plainTextToken;
@@ -27,11 +28,6 @@ class AuthController extends Controller
     }
 
     public function register(Request $request){
-        $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8|max:30',
-        ]);
         $user = new User;
         $user->name=$request->name;
         $user->email=$request->email;
