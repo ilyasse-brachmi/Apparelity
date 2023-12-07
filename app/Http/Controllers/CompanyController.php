@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CompanyRequest;
 use  App\Models\Company;
 use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
-    public function add(Request $request){
+    public function add(CompanyRequest $request){
 
         Company::create([
             'name'=>$request->name,
@@ -17,12 +18,12 @@ class CompanyController extends Controller
             'zipCode'=>$request->zipCode,
             'county'=>$request->county,
             'city'=>$request->city,
-            'phone'=>$request->phone, 
+            'phone'=>$request->phone,
         ]);
         return response()->json('Added Successfully');
 
     }
-    public function edit(Request $request){
+    public function edit(CompanyRequest $request){
         $category=Company::findorfail($request->id);
         $category->update([
             'name'=>$request->name,
@@ -32,11 +33,11 @@ class CompanyController extends Controller
             'zipCode'=>$request->zipCode,
             'county'=>$request->county,
             'city'=>$request->city,
-            'phone'=>$request->phone, 
+            'phone'=>$request->phone,
         ]);
         return response()->json('Updated Successfully');
     }
-    public function delete(Request $request){
+    public function delete(CompanyRequest $request){
         $company=Company::findorfail($request->id);
         $company->delete();
         return response()->json('Deleted Successfully');
