@@ -7,6 +7,7 @@ import Login from "./pages/auth/login.vue"
 import Register from "./pages/auth/register.vue"
 import Example from "@/pages/exemple.vue"
 import CompleteAccount from "@/pages/auth/completeAccount.vue"
+import Dashboard from "@/pages/auth/dashboard.vue"
 import { useAuth } from '@/stores/auth.store'
 
 const routes = [
@@ -23,7 +24,7 @@ const routes = [
     name: 'Store',
     component: Store,
     meta: {
-      auth: 'Auth'
+      auth: 'Guest'
     }
   },
   {
@@ -46,6 +47,14 @@ const routes = [
     path: '/complete-account',
     name: 'CompleteAccount',
     component: CompleteAccount,
+    meta: {
+      auth: 'Auth'
+    }
+  },
+  {
+    path: '/dashboard',
+    name: 'Dashboard',
+    component: Dashboard,
     meta: {
       auth: 'Auth'
     }
@@ -85,7 +94,7 @@ router.beforeEach((to) => {
   const store = useAuth()
 
   if(to.meta.auth === 'Auth' && !store.isAuth) return { name: 'Login' }
-  if(to.meta.auth === 'Guest' && store.isAuth) return { name: 'Store' }
+  if(to.meta.auth === 'Guest' && store.isAuth) return { name: 'Dashboard' }
 })
 
 export default router;

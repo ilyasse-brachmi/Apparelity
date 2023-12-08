@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductRequest;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -92,7 +93,7 @@ class ProductController extends Controller
         }
         return response()->json('Updated Successfully');
     }
-    public function delete(Request $request){
+    public function delete(ProductRequest $request){
         $product=Product::findorfail($request->id);
         $product->materials()->delete();
         $product->delete();

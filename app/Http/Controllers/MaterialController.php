@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\MaterialRequest;
 use App\Models\Material;
-use Illuminate\Http\Request;
-
 class MaterialController extends Controller
 {
     public function add(Request $request){
@@ -43,7 +42,7 @@ class MaterialController extends Controller
         ]);
         return response()->json('Updated Successfully');
     }
-    public function delete(Request $request){
+    public function delete(MaterialRequest $request){
         $material=Material::findorfail($request->id);
         $material->delete();
         return response()->json('Deleted Successfully');
