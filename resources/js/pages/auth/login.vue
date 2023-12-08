@@ -38,7 +38,6 @@ const submit = handleSubmit(async () => {
   await $AppAxios.post('/api/login', data)
   .then(async (response) => {
     await store.fetchUser(response.data.token, response.data.user)
-    // router.push('/store')
     Swal.fire({
       text: 'You are logged in !',
       icon: 'success',
@@ -48,7 +47,7 @@ const submit = handleSubmit(async () => {
       showConfirmButton: false,
     })
     .then(function() {
-      router.push('/store')
+      router.push('/dashboard')
     });
   })
   .catch((e) => 

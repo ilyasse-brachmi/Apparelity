@@ -94,7 +94,7 @@ router.beforeEach((to) => {
   const store = useAuth()
 
   if(to.meta.auth === 'Auth' && !store.isAuth) return { name: 'Login' }
-  if(to.meta.auth === 'Guest' && store.isAuth) return { name: 'Store' }
+  if(to.meta.auth === 'Guest' && store.isAuth) return { name: 'Dashboard' }
 })
 
 export default router;
