@@ -17,6 +17,7 @@ use App\Http\Controllers\SearchController;
 //-----------------------AuthController-----------------//
 Route::post('register',[AuthController::class,'register']);
 Route::post('login',[AuthController::class,'login']);
+Route::get('getUsers', [AuthController::class, 'get']);
 Route::middleware('auth:sanctum')->group(function () {
 Route::post('/logout', [AuthController::class, 'logout']);
 });

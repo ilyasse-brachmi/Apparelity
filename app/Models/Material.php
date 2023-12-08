@@ -29,4 +29,19 @@ class Material extends Model
     {
         return $this->belongsTo(Product::class);
     }
+    public function convertToArray($resource){
+        if(!$resource){
+            return null;
+        }
+        $data=[
+            'id'=>$resource->id,
+            'name'=>$resource->name,
+            'origin'=>$resource->origin,
+            'supplier'=>$resource->supplier,
+            'address'=>$resource->address,
+            'productId'=>$resource->product->id,
+            'productName'=>$resource->product->name,
+        ];
+        return response()->json($data);
+    }
 }
