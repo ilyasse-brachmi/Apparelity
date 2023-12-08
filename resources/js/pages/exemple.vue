@@ -43,11 +43,13 @@ div(ref="mapContainer" class="h-full flex items-center justify-center")
 		LMap(:useGlobalLeaflet="false" ref="map" v-model:zoom="zoom" :center="MarkerLatLang1" :bounds="bounds" :maxBounds="maxBounds")
 			LTileLayer(url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" layer-type="base" name="OpenStreetMap" :minZoom="2")
 			LMarker(:latLng="MarkerLatLang1")
-				LPopup
-					h1(class="font-semibold text-xl") Arfoud
-					p This is the Adress of the first Material
-					Icon(icon="ri:eye-off-line" class="text-3xl")
-					img(:src="Product")
+				LPopup(style="width: 10rem;")
+					div(class="w-[10rem] h-[8rem]")
+						div(class="flex items-center justify-start gap-2")
+							div(class="w-16 h-16 rounded-full border-2 border-black overflow-hidden")
+								img(:src="Product" class="w-16 rounded-full")
+							h1(class="font-semibold text-xl") Arfoud
+						p This is the Adress of the first Material
 			LMarker(:latLng="MarkerLatLang")
 			LMarker(:latLng="MarkerLatLang5")
 			LCircleMarker(:latLng="MarkerLatLang5" :radius="17" :color="'orange'")
@@ -61,12 +63,13 @@ div(ref="mapContainer" class="h-full flex items-center justify-center")
 							h1(class="font-semibold text-xl") China
 						p This is the Adress of the first Material
 			LMarker(:latLng="MarkerLatLang3")
-				LPopup
-					div(class="w-[7rem] h-[10rem]")
-						h1(class="font-semibold text-xl") France
+				LPopup(style="width: 10rem;")
+					div(class="w-[10rem] h-[8rem]")
+						div(class="flex items-center justify-start gap-2")
+							div(class="w-16 h-16 rounded-full border-2 border-black overflow-hidden")
+								img(:src="Product" class="w-16 rounded-full")
+							h1(class="font-semibold text-xl") Canada
 						p This is the Adress of the first Material
-						Icon(icon="ri:eye-off-line" class="text-3xl")
-						img(:src="Product" class="w-10")
 			LPolyline(:latLngs="[MarkerLatLang3, MarkerLatLang]" :color="'hsl(0, 100%, 50%)'" :lineCap="'butt'")
 			LPolyline(:latLngs="[MarkerLatLang1, MarkerLatLang]" :color="'hsl(0, 100%, 50%)'" :lineCap="'butt'")
 			LPolyline(:latLngs="[MarkerLatLang, MarkerLatLang2]" :color="'hsl(0, 100%, 50%)'" :lineCap="'butt'")
