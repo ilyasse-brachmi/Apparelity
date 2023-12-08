@@ -20,7 +20,7 @@ class ProductController extends Controller
             'production_date' =>'required',
             'company_id' => 'required',
             'category_id' => 'required',
-            'image_product' => ['mimes:png,jpg,jpeg,gif',Rule::requiredif(empty($this->route()->parameter('id')))],
+            'image_product' => ['mimes:png,jpg,jpeg,gif','required'],
         ]);
 
         $product=Product::create([
