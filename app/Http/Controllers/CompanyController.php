@@ -8,8 +8,17 @@ use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
-    public function add(CompanyRequest $request){
-
+    public function add(Request $request){
+        $request->validate([
+            'name' => ['required', 'max:40'],
+            'address'=>['required', 'max:255'],
+            'description'=>['max:255','string'],
+            'user_id' => 'required',
+            'county'=>['required','string'],
+            'city'=>['required','string'],
+            'zipCode'=>['required'],
+            'phone'=>['required','string'],
+        ]);
         Company::create([
             'name'=>$request->name,
             'address'=>$request->address,
@@ -23,9 +32,19 @@ class CompanyController extends Controller
         return response()->json('Added Successfully');
 
     }
-    public function edit(CompanyRequest $request){
-        $category=Company::findorfail($request->id);
-        $category->update([
+    public function edit(Request $request){
+        $request->validate([
+            'name' => ['required', 'max:40'],
+            'address'=>['required', 'max:255'],
+            'description'=>['max:255','string'],
+            'user_id' => 'required',
+            'county'=>['required','string'],
+            'city'=>['required','string'],
+            'zipCode'=>['required'],
+            'phone'=>['required','string'],
+        ]);
+        $company=Company::findorfail($request->id);
+        $company->update([
             'name'=>$request->name,
             'address'=>$request->address,
             'description'=>$request->description,

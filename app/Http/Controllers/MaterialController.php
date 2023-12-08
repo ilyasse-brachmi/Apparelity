@@ -6,8 +6,14 @@ use App\Http\Requests\MaterialRequest;
 use App\Models\Material;
 class MaterialController extends Controller
 {
-    public function add(MaterialRequest $request){
-
+    public function add(Request $request){
+        $request->validate([
+            'name' => ['required','string', 'max:40'],
+            'origin'=>['required','string','max:255'],
+            'supplier'=>['required','string','max:255'],
+            'address' => ['required','string','max:255'],
+            'product_id' => 'required',
+        ]);
         Material::create([
             'name'=>$request->name,
             'origin'=>$request->origin,
@@ -18,7 +24,14 @@ class MaterialController extends Controller
         return response()->json('Added Successfully');
 
     }
-    public function edit(MaterialRequest $request){
+    public function edit(Request $request){
+        $request->validate([
+            'name' => ['required','string', 'max:40'],
+            'origin'=>['required','string','max:255'],
+            'supplier'=>['required','string','max:255'],
+            'address' => ['required','string','max:255'],
+            'product_id' => 'required',
+        ]);
         $category=Material::findorfail($request->id);
         $category->update([
             'name'=>$request->name,
@@ -35,7 +48,10 @@ class MaterialController extends Controller
         return response()->json('Deleted Successfully');
     }
     public function get(){
-        $material=Material::all();
-        return response()->json($material);
+        $materials=Material::all();
+        foreach($materials as $key=>$material){
+            $data[$key]=(new \App\Models\Material)->convertToArray($material);
+        }
+        return response()->json($data);
     }
 }

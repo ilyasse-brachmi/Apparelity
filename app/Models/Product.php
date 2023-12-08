@@ -29,7 +29,7 @@ class Product extends Model
     {
         return $this->hasMany(Material::class, 'product_id');
     }
-        
+
     public function company()
     {
         return $this->belongsTo(Company::class);
@@ -43,6 +43,24 @@ class Product extends Model
             return $this->firstMedia('image_product')->getUrl();
         }
         return 0;
+    }
+    public function convertToArray($resource){
+        if(!$resource){
+            return null;
+        }
+        $data=[
+            'id'=>$resource->id,
+            'name'=>$resource->name,
+            'price'=>$resource->price,
+            'description'=>$resource->description,
+            'productionDate'=>$resource->production_date,
+            'ImageProduct'=>$resource->getPicAttribute(),
+            'IdOfCompany'=>$resource->company->id,
+            'nameOfCompany'=>$resource->company->name,
+            'IdOfCategory'=>$resource->category->id,
+            'nameOfCategory'=>$resource->category->name,
+        ];
+        return response()->json($data);
     }
 
 }

@@ -2,11 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ReviewRequest;
 use  App\Models\Review;
+use Illuminate\Http\Request;
+
 class ReviewController extends Controller
 {
-    public function add(ReviewRequest $request){
+    public function add(Request $request){
+        $request->validate([
+            'f_name' => ['required', 'max:40','string'],
+            'l_name'=>['required', 'max:40','string'],
+            'description'=>['string','max:255'],
+            'email' =>['required','string', 'email', 'max:100'],
+        ]);
         Review::create($request->all());
         return response()->json('added successfully');
     }
