@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use MediaUploader;
@@ -20,7 +22,7 @@ class ProductController extends Controller
             'production_date' =>'required',
             'company_id' => 'required',
             'category_id' => 'required',
-            'image_product' => ['mimes:png,jpg,jpeg,gif','required'],
+            'image_product'=>['image','mimes:jpeg,jpg','max:256','required']
         ]);
 
         $product=Product::create([
@@ -48,18 +50,25 @@ class ProductController extends Controller
         return response()->json('Added Successfully');
 
     }
-    public function edit(Request $request){
-        $request->validate([
+    public function edit(Request $request,$id){
+        $inputs=$request->all();
+        $validator=Validator::make($inputs,[
             'name' => ['required','string', 'max:40'],
             'price'=>['required','string', 'numeric'],
             'description'=>['max:255','string'],
             'production_date' =>'required',
             'company_id' => 'required',
             'category_id' => 'required',
-            'image_product' => ['mimes:png,jpg,jpeg,gif',Rule::requiredif(empty($this->route()->parameter('id')))],
+            'image_product'=>['image','mimes:jpeg,jpg','max:256']
         ]);
 
-        $product=Product::findorfail($request->id);
+        if($validator->fails()){
+            return response()->json([
+                'success'=>false,
+                'error'=>$validator->messages()->first()
+            ],Response::HTTP_BAD_REQUEST);
+        }
+        $product=Product::find($id);
         $product->update([
             'name'=>$request->name,
             'price'=>$request->price,

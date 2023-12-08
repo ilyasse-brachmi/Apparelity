@@ -45,7 +45,7 @@ Route::get('category',[CategoryController::class,'get']);
 
 //-----------------------Start Product Controller route-----------------//
 Route::post('product',[ProductController::class,'add']);
-Route::put('product',[ProductController::class,'edit']);
+Route::post('product/{id}',[ProductController::class,'edit']);
 Route::delete('product',[ProductController::class,'delete']);
 Route::get('product',[ProductController::class,'get']);
 //-----------------------End Product Controller route-------------//
