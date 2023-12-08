@@ -49,5 +49,4 @@ header(class="flex items-center justify-between p-4 top-0 bg-gray-100 sticky sha
           a Profile
         li.py-1.text-gray-600.text-base(@click="logout")
           a Logout
-
 </template>
