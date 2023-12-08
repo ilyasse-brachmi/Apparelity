@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import Navbar from "../../components/navbar.vue";
 import Input from '@/components/AppInput.vue';
 import { $AppAxios } from "@/utils/axiosSingleton";
 import { computed } from 'vue';
@@ -75,7 +74,6 @@ div
           Input(:labelName="'Email'" name="email" :type="'text'" :icon="'ic:outline-email'" :color="'#1d6795'" @input="mailError" :inputError="errors.email")
         div(class="mt-8")
           Input(:labelName="'Password'" name="password" :type="'password'" :color="'#1d6795'" @input="passwordError" :inputError="errors.password")
-            //- ri:eye-line
         div(class="flex justify-center mt-16")
           button(type="submit" class="border font-bold text-2xl text-white border-white rounded-full px-16 sm:px-48 py-4 bg-primary hover:shadow-md duration-300") Sign In
       div(class="flex flex-col lg:flex-row items-center gap-2 justify-center mt-4")

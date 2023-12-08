@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import Navbar from "../../components/navbar.vue";
 import Input from '@/components/AppInput.vue';
 import { $AppAxios } from "@/utils/axiosSingleton";
 import { useAuth } from "@/stores/auth.store";
@@ -13,7 +12,6 @@ const scheme = computed(() => {
   return yup.object({
     name: yup.string().required(),
     email: yup.string().required('email is a required field').email('email must be a valid email'),
-    tel: yup.string().required(),
     password: yup.string().required('password is a required field').min(8, 'password must be at least 8 characters').max(30, 'password must be no more than 30 characters'),
     confirmPassword: yup.string().oneOf([yup.ref('password'), null], 'The confirm password must match the Password'),
   })
@@ -37,11 +35,6 @@ const {
 } = useField<string>('email')
 
 const {
-  handleChange: telError,
-  value: tel
-} = useField<string>('tel')
-
-const {
   handleChange: passwordError,
   value: password
 } = useField<string>('password')
@@ -55,7 +48,6 @@ const registerSubmit = handleSubmit(async () => {
   const data = { 
     name: name.value,
     email: email.value, 
-    phone: tel.value, 
     password: password.value
    }
    await $AppAxios.post('/api/register', data)
@@ -98,8 +90,6 @@ div
           Input(:labelName="'Name'" name="name" :type="'text'" :color="'#1d6795'" @input="nameError" :inputError="errors.name")
         div(class="mt-8")
           Input(:labelName="'Email'" name="email" :type="'text'" :icon="'ic:outline-email'" :color="'#1d6795'" @input="mailError" :inputError="errors.email")
-        div(class="mt-8")
-          Input(:labelName="'Tel'" name="tel" :type="'text'" :icon="'ic:baseline-phone'" :color="'#1d6795'" @input="telError" :inputError="errors.tel")
         div(class="mt-8")
           Input(:labelName="'Password'" name="password" :type="'password'" :color="'#1d6795'" :enbaleCopyPast="false" @input="passwordError" :inputError="errors.password")
         div(class="mt-8")
