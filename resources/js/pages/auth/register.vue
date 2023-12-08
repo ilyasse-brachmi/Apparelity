@@ -83,7 +83,6 @@ const registerSubmit = handleSubmit(async () => {
       timer: 3000,
       showConfirmButton: false
     })
-    console.log(e.response.data)
     }
    })
 })

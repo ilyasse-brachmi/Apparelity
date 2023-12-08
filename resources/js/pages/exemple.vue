@@ -4,18 +4,27 @@ import StoreLayout from '@/layouts/storeLayout.vue';
 import { LMap, LTileLayer, LMarker, LPolyline, LPopup, LCircleMarker, LTooltip } from "@vue-leaflet/vue-leaflet";
 import "leaflet/dist/leaflet.css";
 import { onMounted, ref, watch } from "vue";
+import { latLngBounds, latLng } from "leaflet";
+
 
 const url = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 const attribution = '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-const zoom = ref(1.5)
+const zoom = ref(2)
 const center = ref([47.413220, -1.219482])
-const bounds = ref(null)
 const MarkerLatLang = [47.313220, -1.319482]
 const MarkerLatLang5 = [63.03474055597919, 15.67606958969986]
 const MarkerLatLang2 = [-33.21587333561651, -67.99031314110515]
 const MarkerLatLang4 = [32.61607996163231, 108.14249839879659]
 const MarkerLatLang3 = [55.225779252128476, -117.03328302613647]
 const MarkerLatLang1 = [31.443669093644875, -4.241881509506873]
+const bounds = latLngBounds([
+	[40.70081290280357, -74.26963806152345],
+	[40.82991732677597, -74.08716201782228]
+])
+const maxBounds = latLngBounds([
+	[40.70081290280357, -74.26963806152345],
+	[40.82991732677597, -74.08716201782228]
+])
 // function zoomUpdated (zoom) {
 // 	console.log(zoom)
 // 	zoom.value = zoom
@@ -33,8 +42,9 @@ function boundsUpdated (bounds) {
 StoreLayout
 	div(ref="mapContainer" class="my-[17rem] h-[20rem] flex items-center justify-center")
 		div(class="w-[60rem] h-[47rem]")
-			LMap(:useGlobalLeaflet="false" ref="map" v-model:zoom="zoom" :center="MarkerLatLang1")
-				LTileLayer(url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" layer-type="base" name="OpenStreetMap" :minZoom="1")
+			h1 {{ bounds }}
+			LMap(:useGlobalLeaflet="false" ref="map" v-model:zoom="zoom" :center="MarkerLatLang1" :bounds="bounds" :maxBounds="maxBounds")
+				LTileLayer(url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" layer-type="base" name="OpenStreetMap" :minZoom="2")
 				LMarker(:latLng="MarkerLatLang1")
 					LPopup
 						h1(class="font-semibold text-xl") Arfoud
