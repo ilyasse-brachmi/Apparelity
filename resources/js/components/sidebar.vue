@@ -21,14 +21,14 @@ const priceRange = ref(37)
 const opened = computed(() => props.sidebarToggle)
 </script>
 <template lang="pug">
-div(class="lg:max-h-screen w-full dz-drawer lg:dz-drawer-open")
+div(class="w-full dz-drawer lg:dz-drawer-open")
 	input(id="my-drawer" type="checkbox" v-model="opened" class="dz-drawer-toggle")
 	div(class="dz-drawer-content flex flex-col items-center justify-center")
 		div.max-h-screen.h-full.w-full.overflow-y-auto
 			slot
 	div(class="dz-drawer-side min-w-[20rem] shadow-md")
 		label(for="my-drawer" aria-label="close sidebar" class="dz-drawer-overlay")
-		div(class="bg-white min-w-[20rem] shadow-md lg:pt-0 pt-24 h-full z-[999999]")
+		div(class="bg-white min-w-[20rem] shadow-md lg:pt-0 pt-24 h-full overflow-y-auto z-[999999]")
 			div.flex.items-enter.justify-between.py-6.px-4.border-b-2
 				p.text-xl.font-medium.text-gray-700 Filter 
 				p(class="text-primary/70 cursor-pointer text-lg") Clear All
