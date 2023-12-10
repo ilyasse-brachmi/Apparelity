@@ -11,7 +11,7 @@ class LocationController extends Controller
         return response()->json($countries);
     }
     public function states(Request $request){
-        $codeIso=$request->query('codeIso');
+        $codeIso=$request->codeIso;
         $states=getStates($codeIso);
         return response()->json($states);
     }

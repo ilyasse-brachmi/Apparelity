@@ -2,56 +2,49 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\MaterialRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Material;
 class MaterialController extends Controller
 {
+    public function validateMaterialData(Request $request){
+        $validator=Validator::make($request->all(),[
+            'name' => 'required|string|max:255',
+            'origin' => 'required|string|max:255',
+            'supplier' => 'required|string|max:255',
+            'address' => 'required|string',
+            'product_id' => 'required|exists:product,id',
+        ]);
+        if($validator->fails()){
+            return response()->json(['errors'=>$validator->errors()],422);
+        }
+    }
     public function add(Request $request){
-        $request->validate([
-            'name' => ['required','string', 'max:40'],
-            'origin'=>['required','string','max:255'],
-            'supplier'=>['required','string','max:255'],
-            'address' => ['required','string','max:255'],
-            'product_id' => 'required',
-        ]);
-        Material::create([
-            'name'=>$request->name,
-            'origin'=>$request->origin,
-            'supplier'=>$request->supplier,
-            'address'=>$request->address,
-            'product_id'=>$request->product_id
-        ]);
+        $validation = $this->validateMaterialData($request);
+        if ($validation !== null) {
+            return $validation;
+        }
+        Material::create($request->all());
         return response()->json('Added Successfully');
-
     }
     public function edit(Request $request){
-        $request->validate([
-            'name' => ['required','string', 'max:40'],
-            'origin'=>['required','string','max:255'],
-            'supplier'=>['required','string','max:255'],
-            'address' => ['required','string','max:255'],
-            'product_id' => 'required',
-        ]);
-        $category=Material::findorfail($request->id);
-        $category->update([
-            'name'=>$request->name,
-            'origin'=>$request->origin,
-            'supplier'=>$request->supplier,
-            'address'=>$request->address,
-            'product_id'=>$request->product_id
-        ]);
+        $validation = $this->validateMaterialData($request);
+        if ($validation !== null) {
+            return $validation;
+        }
+        $material=Material::find($request->id);
+        if(!$material){return response()->json(['error'=>'material not found'],404);}
+        $material->update($request->all());
         return response()->json('Updated Successfully');
     }
-    public function delete(MaterialRequest $request){
-        $material=Material::findorfail($request->id);
+    public function delete($id){
+        $material=Material::find($id);
+        if(!$material){return response()->json(['error'=>'material not found'],404);}
         $material->delete();
         return response()->json('Deleted Successfully');
     }
     public function get(){
-        $materials=Material::all();
-        foreach($materials as $key=>$material){
-            $data[$key]=(new \App\Models\Material)->convertToArray($material);
-        }
-        return response()->json($data);
+        $material=Material::all();
+        return response()->json($material);
     }
 }

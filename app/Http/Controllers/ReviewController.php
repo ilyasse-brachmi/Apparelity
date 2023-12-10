@@ -4,16 +4,19 @@ namespace App\Http\Controllers;
 
 use  App\Models\Review;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Validator;
 class ReviewController extends Controller
 {
     public function add(Request $request){
-        $request->validate([
-            'f_name' => ['required', 'max:40','string'],
-            'l_name'=>['required', 'max:40','string'],
-            'description'=>['string','max:255'],
-            'email' =>['required','string', 'email', 'max:100'],
+        $validator=Validator::make($request->all(),[
+            'f_name' => 'required|string|max:40',
+            'l_name' => 'required|string|max:40',
+            'description' => 'required|string|max:255',
+            'email' => 'required|email',
         ]);
+        if($validator->fails()){
+            return response()->json(['errors'=>$validator->errors()],422);
+        }
         Review::create($request->all());
         return response()->json('added successfully');
     }

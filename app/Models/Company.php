@@ -16,12 +16,12 @@ class Company extends Model
     use Notifiable;
 
     protected $fillable = [
-        'id','name', 'address','description','user_id','zipCode','county','city','phone'
+        'id','name', 'address','description','user_id','zipCode','country','city','phone'
     ];
 
     public function scopeSelection($query)
     {
-        return $query->select('id', 'name', 'address','description','zipCode','county','city','phone');
+        return $query->select('id', 'name', 'address','description','zipCode','country','city','phone');
     }
 
     public function products()
