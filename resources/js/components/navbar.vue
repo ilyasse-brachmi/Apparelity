@@ -44,9 +44,9 @@ header(class="flex items-center justify-between p-4 top-0 bg-gray-100 sticky sha
           p(class="text-sm text-gray-500") {{ store.user.email }}
         div(class="rounded-full border-2 border-gray-500 cursor-pointer mx-4" tabindex="0" )
           img(src="https://i.pravatar.cc/300" class="rounded-full w-12 h-12")
-      ul.dz-dropdown-content.dz-menu.p-2.shadow-md.bg-gray-100.rounded-box.w-64(tabindex='0' class='z-[1]')
-        li.py-1.text-gray-600.text-base
+      ul.dz-dropdown-content.p-2.shadow-md.bg-gray-100.rounded-lg.w-64.mt-4(tabindex='0' class='z-[1]')
+        li.p-3.text-gray-600(class="hover:font-medium hover:bg-primary/5 px-4 hover:scale-x-105 duration-200 cursor-pointer hover:text-primary")
           a Profile
-        li.py-1.text-gray-600.text-base(@click="logout")
+        li.p-3.text-gray-600(class="hover:font-medium hover:bg-primary/5 px-4 hover:scale-x-105 duration-200 cursor-pointer hover:text-primary" @click="logout")
           a Logout
 </template>
