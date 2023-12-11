@@ -4,6 +4,8 @@ import { createApp } from 'vue';
 import { createPinia } from 'pinia'
 import App from './App.vue';
 import { Icon } from '@iconify/vue';
+import "leaflet/dist/leaflet.css";
+
 
 const pinia = createPinia()
 

@@ -3,13 +3,17 @@ import AppModal from "@/components/AppModal.vue"
 import Card from "@/components/card.vue"
 import StoreLayout from '@/layouts/storeLayout.vue'
 import { onMounted, ref } from "vue"
-import Exemple from "@/pages/exemple.vue"
-import type { ProductResponse } from "@/types/index"
+import ImageProduct from "../../images/jacket.png"
+import type { ProductResponse , ProductMarker } from "@/types/index"
 import { $AppAxios } from "@/utils/axiosSingleton";
+import { LMap, LTileLayer, LMarker, LPopup } from "@vue-leaflet/vue-leaflet";
+import "leaflet/dist/leaflet.css";
 
 const modal = ref(false)
 
 const openModal = (index: number) => {
+	currProduct.value = data.value.find((product: ProductResponse) => product.original.id === index )
+	console.log(currProduct.value)
 	modal.value = true
 }
 
@@ -21,6 +25,28 @@ onMounted(async () => {
 		data.value = response.data
 	})
 })
+const productMarkers: Array<ProductMarker> = [
+	{
+		markerCoordonates: [47.413220, -1.219482],
+		popUp: {
+			title: 'Country',
+			description: 'this is a description',
+			image: ImageProduct
+		}
+	},
+	{
+		markerCoordonates: [40.413220, -17.219482],
+		popUp: {
+			title: 'Country',
+			description: 'this is a description',
+			image: ImageProduct
+		}
+	}
+]
+const currProduct = ref({} as ProductResponse)
+const zoom = ref(3)
+const center = ref([47.413220, -1.219482])
+const minZoom = ref(2)
 </script>
 <template lang="pug">
 StoreLayout
@@ -28,21 +54,37 @@ StoreLayout
 		.flex.items-center.justify-center.h-full.w-full
 			div(v-if="data.length" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 py-8 h-full")
 				div(v-for="product in data" :key="product.original.id")
-					Card(:product="product.original" @openModal="openModal(index)")
+					Card(:product="product.original" @openModal="openModal(product.original.id)")
+				AppModal(v-if="modal" :title="'Product Traceability'" @close="modal = false")
+					div(class="grid grid-cols-5 w-full h-full bg-gray-100 ")
+						div(class="col-span-2")
+							div(class="w-full p-6 py-6")
+								div(class="min-h-[48.7rem]")
+									div(class="flex justify-center")
+										div(class="w-[15rem] h-[15rem] rounded-full p-2 shadow-md mb-4 border")
+											img(:src="`/storage/home/${currProduct.original.product_image.split('home/')[1]}`" class="w-full h-full rounded-full")
+									div(class="px-4")
+										h1(class="text-primary text-center font-semibold text-xl") {{ currProduct.original.name }}
+										div(class="flex items-center justify-center py-2")
+											h3(class="px-2 py-1 bg-primary/20 text-sm text-primary rounded-full w-fit") {{ currProduct.original.company_name }}
+									div(class="flex justify-center h-full")
+										div(class="w-[24rem] h-[25rem] bg-white shadow-md rounded-xl border-4 my-4 border-primar")
+						div(class="col-span-3")
+							//- Exemple
+							div(ref="mapContainer" class="h-full flex items-center justify-center")
+								div(class="w-full h-full")
+									LMap(:useGlobalLeaflet="false" ref="map" v-model:zoom="zoom" :center="center")
+										LTileLayer(url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" layer-type="base" name="OpenStreetMap" :minZoom="minZoom")
+										div(v-for="(marker, index) in productMarkers" :key="index")
+											LMarker(:latLng="marker.markerCoordonates")
+												LPopup(style="width: 15rem; height: 10rem;")
+													div(class="w-[10rem] h-[8rem]")
+														div(class="flex items-center justify-start gap-2")
+															div(class="w-16 h-16 rounded-full border-2 border-black overflow-hidden")
+																img(:src="marker.popUp.image" class="w-16 h-16 rounded-full")
+															h1(class="font-semibold text-xl") {{ marker.popUp.title }}
+														p {{ marker.popUp.description }}	
 			div(v-else class="h-screen flex flex-col items-center pt-[10rem]")
 				p(class="text-2xl tracking-wide font-semibold") Opps... It's empty in here 
 				p(class="text-base text-slate-500") No offers hase been saved yet.
-		AppModal(v-if="modal" :title="'Product Traceability'" @close="modal = false")
-			div(class="grid grid-cols-5 w-full h-full")
-				div(class="col-span-2")
-					div(class="bg-gray-100 w-full p-6 py-6")
-						div(class="min-h-[48.7rem]")
-							div(class="px-4")
-								h1(class="text-primary font-semibold text-xl") Jacket
-							div(class="flex justify-center")
-								div(class="w-[24rem] h-[20rem] bg-white shadow-md rounded-xl border-4 my-4 border-primar")
-							div(class="flex justify-center h-full")
-								div(class="w-[24rem] h-[25rem] bg-white shadow-md rounded-xl border-4 my-4 border-primar")
-				div(class="col-span-3")
-					Exemple
-	</template>
+</template>
