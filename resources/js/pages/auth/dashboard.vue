@@ -97,10 +97,10 @@ const openModal = (index: number) => {
 StoreLayout
   template(v-slot:cards)
     .flex.items-center.justify-center
-      div(v-if="true" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 p-8")
+      div(v-if="false" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 p-8")
         div(v-for="index in 6" :key="index")
           Card(:imageProduct="Product" :productName="'Jacket'" :companyName="'Example Company Name Nike'" :price="199" @openModal="openModal(index)")
-      div(v-else class="h-screen flex flex-col items-center")
+      div(v-else class="h-screen flex flex-col items-center pt-[10rem]")
         p(class="text-xl tracking-wide font-bold") Opps... It's empty in here 
         p(class="text-base text-slate-500") No offers hase been saved yet.
       AppModal(v-if="modal" :title="'Product Traceability'" @close="modal = false")
