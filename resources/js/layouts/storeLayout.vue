@@ -16,8 +16,8 @@ const store = useAuth()
 <template lang="pug">
 Navbar(@sidebar-toggle="sidebarToggle")
 Sidebar(:categories="categories" :materials="materials" :sidebarToggle="opened")
-	div(:class="store.isAuth? 'flex justify-between':''")
-		div
+	div(:class="store.isAuth? 'lg:flex justify-between':''")
+		div(class="flex justify-center items-center p-6 px-10 bg-gray-50")
 			slot(name="addBtn")
 		div(class="flex justify-center lg:justify-end items-center p-6 px-10 bg-gray-50 z-10")
 			div(class="flex items-center justify-between max-w-[30rem] px-1 sm:px-2 lg:px-4 py-1 sm:py-2 border-2 border-primary rounded-full")

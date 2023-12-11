@@ -110,10 +110,10 @@ const openAddModal = () => {
 <template lang="pug">
 StoreLayout
   template(v-slot:addBtn)
-    div(v-if="store.isAuth" class="flex justify-center lg:justify-end items-center p-6 px-10 bg-gray-50 z-10")
-      button(class="border flex items-center font-bold text-lg text-white border-white rounded-lg w-full py-2 px-4 bg-primary hover:shadow-md duration-300" @click="openAddModal()") 
-        p Add New Product
-        //- Icon(:icon="'gridicons:add-outline'" class="text-white absolute end-4 top-4 text-3xl cursor-pointer")
+    div(v-if="store.isAuth")
+      button(class="border flex items-center gap-2 text-white border-white rounded-lg w-full py-2 px-4 bg-primary hover:shadow-md duration-300  cursor-pointer" @click="openAddModal()") 
+        p.text-xl.font-semibold Add New Product
+        Icon(:icon="'gridicons:add-outline'" class="text-2xl")
       AppModal(v-if="AddModal" :title="'Add New Product'" @close="AddModal = false")
         div(class="flex items-center justify-center h-[90vh]")
           form(method="POST" @submit.prevent="addProductSubmit" class="flex-col items-center justify-center px-4")
