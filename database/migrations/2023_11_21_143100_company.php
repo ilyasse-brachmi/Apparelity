@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('address');
             $table->string('description')->nullable();
             $table->bigInteger('zipCode');
-            $table->String('county');
+            $table->String('country');
             $table->String('city');
             $table->String('phone');
             $table->softDeletes();

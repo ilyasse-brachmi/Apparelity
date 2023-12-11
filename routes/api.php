@@ -21,14 +21,14 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::post('/logout', [AuthController::class, 'logout']);
 });
 //-----------------------ReviewController-----------------//
-Route::post('addReview',[ReviewController::class,'addReview']);
-Route::get('getReviews',[ReviewController::class,'getReviews']);
+Route::post('review',[ReviewController::class,'add']);
+Route::get('review',[ReviewController::class,'get']);
 //-----------------------Start Company Controller-----------------//
 
 //-----------------------Start Company Controller route-----------------//
 Route::post('company',[CompanyController::class,'add']);
 Route::put('company',[CompanyController::class,'edit']);
-Route::delete('company',[CompanyController::class,'delete']);
+Route::delete('company/{id}',[CompanyController::class,'delete']);
 Route::get('company',[CompanyController::class,'get']);
 //-----------------------End Company Controller-----------------//
 
@@ -39,7 +39,7 @@ Route::get('product',[SearchController::class,'searchProducts']);
 //-----------------------Start Category Controller route-----------------//
 Route::post('category',[CategoryController::class,'add']);
 Route::put('category',[CategoryController::class,'edit']);
-Route::delete('category',[CategoryController::class,'delete']);
+Route::delete('category/{id}',[CategoryController::class,'delete']);
 Route::get('category',[CategoryController::class,'get']);
 //-----------------------End Category Controller route-------------//
 
@@ -53,7 +53,7 @@ Route::get('product',[ProductController::class,'get']);
 //-----------------------Start Material Controller route-----------------//
 Route::post('material',[MaterialController::class,'add']);
 Route::put('material',[MaterialController::class,'edit']);
-Route::delete('material',[MaterialController::class,'delete']);
+Route::delete('material/{id}',[MaterialController::class,'delete']);
 Route::get('material',[MaterialController::class,'get']);
 //-----------------------End Material Controller route-------------//
 
