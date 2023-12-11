@@ -111,7 +111,7 @@ const openAddModal = () => {
 StoreLayout
   template(v-slot:addBtn)
     div(v-if="store.isAuth")
-      button(class="border flex items-center gap-2 text-white border-white rounded-lg w-full py-2 px-4 bg-primary hover:shadow-md duration-300  cursor-pointer" @click="openAddModal()") 
+      button(class="border flex items-center gap-2 text-white border-white rounded-lg w-full py-4 px-4 bg-primary hover:shadow-md duration-300 cursor-pointer" @click="openAddModal()") 
         p.text-xl.font-semibold Add New Product
         Icon(:icon="'gridicons:add-outline'" class="text-2xl")
       AppModal(v-if="AddModal" :title="'Add New Product'" @close="AddModal = false")
