@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import AppModal from "@/components/AppModal.vue";
-import Card from "@/components/card.vue";
-import StoreLayout from '@/layouts/storeLayout.vue';
-import { onMounted, ref } from "vue";
+import AppModal from "@/components/AppModal.vue"
+import Card from "@/components/card.vue"
+import StoreLayout from '@/layouts/storeLayout.vue'
+import { onMounted, ref } from "vue"
 import Exemple from "@/pages/exemple.vue"
-import type { ProductResponse ,Product } from "@/types/index"
+import type { ProductResponse } from "@/types/index"
 import { $AppAxios } from "@/utils/axiosSingleton";
 
 const modal = ref(false)

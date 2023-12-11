@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import DashLayout from '@/layouts/dashLayout.vue'
+import StoreLayout from '@/layouts/storeLayout.vue'
 import Input from '@/components/AppInput.vue'
 import { $AppAxios } from "@/utils/axiosSingleton"
 import { useAuth } from "@/stores/auth.store"
@@ -84,24 +84,30 @@ const addProductSubmit = handleSubmit(async () => {
 })
 </script>
 <template lang="pug">
-DashLayout
-	div(class="flex items-center justify-center h-[90vh]")
-		div
-			h1(class="text-center text-2xl sm:text-3xl font-semibold text-primary my-4") Add New Product
-			form(method="POST" @submit.prevent="addProductSubmit" class="flex-col items-center justify-center px-4")
-				div(class="grid grid-cols-2 gap-4")
-					div(class="mt-8")
-						Input(:labelName="'Product Name'" name="name" :type="'text'" :color="'#1d6795'" @input="nameError" :inputError="errors.name")
-					div(class="mt-8")
-						Input(:labelName="'Product Description'" name="description" :type="'text'" :color="'#1d6795'" @input="descriptionError" :inputError="errors.description")
-					div(class="mt-8")
-						Input(:labelName="'Category'" name="category" :type="'text'" :color="'#1d6795'")
-					div(class="mt-8")
-						Input(:labelName="'Price'" name="price" :type="'text'" :color="'#1d6795'" :icon="'healthicons:dollar'" @input="priceError" :inputError="errors.price")
-					div(class="mt-8")
-						Input(:labelName="'Image'" name="image" :type="'file'" :color="'#1d6795'" @change="onFileSelected")
-					div(class="mt-8")
-						Input(:labelName="'Material'" name="material" :type="'text'" :color="'#1d6795'")
-				div(class="flex justify-center mt-8")
-					button(type="submit" class="border font-bold text-2xl text-white border-white rounded-full px-16 sm:px-48 py-4 bg-primary hover:shadow-md duration-300") Add
+StoreLayout
+  template(v-slot:cards)
+    .flex.items-center.justify-center
+      div(v-if="false")
+        p data here
+      div(v-else class="h-screen flex flex-col items-center")
+        p(class="text-xl tracking-wide font-bold") Opps... It's empty in here 
+        p(class="text-base text-slate-500") No offers hase been saved yet.
+  template(v-slot:inAppModal)
+    div(class="flex items-center justify-center h-[90vh]")
+        form(method="POST" @submit.prevent="addProductSubmit" class="flex-col items-center justify-center px-4")
+          div(class="grid grid-cols-2 gap-4")
+            div(class="mt-8")
+              Input(:labelName="'Product Name'" name="name" :type="'text'" :color="'#1d6795'" @input="nameError" :inputError="errors.name")
+            div(class="mt-8")
+              Input(:labelName="'Product Description'" name="description" :type="'text'" :color="'#1d6795'" @input="descriptionError" :inputError="errors.description")
+            div(class="mt-8")
+              Input(:labelName="'Category'" name="category" :type="'text'" :color="'#1d6795'")
+            div(class="mt-8")
+              Input(:labelName="'Price'" name="price" :type="'text'" :color="'#1d6795'" :icon="'healthicons:dollar'" @input="priceError" :inputError="errors.price")
+            div(class="mt-8")
+              Input(:labelName="'Image'" name="image" :type="'file'" :color="'#1d6795'" @change="onFileSelected")
+            div(class="mt-8")
+              Input(:labelName="'Material'" name="material" :type="'text'" :color="'#1d6795'")
+          div(class="flex justify-center mt-8")
+            button(type="submit" class="border font-bold text-2xl text-white border-white rounded-full px-16 sm:px-48 py-4 bg-primary hover:shadow-md duration-300") Add
 </template>	
