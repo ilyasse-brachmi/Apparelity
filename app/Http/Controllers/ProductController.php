@@ -23,7 +23,7 @@ class ProductController extends Controller
             'production_date' =>'required',
             'company_id' => 'required',
             'category_id' => 'required',
-            'image_product'=>['image','mimes:jpeg,jpg','max:256','required']
+            'image_product'=>['image','mimes:jpeg,jpg,png','max:2056','required']
         ]);
 
         $product=Product::create([
@@ -60,7 +60,7 @@ class ProductController extends Controller
             'production_date' =>'required',
             'company_id' => 'required',
             'category_id' => 'required',
-            'image_product'=>['image','mimes:jpeg,jpg','max:256']
+            'image_product'=>['image','mimes:jpeg,jpg,png','max:2056']
         ]);
 
         if($validator->fails()){
@@ -93,7 +93,7 @@ class ProductController extends Controller
         }
         return response()->json('Updated Successfully');
     }
-    public function delete(ProductRequest $request){
+    public function delete(Pimage_prodroductRequest $request){
         $product=Product::findorfail($request->id);
         $product->materials()->delete();
         $product->delete();

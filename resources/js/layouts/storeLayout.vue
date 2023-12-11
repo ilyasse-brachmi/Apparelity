@@ -18,6 +18,6 @@ Sidebar(:categories="categories" :materials="materials" :sidebarToggle="opened")
 			input(type="text" placeholder="Search for a Product" class="bg-transparent px-4 py-2 text-sm sm:text-base md:text-lg outline-none border-none w-full")
 			Icon(icon="tabler:search" class="text-3xl lg:text-4xl mx-2 text-primary cursor-pointer")
 		Icon(icon="iconoir:sort" class="text-4xl text-primary cursor-pointer ml-4")
-	div(class="shadow-md bg-gray-50 py-4")
+	div(class="shadow-md bg-gray-50 py-4 h-full w-full")
 		slot
 </template>

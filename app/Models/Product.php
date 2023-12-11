@@ -53,12 +53,12 @@ class Product extends Model
             'name'=>$resource->name,
             'price'=>$resource->price,
             'description'=>$resource->description,
-            'productionDate'=>$resource->production_date,
-            'ImageProduct'=>$resource->getPicAttribute(),
-            'IdOfCompany'=>$resource->company->id,
-            'nameOfCompany'=>$resource->company->name,
-            'IdOfCategory'=>$resource->category->id,
-            'nameOfCategory'=>$resource->category->name,
+            'production_date'=>$resource->production_date,
+            'product_image'=>$resource->getPicAttribute(),
+            'company_id'=>$resource->company->id,
+            'company_name'=>$resource->company->name,
+            'category_id'=>$resource->category->id,
+            'category_name'=>$resource->category->name,
         ];
         return response()->json($data);
     }
