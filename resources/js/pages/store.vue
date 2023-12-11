@@ -28,7 +28,7 @@ StoreLayout
 		.flex.items-center.justify-center.h-full.w-full
 			div(v-if="data.length" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 py-8 h-full")
 				div(v-for="product in data" :key="product.original.id")
-					Card(:product="product.original" :price="199" @openModal="openModal(index)")
+					Card(:product="product.original" @openModal="openModal(index)")
 			div(v-else class="h-screen flex flex-col items-center pt-[10rem]")
 				p(class="text-2xl tracking-wide font-semibold") Opps... It's empty in here 
 				p(class="text-base text-slate-500") No offers hase been saved yet.
