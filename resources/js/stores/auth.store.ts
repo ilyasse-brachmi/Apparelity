@@ -11,16 +11,19 @@ declare interface User {
   name: string,
   email: string,
   isAdmin : boolean
-  company: UserCompany
 }
+
 
 export const useAuth = defineStore('Auth', {
   state: () => {
     const userCookie = Cookies.get('user');
+    const companyCookie = Cookies.get('company');
     return {
       user:  ref(userCookie ? (JSON.parse(userCookie) as User) : {} as User),
       token: ref(Cookies.get('token') || ''),
-      isAuth: ref(!!Cookies.get('token'))
+      isAuth: ref(!!Cookies.get('token')),
+      company: ref(companyCookie ? (JSON.parse(companyCookie) as UserCompany) : {} as UserCompany),
+      hasCompany: ref(!!Cookies.get('company'))
     }
   },
   actions: {
@@ -38,14 +41,16 @@ export const useAuth = defineStore('Auth', {
       this.isAuth = true
     },
     setCompany(company: UserCompany) {
-      this.user.company.id = company.id
-      this.user.company.name = company.name
-      Cookies.set('user', JSON.stringify(this.user), { expires: 1})
+      this.company = company
+      Cookies.set('company', JSON.stringify(company), { expires: 1})
+      this.hasCompany = true
     },
     logout(){
-      this.user = {} as User
       Cookies.remove('token')
+      Cookies.remove('user')
+      Cookies.remove('company')
       this.isAuth = false
+      this.hasCompany = false
     }
   }
 })

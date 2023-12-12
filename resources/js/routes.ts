@@ -96,6 +96,8 @@ router.beforeEach((to) => {
 
   if(to.meta.auth === 'Auth' && !store.isAuth) return { name: 'Login' }
   if(to.meta.auth === 'Guest' && store.isAuth) return { name: 'Dashboard' }
+  if(to.meta.auth === 'Auth' && store.isAuth && !store.hasCompany && to.path !== '/complete-account') return { name: 'CompleteAccount' }
+  if(to.path === '/complete-account' && store.isAuth && store.hasCompany) return { name: 'Dashboard' }
 })
 
 export default router;

@@ -8,6 +8,8 @@ import { useField, useForm } from 'vee-validate'
 import * as yup from 'yup';
 import type { UserCompany } from "@/stores/auth.store"
 import Swal from "sweetalert2";
+import StoreLayout from '@/layouts/storeLayout.vue';
+import Navbar from '@/components/navbar.vue';
 
 const scheme = computed(() => {
   return yup.object({
@@ -115,9 +117,10 @@ const addCompanySubmit = handleSubmit(async () => {
     }
     })
 })
+const logout = () => {store.logout()}
 </script>
 <template lang="pug">
-div(class="h-screen w-screen flex items-center justify-center px-10 md:px-0")
+div(class="w-screen h-screen flex items-center justify-center px-10 md:px-0")
   div(class="flex items-center justify-center py-12 px-4 lg:px-12 w-full border-2 border-gray-200 rounded-lg shadow-lg shadow-gray-200/50 lg:mx-20 mx-10 lg:max-w-[70rem]")
     div(class="w-full")
       h1(class="text-center text-4xl my-6 sm:text-5xl font-semibold text-primary") Complete Your account
@@ -154,4 +157,6 @@ div(class="h-screen w-screen flex items-center justify-center px-10 md:px-0")
           p {{errors.acceptTermsPrivacy}}
         div(class="flex justify-center mt-4")
           button(type="submit" class="border font-bold text-2xl text-white border-white rounded-full w-full py-4 bg-primary hover:shadow-md duration-300") Complete
+        div(class="flex items-center justify-center mt-4")
+          a(href="/" @click="logout" class="text-gray-400 text-sm cursor-pointer hover:text-primary duration-200") Logout
 </template>

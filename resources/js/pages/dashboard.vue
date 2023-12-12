@@ -104,7 +104,6 @@ const addProductSubmit = handleSubmit(async () => {
     }
      })
 })
-
 const data = ref([] as Array<ProductResponse>)
 
 const getProducts = async() => {
@@ -159,7 +158,7 @@ StoreLayout
               div(class="mt-8")
                 AppInput(:labelName="'Material'" name="material" :type="'text'" :color="'#1d6795'")
               div(class="mt-8")
-                input(type="text" v-model="store.user.company.name" class="p-4 w-full border rounded-lg border-primary bg-gray-100 text-gray-500" disabled)
+                input(type="text" v-model="store.company.name" class="p-4 w-full border rounded-lg border-primary bg-gray-100 text-gray-500" disabled)
               div(class="mt-2")
                 label(class="px-2 text-primary text-xs") Production date
                 input(type="date" v-model="date" class="w-full p-2 h-[3.6rem] min-h-[3.6rem] cursor-pointer border border-primary rounded-lg")

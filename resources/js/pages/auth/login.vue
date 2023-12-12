@@ -38,9 +38,9 @@ const submit = handleSubmit(async () => {
   const data = { email: email.value, password: password.value }
   await $AppAxios.post('/api/login', data)
   .then(async (response) => {
-    const user = ref(response.data.user)
-    user.value.company = response.data.company
-    await store.fetchUser(response.data.token, user.value)
+    if(response.data.company)
+      await store.setCompany(response.data.company)
+    await store.fetchUser(response.data.token, response.data.user)
     Swal.fire({
       text: 'You are logged in !',
       icon: 'success',
