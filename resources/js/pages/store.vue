@@ -13,7 +13,6 @@ const modal = ref(false)
 
 const openModal = (index: number) => {
 	currProduct.value = data.value.find((product: ProductResponse) => product.original.id === index )
-	console.log(currProduct.value)
 	modal.value = true
 }
 

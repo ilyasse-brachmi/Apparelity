@@ -2,8 +2,9 @@
 import Input from '@/components/AppInput.vue';
 import { $AppAxios } from "@/utils/axiosSingleton";
 import { useAuth } from "@/stores/auth.store";
+import type { UserCompany } from "@/stores/auth.store";
 import { useRouter } from "vue-router";
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useField, useForm } from 'vee-validate'
 import * as yup from 'yup';
 import Swal from "sweetalert2";
@@ -52,7 +53,9 @@ const registerSubmit = handleSubmit(async () => {
    }
    await $AppAxios.post('/api/register', data)
    .then(async (response) => {
-      store.fetchUser(response.data.token, response.data.user)
+      const user = ref(response.data.user)
+      user.value.company = {} as UserCompany
+      store.fetchUser(response.data.token, user.value)
       Swal.fire({
       text: 'You are logged in !',
       icon: 'success',

@@ -35,8 +35,8 @@ class CompanyController extends Controller
         if ($validation !== null) {
             return $validation;
         }
-        Company::create($request->all());
-        return response()->json('Added Successfully');
+        $company = Company::create($request->all());
+        return response()->json($company);
     }
     public function edit(Request $request){
         $validation=$this->validateCompanyData($request);

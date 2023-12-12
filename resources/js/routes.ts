@@ -7,7 +7,8 @@ import Login from "./pages/auth/login.vue"
 import Register from "./pages/auth/register.vue"
 import Example from "@/pages/exemple.vue"
 import CompleteAccount from "@/pages/auth/completeAccount.vue"
-import Dashboard from "@/pages/auth/dashboard.vue"
+import Dashboard from "@/pages/dashboard.vue"
+import Dashboardd from "@/pages/dashboardd.vue"
 import { useAuth } from '@/stores/auth.store'
 
 const routes = [

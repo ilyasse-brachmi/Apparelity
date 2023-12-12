@@ -2,10 +2,16 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import Cookies from 'js-cookie'
 
+export interface UserCompany {
+  id: number;
+  name: string;
+}
 declare interface User {
+  id: number,
   name: string,
   email: string,
   isAdmin : boolean
+  company: UserCompany
 }
 
 export const useAuth = defineStore('Auth', {
@@ -30,6 +36,11 @@ export const useAuth = defineStore('Auth', {
       this.setToken(token)
       this.setUser(newUser)
       this.isAuth = true
+    },
+    setCompany(company: UserCompany) {
+      this.user.company.id = company.id
+      this.user.company.name = company.name
+      Cookies.set('user', JSON.stringify(this.user), { expires: 1})
     },
     logout(){
       this.user = {} as User

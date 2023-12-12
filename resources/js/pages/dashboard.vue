@@ -2,17 +2,17 @@
 import StoreLayout from '@/layouts/storeLayout.vue'
 import AppModal from "@/components/AppModal.vue"
 import Exemple from "@/pages/exemple.vue"
-import Product from "../../../images/jacket.png"
+import Product from "../../images/jacket.png"
 import Card from "@/components/card.vue"
-import Input from '@/components/AppInput.vue'
+import AppInput from '@/components/AppInput.vue'
 import { $AppAxios } from "@/utils/axiosSingleton"
 import { useAuth } from "@/stores/auth.store"
 import { useRouter } from "vue-router"
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useField, useForm } from 'vee-validate'
 import * as yup from 'yup'
 import Swal from "sweetalert2"
-import type { ProductResponse } from "@/types/index"
+import type { ProductResponse, Category } from "@/types/index"
 
 const scheme = computed(() => {
   return yup.object({
@@ -44,23 +44,42 @@ const {
     value: description
 } = useField<string>('description')
 
-const selectedFile= ref()
-const onFileSelected = ((event: UIEvent & { target: HTMLInputElement & { files: Array<string> } })=>{
+const selectedFile = ref(null)
+const imageUrl = ref(null)
+const onFileSelected = (event) => {
+  // const file = event.target.files[0];
   selectedFile.value = event.target.files[0];
-})
+  //     if (file) {
+  //       // Use FileReader to preview the image
+  //       const reader = new FileReader();
+  //       reader.onload = () => {
+  //         imageUrl.value = reader.result;
+  //       };
+  //       reader.readAsDataURL(file);
+  //       selectedFile.value = file
+  //       console.log(selectedFile.value)
+  // }
+}
 
+const date = ref<String>('')
+console.log(date.value)
 const addProductSubmit = handleSubmit(async () => {
-  const imageFile = new FormData();
-  imageFile.append('image', selectedFile.value)
-  const data = { 
-    name: name.value,
-    price: price.value,
-    description: description.value,
-    image: imageFile
-   }
-   await $AppAxios.post('/api/product', data)
+  const formData = new FormData();
+
+  formData.append('name', name.value)
+  formData.append('price', price.value)
+  formData.append('description', description.value)
+  formData.append('company_id', JSON.stringify(store.user.company.id))
+  if(selectedFile.value)
+    formData.append('image_product', selectedFile.value);
+  console.log(selectedFile.value)
+  formData.append('production_date', date.value)
+  formData.append('category_id', selectedCategory.value)
+
+  console.log([...formData.entries()]);
+
+   await $AppAxios.post('/api/product', formData)
    .then(async (response) => {
-      store.fetchUser(response.data.token, response.data.user)
       Swal.fire({
       text: 'Your Product is added successfuly!',
       icon: 'success',
@@ -69,9 +88,8 @@ const addProductSubmit = handleSubmit(async () => {
       timer: 3000,
       showConfirmButton: false,
     })
-    .then(function() {
-        console.log('success')
-     });
+    await getProducts()
+    addModal.value = false
    })
    .catch((e) => {
     if(e.response) {
@@ -83,18 +101,21 @@ const addProductSubmit = handleSubmit(async () => {
       timer: 3000,
       showConfirmButton: false
     })
-    console.log(e.response.data)
     }
      })
 })
 
 const data = ref([] as Array<ProductResponse>)
 
-onMounted(async () => {
-	$AppAxios.get('/api/product')
+const getProducts = async() => {
+  $AppAxios.get('/api/product')
 	.then((response) => {
 		data.value = response.data
 	})
+}
+
+onMounted(async () => {
+	getProducts()
 })
 
 const modal = ref(false)
@@ -102,10 +123,21 @@ const openModal = (index: number) => {
 	modal.value = true
 }
 
-const AddModal = ref(false)
+const addModal = ref(false)
 const openAddModal = () => {
-	AddModal.value = true
+	addModal.value = true
 }
+const selectedCategory = ref('')
+const categories = ref([] as Category[])
+watch(
+  () => addModal.value,
+  async (newVal) => {
+    if (newVal) {
+      await $AppAxios.get('/api/category')
+      .then((response: { data: Category[]}) => categories.value = response.data)
+    }
+  }
+)
 </script>
 <template lang="pug">
 StoreLayout
@@ -114,22 +146,29 @@ StoreLayout
       button(class="border flex items-center gap-2 text-white border-white rounded-lg w-full py-4 px-4 bg-primary hover:shadow-md duration-300 cursor-pointer" @click="openAddModal()") 
         p.text-xl.font-semibold Add New Product
         Icon(:icon="'gridicons:add-outline'" class="text-2xl")
-      AppModal(v-if="AddModal" :title="'Add New Product'" @close="AddModal = false")
-        div(class="flex items-center justify-center h-[90vh]")
+      AppModal(v-if="addModal" :title="'Add New Product'" @close="addModal = false")
+        div(class="flex items-center justify-center h-full")
           form(method="POST" @submit.prevent="addProductSubmit" class="flex-col items-center justify-center px-4")
             div(class="grid grid-cols-2 gap-4")
               div(class="mt-8")
-                Input(:labelName="'Product Name'" name="name" :type="'text'" :color="'#1d6795'" @input="nameError" :inputError="errors.name")
+                AppInput(:labelName="'Product Name'" name="name" :type="'text'" :color="'#1d6795'" @input="nameError" :inputError="errors.name")
               div(class="mt-8")
-                Input(:labelName="'Product Description'" name="description" :type="'text'" :color="'#1d6795'" @input="descriptionError" :inputError="errors.description")
+                AppInput(:labelName="'Product Description'" name="description" :type="'text'" :color="'#1d6795'" @input="descriptionError" :inputError="errors.description")
               div(class="mt-8")
-                Input(:labelName="'Category'" name="category" :type="'text'" :color="'#1d6795'")
+                AppInput(:labelName="'Price'" name="price" :type="'text'" :color="'#1d6795'" :icon="'healthicons:dollar'" @input="priceError" :inputError="errors.price")
               div(class="mt-8")
-                Input(:labelName="'Price'" name="price" :type="'text'" :color="'#1d6795'" :icon="'healthicons:dollar'" @input="priceError" :inputError="errors.price")
+                AppInput(:labelName="'Material'" name="material" :type="'text'" :color="'#1d6795'")
               div(class="mt-8")
-                Input(:labelName="'Image'" name="image" :type="'file'" :color="'#1d6795'" @change="onFileSelected")
+                input(type="text" v-model="store.user.company.name" class="p-4 w-full border rounded-lg border-primary bg-gray-100 text-gray-500" disabled)
+              div(class="mt-2")
+                label(class="px-2 text-primary text-xs") Production date
+                input(type="date" v-model="date" class="w-full p-2 h-[3.6rem] min-h-[3.6rem] cursor-pointer border border-primary rounded-lg")
               div(class="mt-8")
-                Input(:labelName="'Material'" name="material" :type="'text'" :color="'#1d6795'")
+                select(class="dz-select dz-select-bordered w-full h-[3.6rem] min-h-[3.6rem]" v-model="selectedCategory")
+                  option(disabled value="") Select category
+                  option(v-for="category in categories" :key="category.id" :value="category.id") {{ category.name }}
+              div(class="mt-8 flex items-end")
+                input(type="file" name="image" @change="onFileSelected($event)" class="dz-file-input dz-file-input-bordered dz-file-input-primary w-full max-w-xs")
             div(class="flex justify-center mt-8")
               button(type="submit" class="border font-bold text-2xl text-white border-white rounded-full px-16 sm:px-48 py-4 bg-primary hover:shadow-md duration-300") Add
   template(v-slot:cards)

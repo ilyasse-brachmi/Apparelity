@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import Navbar from "../../components/navbar.vue";
 import Input from '@/components/AppInput.vue';
 import { $AppAxios } from "@/utils/axiosSingleton";
 import { useAuth } from "@/stores/auth.store";
 import { useRouter } from "vue-router";
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useField, useForm } from 'vee-validate'
 import * as yup from 'yup';
+import type { UserCompany } from "@/stores/auth.store"
 import Swal from "sweetalert2";
 
 const scheme = computed(() => {
@@ -84,11 +84,14 @@ const addCompanySubmit = handleSubmit(async () => {
     zipCode: zip.value,
     country: country.value,
     city: city.value,
-    description: description.value
+    description: description.value,
+    user_id: store.user.id
    }
    await $AppAxios.post('/api/company', data)
-   .then(async (response) => {
-      store.fetchUser(response.data.token, response.data.user)
+   .then(async (response: { data: UserCompany }) => {
+      const company = ref({} as UserCompany)
+      company.value = response.data
+      store.setCompany(company.value)
       Swal.fire({
       text: 'Your Company is created successfuly !',
       icon: 'success',
@@ -97,9 +100,7 @@ const addCompanySubmit = handleSubmit(async () => {
       timer: 3000,
       showConfirmButton: false,
     })
-    .then(function() {
-      router.push('/dashboard')
-    });
+    router.push('/dashboard')
    })
    .catch((e) => {
     if(e.response) {
@@ -111,17 +112,16 @@ const addCompanySubmit = handleSubmit(async () => {
       timer: 3000,
       showConfirmButton: false
     })
-    console.log(e.response.data)
     }
     })
 })
 </script>
 <template lang="pug">
-div(class="h-screen w-screen flex items-center justify-center")
-  div(class="flex items-center justify-center my-8 h-[90vh]")
-    div(class="container w-[30rem] sm:w-[60rem] max-h-[68rem] py-2 px-2 sm:px-8 sm:py-4 border-2 border-gray-200 rounded-lg shadow-lg shadow-gray-200/50")
-      h1(class="text-center text-4xl sm:text-5xl font-semibold text-primary") Complete Your account
-      p(class="text-center text-lg sm:text-xl my-2 sm:mx-8") Fill Up your Company informations.
+div(class="h-screen w-screen flex items-center justify-center px-10 md:px-0")
+  div(class="flex items-center justify-center py-12 px-4 lg:px-12 w-full border-2 border-gray-200 rounded-lg shadow-lg shadow-gray-200/50 lg:mx-20 mx-10 lg:max-w-[70rem]")
+    div(class="w-full")
+      h1(class="text-center text-4xl my-6 sm:text-5xl font-semibold text-primary") Complete Your account
+      p(class="text-center text-gray-600 text-lg sm:text-xl my-2 sm:mx-8") Fill Up your Company informations.
       form(method="POST" @submit.prevent="addCompanySubmit" class="flex-col items-center justify-center px-4 sm:px-8")
         div(class="grid md:grid-rows-5 md:grid-cols-2 gap-x-6")
           div(class="mt-4")
@@ -135,7 +135,7 @@ div(class="h-screen w-screen flex items-center justify-center")
           div(class="w-full rounded max-w-[40rem] bg-white mt-4 row-span-3 col-span-1 mt-10")
             label(for="description" class="text-primary ml-2 text-lg") Company Description
             div(class="w-full rounded max-w-[40rem] bg-white mt-2")
-              textarea(rows="8" cols="" id="description" placeholder="Optional Description of Your Company..." @input="descriptionError" class="px-2 mt-2 text-sm border-primary border-2 rounded-lg bg-transparent w-full")
+              textarea(rows="5" cols="" id="description" placeholder="Optional Description of Your Company..." @input="descriptionError" class="p-4 mt-2 text-lg border-primary border-2 rounded-lg bg-transparent w-full")
             div(v-if="errors.description" class="mt-4 bg-red text-black")
               p {{ errors.description }}
           div(class="mt-4")
@@ -144,7 +144,7 @@ div(class="h-screen w-screen flex items-center justify-center")
             Input(:labelName="'City'" name="city" :type="'text'" :icon="'la:city'" :color="'#1d6795'" @input="cityError" :inputError="errors.city")
           div(class="mt-4")
             Input(:labelName="'Country'" name="country" :type="'text'" :icon="'gis:search-country'" :color="'#1d6795'" @input="countryError" :inputError="errors.country")
-        div(class="mt-4 flex justify-center gap-1 whitespace-nowrap")
+        div(class="mt-10 flex justify-center gap-1 whitespace-nowrap")
           input(type="checkbox" id="acceptTermsPrivacy" name="acceptTermsPrivacy" v-model="acceptTermsPrivacyError")
           label(for="acceptTermsPrivacy" class="ml-1") I have read and accept 
           a(href="/terms-of-service" target="_blank" class="text-primary") terms of Service 

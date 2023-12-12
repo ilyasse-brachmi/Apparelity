@@ -26,6 +26,12 @@ onMounted(async () => {
 			materials.value = response.data
 	})
 })
+const props = defineProps({
+	withSearch :{
+		type: Boolean,
+		default: true
+	}
+})
 // provide('sidebarToggle', opened.value)
 </script>
 <template lang="pug">
@@ -34,7 +40,7 @@ Sidebar(:categories="categories" :materials="materials" :sidebarToggle="opened")
 	div(:class="store.isAuth? 'lg:flex justify-between':''")
 		div(class="flex justify-center items-center py-2 sm:py-4 px-2 bg-gray-50")
 			slot(name="addBtn")
-		div(class="flex justify-center lg:justify-end items-center sm:py-4 px-2 bg-gray-50 z-10")
+		div(v-if="withSearch" class="flex justify-center lg:justify-end items-center sm:py-4 px-2 bg-gray-50 z-10")
 			div(class="flex items-center justify-between max-w-[30rem] px-1 sm:px-2 lg:px-4 py-1 sm:py-2 border-2 border-primary rounded-full")
 				input(type="text" placeholder="Search for a Product" class="bg-transparent px-4 py-2 text-sm sm:text-base md:text-lg outline-none border-none w-full")
 				Icon(icon="tabler:search" class="text-3xl lg:text-4xl mx-2 text-primary cursor-pointer")

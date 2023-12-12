@@ -22,8 +22,9 @@ class AuthController extends Controller
             return response()->json(['errorMessage' => 'email or password not valid'] ,400);
         }
         $user=Auth::User();
+        $company = Company::where('user_id', $user->id)->first(); // Assuming 'user_id' is the foreign key in the Company table
         $token=$user->createToken('user')->plainTextToken;
-        return response()->json(['user'=>$user,'token'=>$token] ,200);
+        return response()->json(['user'=>$user, 'company' => $company, 'token'=>$token] ,200);
     }
 
     public function register(Request $request){

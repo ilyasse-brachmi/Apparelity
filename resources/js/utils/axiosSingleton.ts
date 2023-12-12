@@ -12,10 +12,10 @@ class AxiosSingleton {
     this.axiosInstance = axios.create({
       baseURL: 'http://127.0.0.1:8000', // Replace with your API base URL
       timeout: 5000, // Set the timeout for requests (in milliseconds)
-      headers: {
-        'Content-Type': 'application/json',
-        // Add any other default headers you need
-      },
+      // headers: {
+      //   'Content-Type': 'application/json',
+      //   // Add any other default headers you need
+      // },
     });
 
     // Optionally, you can add interceptors for request and response
