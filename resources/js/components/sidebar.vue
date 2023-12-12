@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref } from 'vue'
+import type { Category, Material } from "@/types/index"
 
 const props = defineProps({
   materials: {
-    type: Array<String>,
+    type: Array<Material>,
     required: true
   },
   categories: {
-    type: Array<String>,
+    type: Array<Category>,
     required: true
   },
 	sidebarToggle: {
@@ -39,7 +40,7 @@ div(class="w-full dz-drawer lg:dz-drawer-open")
 				.dz-collapse-content
 					ul
 						li(v-for="(category, index) in categories" :key="index" class="p-4 cursor-pointer hover:bg-primary/10 duration-200 text-gray-600 hover:scale-x-105 hover:text-primary")
-							h3(class="text-lg") {{ category }}
+							h3(class="text-lg") {{ category.name }}
 			.dz-collapse.dz-collapse-plus.text-primary
 				input(type='checkbox' name='my-accordion-3' :checked="checked")
 				.dz-collapse-title.text-xl.font-medium.border-b-2
@@ -47,7 +48,7 @@ div(class="w-full dz-drawer lg:dz-drawer-open")
 				.dz-collapse-content
 					ul
 						li(v-for="(material, index) in materials" :key="index" class="p-4 cursor-pointer hover:bg-primary/10 duration-200 text-gray-600 hover:scale-x-105 hover:text-primary")
-							h3(class="text-lg") {{ material }}
+							h3(class="text-lg") {{ material.name }}
 			.dz-collapse.dz-collapse-plus.text-primary
 				input(type='checkbox' name='my-accordion-3' :checked="checked")
 				.dz-collapse-title.text-xl.font-medium.border-b-2

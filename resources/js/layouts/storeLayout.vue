@@ -1,16 +1,31 @@
 <script setup lang="ts">
 import Sidebar from "../components/sidebar.vue"
-import AppModal from "@/components/AppModal.vue"
-import { ref } from 'vue'
+import { onMounted, ref } from "vue"
+import { $AppAxios } from "@/utils/axiosSingleton";
 import { useAuth } from '@/stores/auth.store'
 import Navbar from '@/components/navbar.vue'
-const categories = ['Headwear','Shoes','Bags','Clothes'];
-const materials = ['Cotton','Leather','Linen','Nylon'];
+import type { Category, Material } from "@/types/index"
 const opened = ref(false)
 const sidebarToggle = (newVal: boolean) => {
 	opened.value = newVal
 }
 const store = useAuth()
+const modal = ref(false)
+const openModal = () => {
+	modal.value = true
+}
+const categories = ref([] as Array<Category>)
+const materials = ref([] as Array<Material>)
+onMounted(async () => {
+	$AppAxios.get('/api/category')
+		.then((response) => {
+			categories.value = response.data
+	})
+	$AppAxios.get('/api/material')
+		.then((response) => {
+			materials.value = response.data
+	})
+})
 // provide('sidebarToggle', opened.value)
 </script>
 <template lang="pug">
