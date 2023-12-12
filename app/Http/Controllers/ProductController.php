@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductRequest;
 use App\Models\Product;
+use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
@@ -107,4 +108,27 @@ class ProductController extends Controller
         }
         return response()->json($data);
     }
+    public function search(Request $request)
+    {
+        $name = $request->input('name');
+        $company = Company::with('products')->where('name', 'like', "%$name%")->first();
+        if ($company) {
+            return response()->json([
+                'company' => $company,
+                'products' => $company->products,
+            ]);
+        }
+        $products = Product::where('name', 'like', "%$name%")->get();
+
+        return response()->json([
+            'products' => $products,]);
+        }
+      public function getProductCompany($id){
+        $company=Company::find($id);
+        if(!$company){
+            return response()->json(['error'=>'Company not found'],404);
+        }
+        $products=$company->products;
+        return response()->json(['products'=>$products]);
+      }
 }
