@@ -32,3 +32,17 @@ export interface ProductResponse{
   original: Product;
   exception: Object | null
 }
+
+export interface Category{
+  id: number;
+  name: string
+}
+
+export interface Material{
+  id: number;
+  product_id: number;
+  name: string;
+  origin: string;
+  supplier: string;
+  address: string
+}
