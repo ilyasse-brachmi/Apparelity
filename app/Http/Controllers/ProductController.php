@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use MediaUploader;
-
+use function PHPUnit\Framework\status;
 
 
 class ProductController extends Controller
@@ -94,7 +94,7 @@ class ProductController extends Controller
         }
         return response()->json('Updated Successfully');
     }
-    public function delete(Pimage_prodroductRequest $request){
+    public function delete(Request $request){
         $product=Product::findorfail($request->id);
         $product->materials()->delete();
         $product->delete();
@@ -110,19 +110,37 @@ class ProductController extends Controller
     }
     public function search(Request $request)
     {
-        $name = $request->input('name');
-        $company = Company::with('products')->where('name', 'like', "%$name%")->first();
-        if ($company) {
-            return response()->json([
-                'company' => $company,
-                'products' => $company->products,
-            ]);
+        $companyName = $request->input('company');
+        $productName = $request->input('product');
+        if ($companyName) {
+            $company = Company::where('name', 'like', "%$companyName%")->first();
+            $productsCompany = Product::where('company_id', $company->id)->get();
+            $data=[];
+            foreach ($productsCompany as $key=>$product){
+                $data[$key]= (new \App\Models\Product)->convertToArray($product);
+            }
+            if ($company) {
+                return response()->json([
+                    'company' => $company, $data,
+                ]);
+            } else {
+                return response()->json(['error' => 'Company not found'], 404);
+            }
         }
-        $products = Product::where('name', 'like', "%$name%")->get();
-
-        return response()->json([
-            'products' => $products,]);
+        if ($productName) {
+            $products = Product::where('name', 'like', "%$productName%")->get();
+            $data=[];
+            foreach ($products as $key=>$product){
+                $data[$key]= (new \App\Models\Product)->convertToArray($product);
+            }
+            if ($products->isNotEmpty()) {
+                return response()->json($data);
+            } else {
+                return response()->json(['error' => 'Product not found'], 404);
+            }
         }
+        return response()->json(['error' => 'Please provide a company or product name for search'], 400);
+    }
       public function getProductCompany($id){
         $company=Company::find($id);
         if(!$company){
