@@ -147,6 +147,10 @@ class ProductController extends Controller
             return response()->json(['error'=>'Company not found'],404);
         }
         $products=$company->products;
-        return response()->json(['products'=>$products]);
+        $data=[];
+        foreach ($products as $key=>$product){
+            $data[$key]= (new \App\Models\Product)->convertToArray($product);
+        }
+        return response()->json(['data'=>$data]);
       }
 }
