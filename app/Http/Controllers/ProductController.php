@@ -151,6 +151,6 @@ class ProductController extends Controller
         foreach ($products as $key=>$product){
             $data[$key]= (new \App\Models\Product)->convertToArray($product);
         }
-        return response()->json(['data'=>$data]);
+        return response()->json($data);
       }
 }
