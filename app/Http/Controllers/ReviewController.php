@@ -15,10 +15,10 @@ class ReviewController extends Controller
             'email' => 'required|email',
         ]);
         if($validator->fails()){
-            return response()->json(['errors'=>$validator->errors()],422);
+            return response()->json(['success' => false,'errors'=>$validator->errors()],422);
         }
-        Review::create($request->all());
-        return response()->json('added successfully');
+       $review=Review::create($request->all());
+        return response()->json(['success' => true,'data' => $review], 201);
     }
     public function get(){
         $reviews=Review::all();

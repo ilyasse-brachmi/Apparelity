@@ -16,7 +16,7 @@ class MaterialController extends Controller
             'product_id' => 'required|exists:product,id',
         ]);
         if($validator->fails()){
-            return response()->json(['errors'=>$validator->errors()],422);
+            return response()->json(['success'=>false,'errors'=>$validator->errors()],422);
         }
     }
     public function add(Request $request){
@@ -24,8 +24,8 @@ class MaterialController extends Controller
         if ($validation !== null) {
             return $validation;
         }
-        Material::create($request->all());
-        return response()->json('Added Successfully');
+        $material=Material::create($request->all());
+        return response()->json(['success' => true,'data' => $material], 201);
     }
     public function edit(Request $request){
         $validation = $this->validateMaterialData($request);
@@ -33,9 +33,9 @@ class MaterialController extends Controller
             return $validation;
         }
         $material=Material::find($request->id);
-        if(!$material){return response()->json(['error'=>'material not found'],404);}
+        if(!$material){return response()->json(['success' => false,'error'=>'material not found'],404);}
         $material->update($request->all());
-        return response()->json('Updated Successfully');
+        return response()->json(['success' => true,'data' => $company], 201);
     }
     public function delete($id){
         $material=Material::find($id);
