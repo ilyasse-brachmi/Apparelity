@@ -12,24 +12,24 @@ class CategoryController extends Controller
             'name' => 'required|string',
         ]);
         if($validator->fails()){
-            return response()->json(['errors'=>$validator->errors()],422);
+            return response()->json(['success'=>false,'errors'=>$validator->errors()],422);
         }
-       Category::create([
+       $category=Category::create([
            'name'=>$request->name,
        ]);
-        return response()->json('Added Successfully');
+        return response()->json(['success' => true,'data' => $category], 201);
     }
     public function edit(Request $request){
         $validator=Validator::make($request->all(),[
             'name' => 'required|string',
         ]);
         if($validator->fails()){
-            return response()->json(['errors'=>$validator->errors()],422);
+            return response()->json(['success' => false,'errors'=>$validator->errors()],422);
         }
         $category=Category::find($request->id);
-        if(!$category){return response()->json(['error'=>'Category not found'],404);}
+        if(!$category){return response()->json(['success' => false,'error'=>'Category not found'],404);}
         $category->update($request->all());
-        return response()->json('Updated Successfully');
+        return response()->json(['success' => true,'data' => $category], 201);
     }
     public function delete( $id){
             $category=Category::find($id);
