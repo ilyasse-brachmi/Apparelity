@@ -17,11 +17,11 @@ class CategorySeeder extends Seeder
         DB::table('category')->truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         DB::table('category')->insert([
-            ['name' => 'Shoes'],
-            ['name' => 'Coat'],
-            ['name' => 'Jacket'],
-            ['name' => 'Trousers'],
-            ['name' => 'Sweetshirt'],
+            ['id'=>'1','name' => 'Shoes','created_at' => now(),'updated_at' => now()],
+            ['id'=>'2','name' => 'Coat','created_at' => now(),'updated_at' => now()],
+            ['id'=>'3','name' => 'Jacket','created_at' => now(),'updated_at' => now()],
+            ['id'=>'4','name' => 'Trousers','created_at' => now(),'updated_at' => now()],
+            ['id'=>'5','name' => 'Sweetshirt','created_at' => now(),'updated_at' => now()],
         ]);
     }
 }
