@@ -2,7 +2,7 @@
 import StoreLayout from '@/layouts/storeLayout.vue'
 import AppModal from "@/components/AppModal.vue"
 import Exemple from "@/pages/exemple.vue"
-import Product from "../../images/jacket.png"
+import Placeholder from "../../images/placeholder.jpg"
 import Card from "@/components/card.vue"
 import AppInput from '@/components/AppInput.vue'
 import { $AppAxios } from "@/utils/axiosSingleton"
@@ -17,7 +17,7 @@ import type { ProductResponse, Category } from "@/types/index"
 const scheme = computed(() => {
   return yup.object({
     name: yup.string().required('Name is a required field'),
-    price: yup.string().required('Price is a required field'),
+    price: yup.number().typeError('Must be a number').required('Price is a required field'),
     description: yup.string().required('Description is a required field'),
   })
 })
@@ -45,20 +45,19 @@ const {
 } = useField<string>('description')
 
 const selectedFile = ref(null)
-const imageUrl = ref(null)
+const imageUrl = ref(Placeholder);
+
 const onFileSelected = (event) => {
-  // const file = event.target.files[0];
   selectedFile.value = event.target.files[0];
-  //     if (file) {
-  //       // Use FileReader to preview the image
-  //       const reader = new FileReader();
-  //       reader.onload = () => {
-  //         imageUrl.value = reader.result;
-  //       };
-  //       reader.readAsDataURL(file);
-  //       selectedFile.value = file
-  //       console.log(selectedFile.value)
-  // }
+
+  if (selectedFile.value) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      imageUrl.value = reader.result;
+    };
+    reader.readAsDataURL(selectedFile.value);
+  }
+  console.log(selectedFile.value)
 }
 
 const date = ref<String>('')
@@ -69,14 +68,13 @@ const addProductSubmit = handleSubmit(async () => {
   formData.append('name', name.value)
   formData.append('price', price.value)
   formData.append('description', description.value)
-  formData.append('company_id', JSON.stringify(store.user.company.id))
+  formData.append('company_id', JSON.stringify(store.company.id))
   if(selectedFile.value)
     formData.append('image_product', selectedFile.value);
   console.log(selectedFile.value)
   formData.append('production_date', date.value)
   formData.append('category_id', selectedCategory.value)
 
-  console.log([...formData.entries()]);
 
    await $AppAxios.post('/api/product', formData)
    .then(async (response) => {
@@ -146,9 +144,15 @@ StoreLayout
         p.text-xl.font-semibold Add New Product
         Icon(:icon="'gridicons:add-outline'" class="text-2xl")
       AppModal(v-if="addModal" :title="'Add New Product'" @close="addModal = false")
-        div(class="flex items-center justify-center h-full")
-          form(method="POST" @submit.prevent="addProductSubmit" class="flex-col items-center justify-center px-4")
-            div(class="grid grid-cols-2 gap-4")
+        div(class="flex items-center justify-center h-full py-8")
+          form(method="POST" @submit.prevent="addProductSubmit" class="h-full flex-col items-center justify-center px-8")
+            div(class="w-full flex items-center justify-center")
+              label(class="flex items-center flex-col gap-3" for="product_image")
+                img(v-if="imageUrl" :src="imageUrl" class="w-40 h-40 cursor-pointer rounded-full p-2 border")
+                input(type="file" name="image" @change="onFileSelected($event)" id="product_image" class="hidden")
+                p(class="text-center") {{ selectedFile ? selectedFile.name :  "Here Your product image" }}
+                p(class="bg-primary/20 text-primary px-4 py-1 rounded-full text-sm") {{ store.company.name }}
+            div(class="grid grid-cols-1 md:grid-cols-2 gap-4")
               div(class="mt-8")
                 AppInput(:labelName="'Product Name'" name="name" :type="'text'" :color="'#1d6795'" @input="nameError" :inputError="errors.name")
               div(class="mt-8")
@@ -157,8 +161,6 @@ StoreLayout
                 AppInput(:labelName="'Price'" name="price" :type="'text'" :color="'#1d6795'" :icon="'healthicons:dollar'" @input="priceError" :inputError="errors.price")
               div(class="mt-8")
                 AppInput(:labelName="'Material'" name="material" :type="'text'" :color="'#1d6795'")
-              div(class="mt-8")
-                input(type="text" v-model="store.company.name" class="p-4 w-full border rounded-lg border-primary bg-gray-100 text-gray-500" disabled)
               div(class="mt-2")
                 label(class="px-2 text-primary text-xs") Production date
                 input(type="date" v-model="date" class="w-full p-2 h-[3.6rem] min-h-[3.6rem] cursor-pointer border border-primary rounded-lg")
@@ -166,9 +168,7 @@ StoreLayout
                 select(class="dz-select dz-select-bordered w-full h-[3.6rem] min-h-[3.6rem]" v-model="selectedCategory")
                   option(disabled value="") Select category
                   option(v-for="category in categories" :key="category.id" :value="category.id") {{ category.name }}
-              div(class="mt-8 flex items-end")
-                input(type="file" name="image" @change="onFileSelected($event)" class="dz-file-input dz-file-input-bordered dz-file-input-primary w-full max-w-xs")
-            div(class="flex justify-center mt-8")
+            div(class="flex justify-center mt-16")
               button(type="submit" class="border font-bold text-2xl text-white border-white rounded-full px-16 sm:px-48 py-4 bg-primary hover:shadow-md duration-300") Add
   template(v-slot:cards)
     .flex.items-center.justify-center
