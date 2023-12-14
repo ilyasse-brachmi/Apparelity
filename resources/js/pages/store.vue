@@ -2,12 +2,13 @@
 import AppModal from "@/components/AppModal.vue"
 import Card from "@/components/card.vue"
 import StoreLayout from '@/layouts/storeLayout.vue'
-import { onMounted, ref } from "vue"
+import { onMounted, ref, watch } from "vue"
 import ImageProduct from "../../images/jacket.png"
 import type { ProductResponse , ProductMarker } from "@/types/index"
 import { $AppAxios } from "@/utils/axiosSingleton";
 import { LMap, LTileLayer, LMarker, LPopup } from "@vue-leaflet/vue-leaflet";
 import "leaflet/dist/leaflet.css";
+import Swal from "sweetalert2"
 
 const modal = ref(false)
 
@@ -16,6 +17,31 @@ const openModal = (index: number) => {
 	modal.value = true
 }
 
+const nameSearched = ref('' as string)
+const selectedSearch = ref('' as string)
+selectedSearch.value='company'
+const searchedName = (name: any)=>{
+	nameSearched.value = name
+}
+watch(nameSearched, () => {
+	$AppAxios.get(`/api/product/search?${selectedSearch.value}=${nameSearched.value}`)
+	.then((response) => {
+		data.value = response.data
+	})
+	.catch((e) => {
+		if(e.response) {
+			Swal.fire({
+				text: e.response.data.message || 'Error !!',
+				icon: 'error',
+				toast: true,
+				position: 'top-end',
+				timer: 3000,
+				showConfirmButton: false
+			})
+		}
+	}
+	)
+})
 const data = ref([] as Array<ProductResponse>)
 
 onMounted(async () => {
@@ -48,7 +74,7 @@ const center = ref([47.413220, -1.219482])
 const minZoom = ref(2)
 </script>
 <template lang="pug">
-StoreLayout
+StoreLayout(@NameSearched="searchedName")
 	template(v-slot:cards)
 		.flex.items-center.justify-center.h-full.w-full
 			div(v-if="data.length" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 py-8 h-full")
