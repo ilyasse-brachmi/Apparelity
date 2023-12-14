@@ -31,7 +31,7 @@ class UsersSeeder extends Seeder
         User::create([
             'id'=>'2',
             'name' => 'name2',
-            'email' => 'name2@gamil.com',
+            'email' => 'name2@gmail.com',
             'is_admin' => false,
             'email_verified_at' => now(),
             'password' => Hash::make('password456'),
@@ -40,7 +40,7 @@ class UsersSeeder extends Seeder
         User::create([
             'id'=>'3',
             'name' => 'name3',
-            'email' => 'name3@gamil.com',
+            'email' => 'name3@gmail.com',
             'is_admin' => false,
             'email_verified_at' => now(),
             'password' => Hash::make('password789'),
@@ -49,7 +49,7 @@ class UsersSeeder extends Seeder
         User::create([
             'id'=>'4',
             'name' => 'admin',
-            'email' => 'admin@gamil.com',
+            'email' => 'admin@gmail.com',
             'is_admin' => true,
             'email_verified_at' => now(),
             'password' => Hash::make('admin123'),
