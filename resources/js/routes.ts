@@ -8,7 +8,7 @@ import Register from "./pages/auth/register.vue"
 import Example from "@/pages/exemple.vue"
 import CompleteAccount from "@/pages/auth/completeAccount.vue"
 import Dashboard from "@/pages/dashboard.vue"
-import Dashboardd from "@/pages/dashboardd.vue"
+import Test from "@/pages/test.vue";
 import { useAuth } from '@/stores/auth.store'
 
 const routes = [
@@ -64,6 +64,14 @@ const routes = [
     path: '/privacy-policy',
     name: 'PrivacyPolicy',
     component: Privacy,
+    meta: {
+      auth: 'Both'
+    }
+  },
+  {
+    path: '/test',
+    name: 'Test',
+    component: Test,
     meta: {
       auth: 'Both'
     }

@@ -40,7 +40,7 @@ class ProductController extends Controller
                 $product->firstMedia('image_product')->forceDelete();
             }
             $media = MediaUploader::fromSource($request->file('image_product'))
-                ->toDestination('local', 'home')
+                ->toDestination('local', 'public')
                 ->useFilename(Str::uuid())
                 ->makePrivate()
                 ->onDuplicateReplace()
@@ -83,7 +83,7 @@ class ProductController extends Controller
                 $product->firstMedia('image_product')->forceDelete();
             }
             $media = MediaUploader::fromSource($request->file('image_product'))
-                ->toDestination('local', 'home')
+                ->toDestination('local', 'public')
                 ->useFilename(Str::uuid())
                 ->makePrivate()
                 ->onDuplicateReplace()
@@ -107,38 +107,48 @@ class ProductController extends Controller
         return response()->json($data);
     }
     public function search(Request $request)
-    {
-        $companyName = $request->input('company');
-        $productName = $request->input('product');
-        if ($companyName) {
-            $company = Company::where('name', 'like', "%$companyName%")->first();
+{
+    $companyName = $request->input('company');
+    $productName = $request->input('product');
+
+    if ($companyName) {
+        $company = Company::where('name', 'like', "%$companyName%")->first();
+
+        if ($company) {
             $productsCompany = Product::where('company_id', $company->id)->get();
-            $data=[];
-            foreach ($productsCompany as $key=>$product){
-                $data[$key]= (new \App\Models\Product)->convertToArray($product);
-            }
-            if ($company) {
-                return response()->json([
-                    'company' => $company, $data,
-                ]);
-            } else {
-                return response()->json(['error' => 'Company not found'], 404);
-            }
+            $data = $this->convertProductsToArray($productsCompany);
+
+            return response()->json([
+                'company' => $company,
+                'products' => $data,
+            ]);
+        } else {
+            return response()->json(['error' => 'Company not found'], 404);
         }
-        if ($productName) {
-            $products = Product::where('name', 'like', "%$productName%")->get();
-            $data=[];
-            foreach ($products as $key=>$product){
-                $data[$key]= (new \App\Models\Product)->convertToArray($product);
-            }
-            if ($products->isNotEmpty()) {
-                return response()->json($data);
-            } else {
-                return response()->json(['error' => 'Product not found'], 404);
-            }
-        }
-        return response()->json(['error' => 'Please provide a company or product name for search'], 400);
     }
+
+    if ($productName) {
+        $products = Product::where('name', 'like', "%$productName%")->get();
+        $data = $this->convertProductsToArray($products);
+
+        if ($products->isNotEmpty()) {
+            return response()->json($data);
+        } else {
+            return response()->json(['error' => 'Product not found'], 404);
+        }
+    }
+
+    return response()->json(['error' => 'Please provide a company or product name for search'], 400);
+}
+
+private function convertProductsToArray($products)
+{
+    $data = [];
+    foreach ($products as $key => $product) {
+        $data[$key] = (new \App\Models\Product)->convertToArray($product);
+    }
+    return $data;
+}
       public function getProductCompany($id){
         $company=Company::find($id);
         if(!$company){

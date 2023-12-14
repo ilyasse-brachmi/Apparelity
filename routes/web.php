@@ -41,3 +41,7 @@ Route::get('/register', function () {
 Route::get('/example', function () {
     return view('welcome');
 });
+
+Route::get('/test', function () {
+    return view('welcome');
+});
