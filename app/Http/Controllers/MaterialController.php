@@ -35,7 +35,7 @@ class MaterialController extends Controller
         $material=Material::find($request->id);
         if(!$material){return response()->json(['success' => false,'error'=>'material not found'],404);}
         $material->update($request->all());
-        return response()->json(['success' => true,'data' => $company], 201);
+        return response()->json(['success' => true,'data' => $material], 201);
     }
     public function delete($id){
         $material=Material::find($id);
