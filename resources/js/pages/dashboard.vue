@@ -105,7 +105,7 @@ const addProductSubmit = handleSubmit(async () => {
 const data = ref([] as Array<ProductResponse>)
 
 const getProducts = async() => {
-  $AppAxios.get('/api/product')
+  $AppAxios.get(`/api/product/${store.company.id}`)
 	.then((response) => {
 		data.value = response.data
 	})
