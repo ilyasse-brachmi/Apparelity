@@ -117,13 +117,9 @@ class ProductController extends Controller
             foreach ($productsCompany as $key=>$product){
                 $data[$key]= (new \App\Models\Product)->convertToArray($product);
             }
-            if ($company) {
-                return response()->json([
-                    'company' => $company, $data,
-                ]);
-            } else {
-                return response()->json(['error' => 'Company not found'], 404);
-            }
+             return response()->json([
+                        'products' => $data,
+                    ]);
         }
         if ($productName) {
             $products = Product::where('name', 'like', "%$productName%")->get();
