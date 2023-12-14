@@ -111,6 +111,29 @@ const getProducts = async() => {
 	})
 }
 
+// const nameSearched = ref('' as string)
+// const searchedName = (name: any)=>{
+// 	nameSearched.value = name
+// }
+// watch(nameSearched, () => {
+// 	$AppAxios.get(`/api/product/${store.company.id}/search?product=${nameSearched.value}`)
+// 	.then((response) => {
+// 		data.value = response.data
+// 	})
+// 	.catch((e) => {
+// 		if(e.response) {
+// 			Swal.fire({
+// 				text: e.response.data.message || 'Error !!',
+// 				icon: 'error',
+// 				toast: true,
+// 				position: 'top-end',
+// 				timer: 3000,
+// 				showConfirmButton: false
+// 			})
+// 		}
+// 	}
+// 	)
+// })
 onMounted(async () => {
 	getProducts()
 })
@@ -137,6 +160,7 @@ watch(
 )
 </script>
 <template lang="pug">
+//- StoreLayout(@NameSearched="searchedName")
 StoreLayout
   template(v-slot:addBtn)
     div(v-if="store.isAuth")
