@@ -33,6 +33,18 @@ const props = defineProps({
 	}
 })
 // provide('sidebarToggle', opened.value)
+const icon = ref('iconoir:sort-up')
+const clicked = () => {
+	if(icon.value === 'iconoir:sort-up'){
+		icon.value = 'iconoir:sort-down'
+		emits('sortClicked', 'desc')
+	}
+	else{
+		icon.value = 'iconoir:sort-up'
+		emits('sortClicked', 'asc')
+	}
+}
+const emits = defineEmits(['sortClicked'])
 </script>
 <template lang="pug">
 Navbar(@sidebar-toggle="sidebarToggle")
@@ -44,7 +56,7 @@ Sidebar(:categories="categories" :materials="materials" :sidebarToggle="opened")
 			div(class="flex items-center justify-between max-w-[30rem] px-1 sm:px-2 lg:px-4 py-0.5 sm:py-2 border-2 border-primary rounded-full")
 				input(type="text" placeholder="Search for a Product" class="bg-transparent text-sm sm:text-base md:text-lg outline-none border-none w-full")
 				Icon(icon="tabler:search" class="text-3xl lg:text-4xl mx-2 text-primary cursor-pointer")
-			Icon(icon="iconoir:sort" class="text-4xl text-primary cursor-pointer ml-4")
+			Icon(:icon="icon" @click="clicked()" class="text-4xl text-primary cursor-pointer ml-4")
 	div(class="shadow-md bg-gray-50 py-4 w-full h-full")
 		slot(name="cards")
 </template>
