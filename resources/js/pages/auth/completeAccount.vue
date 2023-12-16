@@ -1,15 +1,13 @@
 <script setup lang="ts">
-import Input from '@/components/AppInput.vue';
-import { $AppAxios } from "@/utils/axiosSingleton";
-import { useAuth } from "@/stores/auth.store";
-import { useRouter } from "vue-router";
-import { computed, ref } from 'vue';
+import Input from '@/components/AppInput.vue'
+import { $AppAxios } from "@/utils/axiosSingleton"
+import { useAuth } from "@/stores/auth.store"
+import { useRouter } from "vue-router"
+import { computed, onMounted, ref, watch } from 'vue'
 import { useField, useForm } from 'vee-validate'
-import * as yup from 'yup';
+import * as yup from 'yup'
 import type { UserCompany } from "@/stores/auth.store"
-import Swal from "sweetalert2";
-import StoreLayout from '@/layouts/storeLayout.vue';
-import Navbar from '@/components/navbar.vue';
+import Swal from "sweetalert2"
 
 const scheme = computed(() => {
   return yup.object({
@@ -95,28 +93,55 @@ const addCompanySubmit = handleSubmit(async () => {
       company.value = response.data
       store.setCompany(company.value)
       Swal.fire({
-      text: 'Your Company is created successfuly !',
-      icon: 'success',
-      toast: true,
-      position: 'top-end',
-      timer: 3000,
-      showConfirmButton: false,
-    })
-    router.push('/dashboard')
+        text: 'Your Company is created successfuly !',
+        icon: 'success',
+        toast: true,
+        position: 'top-end',
+        timer: 3000,
+        showConfirmButton: false,
+      })
+      router.push('/dashboard')
    })
    .catch((e) => {
     if(e.response) {
       Swal.fire({
-      text: e.response.data.message || 'Error !!',
-      icon: 'error',
-      toast: true,
-      position: 'top-end',
-      timer: 3000,
-      showConfirmButton: false
-    })
+        text: e.response.data.message || 'Error !!',
+        icon: 'error',
+        toast: true,
+        position: 'top-end',
+        timer: 3000,
+        showConfirmButton: false
+      })
     }
     })
 })
+interface StateCountry {
+  [Code: string]: string;
+}
+
+const selectedState = ref<StateCountry>({})
+const states = ref([] as StateCountry[])
+const selectedCountry = ref('')
+const countries = ref()
+onMounted(async () => {
+  await $AppAxios.get('/api/countries')
+  .then((response: { data: []}) => {
+    countries.value = response.data
+    console.log(Object.values(countries.value))
+  })
+  // await $AppAxios.get(`/api/states?codeIso=MA`)
+  // .then((response: { data: []}) => states.value = response.data)
+})
+watch(
+  () => countries.value,
+  async (newVal) => {
+    console.log(newVal)
+    // if (newVal) {
+    //   await $AppAxios.get(`/api/states?codeIso=${new}`)
+    //   .then((response: { data: []}) => states.value = response.data)
+    // }
+  }
+)
 const logout = () => {store.logout()}
 </script>
 <template lang="pug">
@@ -146,7 +171,21 @@ div(class="w-screen h-screen flex items-center justify-center px-10 md:px-0")
           div(class="mt-4")
             Input(:labelName="'City'" name="city" :type="'text'" :icon="'la:city'" :color="'#1d6795'" @input="cityError" :inputError="errors.city")
           div(class="mt-4")
-            Input(:labelName="'Country'" name="country" :type="'text'" :icon="'gis:search-country'" :color="'#1d6795'" @input="countryError" :inputError="errors.country")
+            //- Input(:labelName="'Country'" name="country" :type="'text'" :icon="'gis:search-country'" :color="'#1d6795'" @input="countryError" :inputError="errors.country")
+            select(class="dz-select dz-select-bordered w-full h-[3.6rem] min-h-[3.6rem]" v-model="selectedCountry")
+              option(disabled value="") Select Country
+              //- option(v-for="country in countries" :key="country.id" :value="country.id") {{ country.name }}
+              option(v-for="country in Object.values(countries)" :value="Object.keys(countries)") {{ country }}
+          //- div(class="mt-4")
+          //-   select(class="dz-select dz-select-bordered w-full h-[3.6rem] min-h-[3.6rem]" v-model="selectedCountry")
+          //-     option(disabled value="") Select Country
+          //-     //- option(v-for="country in countries" :key="country.id" :value="country.id") {{ country.name }}
+          //-     option(v-for="country in countries" :value="country" @click="test") {{ country }}
+          //- div(class="mt-4")
+          //-   select(class="dz-select dz-select-bordered w-full h-[3.6rem] min-h-[3.6rem]" v-model="selectedState")
+          //-     option(disabled value="") Select State
+          //-     //- option(v-for="state in states" :key="state.id" :value="state.id") {{ state.name }}
+          //-     option(v-for="state in states" :value="state") {{ state }}
         div(class="mt-10 flex justify-center gap-1 whitespace-nowrap")
           input(type="checkbox" id="acceptTermsPrivacy" name="acceptTermsPrivacy" v-model="acceptTermsPrivacyError")
           label(for="acceptTermsPrivacy" class="ml-1") I have read and accept 

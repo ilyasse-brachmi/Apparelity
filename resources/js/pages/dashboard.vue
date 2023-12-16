@@ -126,9 +126,10 @@ const openAddModal = () => {
 }
 const selectedCategory = ref('')
 const categories = ref([] as Category[])
-watch(
+const test = watch(
   () => addModal.value,
   async (newVal) => {
+    console.log(selectedCategory.value)
     if (newVal) {
       await $AppAxios.get('/api/category')
       .then((response: { data: Category[]}) => categories.value = response.data)
@@ -167,7 +168,7 @@ StoreLayout
               div(class="mt-8")
                 select(class="dz-select dz-select-bordered w-full h-[3.6rem] min-h-[3.6rem]" v-model="selectedCategory")
                   option(disabled value="") Select category
-                  option(v-for="category in categories" :key="category.id" :value="category.id") {{ category.name }}
+                  option(v-for="category in categories" :key="category.id" :value="category.id" @click="test") {{ category.name }}
             div(class="flex justify-center mt-16")
               button(type="submit" class="border font-bold text-2xl text-white border-white rounded-full px-16 sm:px-48 py-4 bg-primary hover:shadow-md duration-300") Add
   template(v-slot:cards)

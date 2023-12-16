@@ -58,4 +58,4 @@ Route::get('material',[MaterialController::class,'get']);
 //-----------------------List of countries-----------------//
 Route::get('countries',[LocationController::class,'countries']);
  //-----------------------List of states-----------------//
- Route::get('states',[LocationController::class,'states']);
+Route::get('states',[LocationController::class,'states']);
