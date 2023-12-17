@@ -72,9 +72,24 @@ const currProduct = ref({} as ProductResponse)
 const zoom = ref(3)
 const center = ref([47.413220, -1.219482])
 const minZoom = ref(2)
+const typeSort = ref('' as string)
+const sorting = (type: string)=>{
+	typeSort.value = type
+}
+watch(
+  () => typeSort.value,
+  async (newVal) => {
+    if (newVal) {
+		if(newVal==='asc')
+			data.value.sort((product: ProductResponse,product1: ProductResponse)=>product.original.price-product1.original.price)
+		if(newVal==='desc')
+			data.value.sort((product: ProductResponse,product1: ProductResponse)=>product1.original.price-product.original.price)
+    }
+  }
+)
 </script>
 <template lang="pug">
-StoreLayout(@NameSearched="searchedName")
+StoreLayout(@NameSearched="searchedName" @sortClicked="sorting")
 	template(v-slot:cards)
 		.flex.items-center.justify-center.h-full.w-full
 			div(v-if="data.length" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 py-8 h-full")
@@ -87,7 +102,7 @@ StoreLayout(@NameSearched="searchedName")
 								div(class="min-h-[48.7rem]")
 									div(class="flex justify-center")
 										div(class="w-[15rem] h-[15rem] rounded-full p-2 shadow-md mb-4 border")
-											img(:src="`/storage/home/${currProduct.original.product_image.split('home/')[1]}`" class="w-full h-full rounded-full")
+											img(:src="`/storage/public/${currProduct.original.product_image.split('public/')[1]}`" class="w-full h-full rounded-full")
 									div(class="px-4")
 										h1(class="text-primary text-center font-semibold text-xl") {{ currProduct.original.name }}
 										div(class="flex items-center justify-center py-2")

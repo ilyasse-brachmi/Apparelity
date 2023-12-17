@@ -8,11 +8,19 @@ class LocationController extends Controller
 {
     public function countries(){
         $countries = getCountriesNames();
-        return response()->json($countries);
+        $data=[];
+        foreach ($countries as $key=>$value){
+            $data[]=['key' => $key, 'value' => $value];
+        }
+        return response()->json($data);
     }
     public function states(Request $request){
         $codeIso=$request->codeIso;
         $states=getStates($codeIso);
-        return response()->json($states);
+        $data=[];
+        foreach ($states as $key=>$value){
+            $data[]=['key' => $key, 'value' => $value];
+        }
+        return response()->json($data);
     }
 }
