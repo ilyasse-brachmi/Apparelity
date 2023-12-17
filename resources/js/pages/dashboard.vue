@@ -34,7 +34,6 @@ const addModal = ref(false)
 const openAddModal = () => {
 	addModal.value = true
 }
-
 </script>
 <template lang="pug">
 StoreLayout
