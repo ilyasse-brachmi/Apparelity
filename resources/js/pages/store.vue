@@ -61,7 +61,7 @@ StoreLayout
 								div(class="min-h-[48.7rem]")
 									div(class="flex justify-center")
 										div(class="w-[15rem] h-[15rem] rounded-full p-2 shadow-md mb-4 border")
-											img(:src="`/storage/home/${currProduct.original.product_image.split('home/')[1]}`" class="w-full h-full rounded-full")
+											img(:src="`/storage/public/${currProduct.original.product_image.split('public/')[1]}`" class="w-full h-full rounded-full")
 									div(class="px-4")
 										h1(class="text-primary text-center font-semibold text-xl") {{ currProduct.original.name }}
 										div(class="flex items-center justify-center py-2")
