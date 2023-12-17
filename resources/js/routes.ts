@@ -8,7 +8,8 @@ import Register from "./pages/auth/register.vue"
 import Example from "@/pages/exemple.vue"
 import CompleteAccount from "@/pages/auth/completeAccount.vue"
 import Dashboard from "@/pages/dashboard.vue"
-import Dashboardd from "@/pages/dashboardd.vue"
+import Test from "@/pages/test.vue";
+import Product from "@/pages/product/index.vue"
 import { useAuth } from '@/stores/auth.store'
 
 const routes = [
@@ -69,6 +70,14 @@ const routes = [
     }
   },
   {
+    path: '/test',
+    name: 'Test',
+    component: Test,
+    meta: {
+      auth: 'Both'
+    }
+  },
+  {
     path: '/terms-of-service',
     name: 'TermsOfService',
     component: Terms,
@@ -80,6 +89,14 @@ const routes = [
     path: '/example',
     name: 'Example',
     component: Example,
+    meta: {
+      auth: 'Auth'
+    }
+  },
+  {
+    path: '/product',
+    name: 'Product',
+    component: Product,
     meta: {
       auth: 'Auth'
     }
