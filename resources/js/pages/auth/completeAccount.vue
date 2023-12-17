@@ -16,8 +16,8 @@ const scheme = computed(() => {
     tel: yup.string().required('Phone is required'),
     address: yup.string().required('Address is required'),
     zip: yup.number().typeError('Zip must be a Number').required('Zip code is required'),
-    city: yup.string().required('City is required'),
-    country: yup.string().required('Country is required'),
+    // state: yup.string().required('City is required'),
+    // country: yup.string().required('Country is required'),
     description: yup.string(),
     acceptTermsPrivacy: yup.boolean().oneOf([true], 'Must be accepted')
   })
@@ -55,15 +55,15 @@ const {
   value: zip
 } = useField<string>('zip')
 
-const {
-  handleChange: cityError,
-  value: city
-} = useField<string>('city')
+// const {
+//   handleChange: stateError,
+//   value: state
+// } = useField<string>('state')
 
-const {
-  handleChange: countryError,
-  value: country
-} = useField<string>('country')
+// const {
+//   handleChange: countryError,
+//   value: country
+// } = useField<string>('country')
 
 const {
   handleChange: descriptionError,
@@ -82,8 +82,8 @@ const addCompanySubmit = handleSubmit(async () => {
     phone: tel.value, 
     address: address.value,
     zipCode: zip.value,
-    country: country.value,
-    city: city.value,
+    country: selectedCountry.value?.value,
+    city: selectedState.value?.value,
     description: description.value,
     user_id: store.user.id
    }
@@ -116,30 +116,27 @@ const addCompanySubmit = handleSubmit(async () => {
     })
 })
 interface StateCountry {
-  [Code: string]: string;
+  key: string
+  value: string
 }
 
-const selectedState = ref<StateCountry>({})
+const selectedState = ref<StateCountry>()
 const states = ref([] as StateCountry[])
-const selectedCountry = ref('')
-const countries = ref()
+const selectedCountry = ref<StateCountry>()
+const countries =ref([] as StateCountry[])
 onMounted(async () => {
   await $AppAxios.get('/api/countries')
   .then((response: { data: []}) => {
     countries.value = response.data
-    console.log(Object.values(countries.value))
   })
-  // await $AppAxios.get(`/api/states?codeIso=MA`)
-  // .then((response: { data: []}) => states.value = response.data)
 })
 watch(
-  () => countries.value,
+  () => selectedCountry.value,
   async (newVal) => {
-    console.log(newVal)
-    // if (newVal) {
-    //   await $AppAxios.get(`/api/states?codeIso=${new}`)
-    //   .then((response: { data: []}) => states.value = response.data)
-    // }
+    if (newVal) {
+      await $AppAxios.get(`/api/states?codeIso=${newVal.key}`)
+      .then((response: { data: []}) => states.value = response.data)
+    }
   }
 )
 const logout = () => {store.logout()}
@@ -169,23 +166,14 @@ div(class="w-screen h-screen flex items-center justify-center px-10 md:px-0")
           div(class="mt-4")
             Input(:labelName="'Zip Code'" name="zip" :type="'text'" :icon="'icon-park-outline:zip'" :color="'#1d6795'" @input="zipError" :inputError="errors.zip")
           div(class="mt-4")
-            Input(:labelName="'City'" name="city" :type="'text'" :icon="'la:city'" :color="'#1d6795'" @input="cityError" :inputError="errors.city")
-          div(class="mt-4")
             //- Input(:labelName="'Country'" name="country" :type="'text'" :icon="'gis:search-country'" :color="'#1d6795'" @input="countryError" :inputError="errors.country")
             select(class="dz-select dz-select-bordered w-full h-[3.6rem] min-h-[3.6rem]" v-model="selectedCountry")
               option(disabled value="") Select Country
-              //- option(v-for="country in countries" :key="country.id" :value="country.id") {{ country.name }}
-              option(v-for="country in Object.values(countries)" :value="Object.keys(countries)") {{ country }}
-          //- div(class="mt-4")
-          //-   select(class="dz-select dz-select-bordered w-full h-[3.6rem] min-h-[3.6rem]" v-model="selectedCountry")
-          //-     option(disabled value="") Select Country
-          //-     //- option(v-for="country in countries" :key="country.id" :value="country.id") {{ country.name }}
-          //-     option(v-for="country in countries" :value="country" @click="test") {{ country }}
-          //- div(class="mt-4")
-          //-   select(class="dz-select dz-select-bordered w-full h-[3.6rem] min-h-[3.6rem]" v-model="selectedState")
-          //-     option(disabled value="") Select State
-          //-     //- option(v-for="state in states" :key="state.id" :value="state.id") {{ state.name }}
-          //-     option(v-for="state in states" :value="state") {{ state }}
+              option(v-for="(country,key) in countries" :key="key" :value="country") {{ country.value }}
+          div(class="mt-4")
+            select(class="dz-select dz-select-bordered w-full h-[3.6rem] min-h-[3.6rem]" v-model="selectedState")
+              option(disabled value="") Select State
+              option(v-for="(state,key) in states" :key="key" :value="state") {{ state.value }}
         div(class="mt-10 flex justify-center gap-1 whitespace-nowrap")
           input(type="checkbox" id="acceptTermsPrivacy" name="acceptTermsPrivacy" v-model="acceptTermsPrivacyError")
           label(for="acceptTermsPrivacy" class="ml-1") I have read and accept 
