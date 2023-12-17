@@ -34,9 +34,35 @@ const addModal = ref(false)
 const openAddModal = () => {
 	addModal.value = true
 }
+const selectedCategory = ref('')
+const categories = ref([] as Category[])
+watch(
+  () => addModal.value,
+  async (newVal) => {
+    if (newVal) {
+      await $AppAxios.get('/api/category')
+      .then((response: { data: Category[]}) => categories.value = response.data)
+    }
+  }
+)
+const typeSort = ref('' as string)
+const sorting = (type: string)=>{
+	typeSort.value = type
+}
+watch(
+  () => typeSort.value,
+  async (newVal) => {
+    if (newVal) {
+		if(newVal==='asc')
+			data.value.sort((product: ProductResponse,product1: ProductResponse)=>product.original.price-product1.original.price)
+		if(newVal==='desc')
+			data.value.sort((product: ProductResponse,product1: ProductResponse)=>product1.original.price-product.original.price)
+    }
+  }
+)
 </script>
 <template lang="pug">
-StoreLayout
+StoreLayout(@sortClicked="sorting")
   template(v-slot:addBtn)
     div(v-if="store.isAuth")
       button(class="border flex items-center gap-2 text-white border-white rounded-lg w-full py-4 px-4 bg-primary hover:shadow-md duration-300 cursor-pointer" @click="openAddModal()") 

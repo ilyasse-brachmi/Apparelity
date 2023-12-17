@@ -2,7 +2,7 @@
 import AppModal from "@/components/AppModal.vue"
 import Card from "@/components/card.vue"
 import StoreLayout from '@/layouts/storeLayout.vue'
-import { onMounted, ref } from "vue"
+import { onMounted, ref, watch } from "vue"
 import ImageProduct from "../../images/jacket.png"
 import type { ProductResponse , ProductMarker } from "@/types/index"
 import { $AppAxios } from "@/utils/axiosSingleton";
@@ -46,9 +46,24 @@ const currProduct = ref({} as ProductResponse)
 const zoom = ref(3)
 const center = ref([47.413220, -1.219482])
 const minZoom = ref(2)
+const typeSort = ref('' as string)
+const sorting = (type: string)=>{
+	typeSort.value = type
+}
+watch(
+  () => typeSort.value,
+  async (newVal) => {
+    if (newVal) {
+		if(newVal==='asc')
+			data.value.sort((product: ProductResponse,product1: ProductResponse)=>product.original.price-product1.original.price)
+		if(newVal==='desc')
+			data.value.sort((product: ProductResponse,product1: ProductResponse)=>product1.original.price-product.original.price)
+    }
+  }
+)
 </script>
 <template lang="pug">
-StoreLayout
+StoreLayout(@sortClicked="sorting")
 	template(v-slot:cards)
 		.flex.items-center.justify-center.h-full.w-full
 			div(v-if="data.length" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 py-8 h-full")
