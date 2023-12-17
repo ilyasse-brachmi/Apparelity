@@ -45,6 +45,7 @@ Route::post('product/{id}',[ProductController::class,'edit']);
 Route::delete('product',[ProductController::class,'delete']);
 Route::get('product',[ProductController::class,'get']);
 Route::get('product/search',[ProductController::class,'search']);
+Route::get('product/{company_id}/search/product={nameProduct}', [ProductController::class, 'searchInCompany']);
 Route::get('product/{id}', [ProductController::class, 'getProductCompany']);
 //-----------------------End Product Controller route-------------//
 
@@ -58,4 +59,4 @@ Route::get('material',[MaterialController::class,'get']);
 //-----------------------List of countries-----------------//
 Route::get('countries',[LocationController::class,'countries']);
  //-----------------------List of states-----------------//
- Route::get('states',[LocationController::class,'states']);
+Route::get('states',[LocationController::class,'states']);

@@ -14,24 +14,25 @@ use function PHPUnit\Framework\status;
 
 class ProductController extends Controller
 {
-    public function add(Request $request){
+    public function add(Request $request)
+    {
         $request->validate([
-            'name' => ['required','string', 'max:40'],
-            'price'=>['required','string', 'numeric'],
-            'description'=>['max:255','string'],
-            'production_date' =>'required',
+            'name' => ['required', 'string', 'max:40'],
+            'price' => ['required', 'string', 'numeric'],
+            'description' => ['max:255', 'string'],
+            'production_date' => 'required',
             'company_id' => 'required',
             'category_id' => 'required',
-            'image_product'=>['image','mimes:jpeg,jpg,png','max:2056','required']
+            'image_product' => ['image', 'mimes:jpeg,jpg,png', 'max:2056', 'required']
         ]);
 
-        $product=Product::create([
-            'name'=>$request->name,
-            'price'=>$request->price,
-            'description'=>$request->description,
-            'production_date'=>$request->production_date,
-            'company_id'=>$request->company_id,
-            'category_id'=>$request->category_id,
+        $product = Product::create([
+            'name' => $request->name,
+            'price' => $request->price,
+            'description' => $request->description,
+            'production_date' => $request->production_date,
+            'company_id' => $request->company_id,
+            'category_id' => $request->category_id,
         ]);
 
         if ($request->hasFile('image_product')) {
@@ -40,7 +41,7 @@ class ProductController extends Controller
                 $product->firstMedia('image_product')->forceDelete();
             }
             $media = MediaUploader::fromSource($request->file('image_product'))
-                ->toDestination('local', 'home')
+                ->toDestination('local', 'public')
                 ->useFilename(Str::uuid())
                 ->makePrivate()
                 ->onDuplicateReplace()
@@ -50,32 +51,34 @@ class ProductController extends Controller
         return response()->json('Added Successfully');
 
     }
-    public function edit(Request $request,$id){
-        $inputs=$request->all();
-        $validator=Validator::make($inputs,[
-            'name' => ['required','string', 'max:40'],
-            'price'=>['required','string', 'numeric'],
-            'description'=>['max:255','string'],
-            'production_date' =>'required',
+
+    public function edit(Request $request, $id)
+    {
+        $inputs = $request->all();
+        $validator = Validator::make($inputs, [
+            'name' => ['required', 'string', 'max:40'],
+            'price' => ['required', 'string', 'numeric'],
+            'description' => ['max:255', 'string'],
+            'production_date' => 'required',
             'company_id' => 'required',
             'category_id' => 'required',
-            'image_product'=>['image','mimes:jpeg,jpg,png','max:2056']
+            'image_product' => ['image', 'mimes:jpeg,jpg,png', 'max:2056']
         ]);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             return response()->json([
-                'success'=>false,
-                'error'=>$validator->messages()->first()
-            ],Response::HTTP_BAD_REQUEST);
+                'success' => false,
+                'error' => $validator->messages()->first()
+            ], Response::HTTP_BAD_REQUEST);
         }
-        $product=Product::find($id);
+        $product = Product::find($id);
         $product->update([
-            'name'=>$request->name,
-            'price'=>$request->price,
-            'description'=>$request->description,
-            'production_date'=>$request->production_date,
-            'company_id'=>$request->company_id,
-            'category_id'=>$request->category_id,
+            'name' => $request->name,
+            'price' => $request->price,
+            'description' => $request->description,
+            'production_date' => $request->production_date,
+            'company_id' => $request->company_id,
+            'category_id' => $request->category_id,
         ]);
 
         if ($request->hasFile('image_product')) {
@@ -83,7 +86,7 @@ class ProductController extends Controller
                 $product->firstMedia('image_product')->forceDelete();
             }
             $media = MediaUploader::fromSource($request->file('image_product'))
-                ->toDestination('local', 'home')
+                ->toDestination('local', 'public')
                 ->useFilename(Str::uuid())
                 ->makePrivate()
                 ->onDuplicateReplace()
@@ -92,40 +95,65 @@ class ProductController extends Controller
         }
         return response()->json('Updated Successfully');
     }
-    public function delete(Request $request){
-        $product=Product::findorfail($request->id);
+
+    public function delete(Request $request)
+    {
+        $product = Product::findorfail($request->id);
         $product->materials()->delete();
         $product->delete();
         return response()->json('Deleted Successfully');
     }
-    public function get(){
-        $products=Product::all();
-        $data=[];
-        foreach ($products as $key=>$product){
-            $data[$key]= (new \App\Models\Product)->convertToArray($product);
+
+    //*******************************************Getters *************************************
+    public function get()
+    {
+        $products = Product::all();
+        $data = [];
+        foreach ($products as $key => $product) {
+            $data[$key] = (new \App\Models\Product)->convertToArray($product);
         }
         return response()->json($data);
     }
-    public function search(Request $request)
+
+    public function getProductCompany($id)
     {
-        $companyName = $request->input('company');
-        $productName = $request->input('product');
-        if ($companyName) {
-            $company = Company::where('name', 'like', "%$companyName%")->first();
+        $company = Company::find($id);
+        if (!$company) {
+            return response()->json(['error' => 'Company not found'], 404);
+        }
+        $products = $company->products;
+        $data = [];
+        foreach ($products as $key => $product) {
+            $data[$key] = (new \App\Models\Product)->convertToArray($product);
+        }
+        return response()->json($data);
+    }
+    //***************************************End Getters *************************************
+
+    //******************************Search Functions *************************
+    public function search(Request $request)
+{
+    $companyName = $request->input('company');
+    $productName = $request->input('product');
+
+    if ($companyName) {
+        $company = Company::where('name', 'like', "%$companyName%")->first();
+
+        if ($company) {
             $productsCompany = Product::where('company_id', $company->id)->get();
-            $data=[];
-            foreach ($productsCompany as $key=>$product){
-                $data[$key]= (new \App\Models\Product)->convertToArray($product);
+            $data = [];
+            foreach ($productsCompany as $key => $product) {
+                $data[$key] = (new \App\Models\Product)->convertToArray($product);
             }
-             return response()->json([
-                        'products' => $data,
-                    ]);
+            return response()->json([
+                'products' => $data,
+            ]);
         }
         if ($productName) {
             $products = Product::where('name', 'like', "%$productName%")->get();
-            $data=[];
-            foreach ($products as $key=>$product){
-                $data[$key]= (new \App\Models\Product)->convertToArray($product);
+            $data = [];
+            foreach ($products as $key => $product) {
+                $data[$key] = (new \App\Models\Product)->convertToArray($product);
             }
             if ($products->isNotEmpty()) {
                 return response()->json($data);
@@ -133,18 +161,24 @@ class ProductController extends Controller
                 return response()->json(['error' => 'Product not found'], 404);
             }
         }
-        return response()->json(['error' => 'Please provide a company or product name for search'], 400);
     }
-      public function getProductCompany($id){
-        $company=Company::find($id);
-        if(!$company){
-            return response()->json(['error'=>'Company not found'],404);
+
+    public function searchInCompany($companyId, $nameProduct)
+    {
+        $company = Company::find($companyId);
+        if (!$company) {
+            return response()->json(['error' => 'Company not found'], 404);
         }
-        $products=$company->products;
-        $data=[];
-        foreach ($products as $key=>$product){
-            $data[$key]= (new \App\Models\Product)->convertToArray($product);
+        $products = $company->products()->where('name', 'like', "%$nameProduct%")->get();
+        $data = [];
+        foreach ($products as $key => $product) {
+            $data[$key] = (new \App\Models\Product)->convertToArray($product);
         }
-        return response()->json($data);
-      }
+        if ($products->isNotEmpty()) {
+            return response()->json(['products' => $data]);
+        } else {
+            return response()->json(['error' => 'Product not found for the specified company and name'], 404);
+        }
+    }
+    //*************************************************End Search Functions *****************************************************************
 }
