@@ -54,3 +54,14 @@ export interface Category {
   updated_at: Date,
   deleted_at: Date
 }
+
+export interface ProductMaterial {
+  id: number;
+  trace: string;
+  order: number;
+  name: string;
+  coordonates: string;
+  supplier: string;
+  children: ProductMaterial[];
+  opened: boolean;
+}

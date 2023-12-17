@@ -19,7 +19,6 @@ export const useMaterial = defineStore('Material', {
   },
   actions: {
     setCurrentMaterial(data: Material) {
-      console.log('ana f store')
       this.material = data
     }
   }

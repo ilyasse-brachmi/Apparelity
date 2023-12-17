@@ -45,3 +45,6 @@ Route::get('/example', function () {
 Route::get('/test', function () {
     return view('welcome');
 });
+Route::get('/product', function () {
+    return view('welcome');
+});

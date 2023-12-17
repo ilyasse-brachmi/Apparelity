@@ -2,6 +2,8 @@
 import { reactive, ref, computed, watch } from 'vue';
 import Nested from '@/components/nested.vue';
 import { useMaterial } from '@/stores/material.store';
+import AppModal from '@/components/AppModal.vue';
+import AppInput from '@/components/AppInput.vue';
 
 interface Material {
   id: number;
@@ -17,40 +19,14 @@ const store = useMaterial()
 
 watch(
   () => store.material,
-  (newVal) => addMaterial(newVal) 
+  (newVal) => addMaterial(newVal as Material) 
 )
 
-const materials = ref<Material[]>([
-  {
-    id: 0,
-    order: 1,
-    trace: '01',
-    name: "first",
-    opened: false,
-    children: [
-      // {
-      //   id: 0,
-      //   order: 2,
-      //   trace: '0102',
-      //   name: "second",
-      //   opened: false,
-      //   children: [
-      //   ]
-      // },
-      // {
-      //   id: 1,
-      //   order: 2,
-      //   trace: '0112',
-      //   name: "second2",
-      //   opened: false,
-      //   children: []
-      // }
-    ]
-  }
-])
+
 
 const addMaterial = (material: Material, array = [...materials.value] as Material[]) => {
   console.log(material)
+  opened.value = false
   if (array.length) {
     array.forEach(element => {
       if (element.trace === material.trace) {
@@ -85,19 +61,25 @@ const getData = () => {
   data.value = materials.value
 }
 const test = ref('')
+const opened = ref(false)
 </script>
 
 <template lang="pug">
 div(class="my-20")
   button(@click="getData") Get data
   p(v-if="data") {{ data }}
-div(v-for="item in materials" :key="item.id" class="w-screen h-screen flex items-center justify-center")
-  div
+div(v-for="item in materials" :key="item.id" class="w-screen h-screen flex flex-col items-center justify-center m-4")
+  AppModal(v-if="opened" :title="'Materials'" @close="opened = false")
+    div(class="p-12")
+      AppInput(:labelName="'Name'" name="name" :type="'text'" v-model="test" :color="'#1d6795'")
+      div(class="flex items-center justify-end my-8")
+        button(type="button" class="bg-primary text-white p-4 rounded-lg" @click="addMaterial({id: item.id, order: item.order, name: test, opened: false, trace: item.trace , children: []})") Submit
+  div(class="flex items-center justify-center gap-x-6")
     h1 {{ item.name }}
-    input(v-if="item.opened" type="text" v-model="test" class="border")
+    //- input(v-if="item.opened" type="text" v-model="test" class="border")
     div(class="flex items-center justify-center gap-2 text-white")
-      button(type="button" class="p-4 bg-primary rounded-lg" @click="item.opened = true") Add Material
-      button(type="button" class="p-4 bg-primary rounded-lg" @click="addMaterial({id: item.id, order: item.order, name: test, opened: false, trace: item.trace , children: []})") {{ item.trace }}
-    div(class="ml-20")
-      Nested(v-if="item.children?.length" :materials="item.children")
+      Icon(icon="carbon:add-filled" class="text-primary text-4xl cursor-pointer" @click="opened = true")
+      //- button(type="button" class="px-4 py-2 bg-primary rounded-lg") Submit
+  div(class="ml-40")
+    Nested(v-if="item.children?.length" :materials="item.children")
 </template>

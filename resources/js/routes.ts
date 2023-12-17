@@ -9,6 +9,7 @@ import Example from "@/pages/exemple.vue"
 import CompleteAccount from "@/pages/auth/completeAccount.vue"
 import Dashboard from "@/pages/dashboard.vue"
 import Test from "@/pages/test.vue";
+import Product from "@/pages/product/index.vue"
 import { useAuth } from '@/stores/auth.store'
 
 const routes = [
@@ -88,6 +89,14 @@ const routes = [
     path: '/example',
     name: 'Example',
     component: Example,
+    meta: {
+      auth: 'Auth'
+    }
+  },
+  {
+    path: '/product',
+    name: 'Product',
+    component: Product,
     meta: {
       auth: 'Auth'
     }
