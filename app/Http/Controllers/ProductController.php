@@ -116,14 +116,13 @@ class ProductController extends Controller
 
         if ($company) {
             $productsCompany = Product::where('company_id', $company->id)->get();
-            $data = $this->convertProductsToArray($productsCompany);
-
-            return response()->json([
-                'company' => $company,
-                'products' => $data,
-            ]);
-        } else {
-            return response()->json(['error' => 'Company not found'], 404);
+            $data=[];
+            foreach ($productsCompany as $key=>$product){
+                $data[$key]= (new \App\Models\Product)->convertToArray($product);
+            }
+             return response()->json([
+                        'products' => $data,
+                    ]);
         }
     }
 
