@@ -28,7 +28,7 @@ onMounted(async () => {
 	})
 })
 const nameValue = ref('')
-defineEmits(['NameSearched'])
+// defineEmits(['NameSearched'])
 const props = defineProps({
 	withSearch :{
 		type: Boolean,
@@ -47,7 +47,7 @@ const clicked = () => {
 		emits('sortClicked', 'asc')
 	}
 }
-const emits = defineEmits(['sortClicked'])
+const emits = defineEmits(['sortClicked','NameSearched'])
 </script>
 <template lang="pug">
 Navbar(@sidebar-toggle="sidebarToggle")

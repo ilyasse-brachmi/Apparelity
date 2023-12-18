@@ -8,8 +8,7 @@ import { $AppAxios } from "@/utils/axiosSingleton"
 import { useAuth } from "@/stores/auth.store"
 import { computed, onMounted, ref, watch } from 'vue'
 import type { ProductResponse, Category } from "@/types/index"
-import Material from '@/components/material.vue'
-
+// import Material from '@/components/material.vue'
 
 const store = useAuth()
 const data = ref([] as Array<ProductResponse>)
