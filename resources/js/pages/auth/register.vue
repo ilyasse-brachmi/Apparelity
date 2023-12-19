@@ -8,6 +8,7 @@ import { computed, ref } from 'vue';
 import { useField, useForm } from 'vee-validate'
 import * as yup from 'yup';
 import Swal from "sweetalert2";
+import { useAppa } from '@/stores/index.store';
 
 const scheme = computed(() => {
   return yup.object({
@@ -18,6 +19,7 @@ const scheme = computed(() => {
   })
 })
 
+const appaStore = useAppa()
 const store = useAuth()
 const router = useRouter()
 
@@ -55,15 +57,19 @@ const registerSubmit = handleSubmit(async () => {
    .then(async (response) => {
       await store.fetchUser(response.data.token, response.data.user)
       Swal.fire({
-      text: 'You are logged in !',
-      icon: 'success',
-      toast: true,
-      position: 'top-end',
-      timer: 3000,
-      showConfirmButton: false,
-    })
+        text: 'You are registred in !',
+        icon: 'success',
+        toast: true,
+        position: 'top-end',
+        timer: 2000,
+        customClass: {
+        container: '.swal2-container ',
+        },
+        showConfirmButton: false,
+      })
     .then(function() {
-      router.push('/complete-account')
+      appaStore.isLoading = false
+      router.push('/dashboard')
     });
    })
    .catch((e) => {

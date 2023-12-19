@@ -11,6 +11,7 @@ import Dashboard from "@/pages/dashboard.vue"
 import Test from "@/pages/test.vue";
 import Product from "@/pages/product/index.vue"
 import { useAuth } from '@/stores/auth.store'
+import { useAppa } from "./stores/index.store";
 
 const routes = [
   {
@@ -110,11 +111,17 @@ const router = createRouter({
 
 router.beforeEach((to) => {
   const store = useAuth()
+  const appaStore = useAppa()
 
-  if(to.meta.auth === 'Auth' && !store.isAuth) return { name: 'Login' }
-  if(to.meta.auth === 'Guest' && store.isAuth) return { name: 'Dashboard' }
-  if(to.meta.auth === 'Auth' && store.isAuth && !store.hasCompany && to.path !== '/complete-account') return { name: 'CompleteAccount' }
-  if(to.path === '/complete-account' && store.isAuth && store.hasCompany) return { name: 'Dashboard' }
+  appaStore.isLoading = true
+  setTimeout(() => {
+    if(to.meta.auth === 'Auth' && !store.isAuth) return { name: 'Login' }
+    if(to.meta.auth === 'Guest' && store.isAuth) return { name: 'Dashboard' }
+    if(to.meta.auth === 'Auth' && store.isAuth && !store.hasCompany && to.path !== '/complete-account') return { name: 'CompleteAccount' }
+    if(to.path === '/complete-account' && store.isAuth && store.hasCompany) return { name: 'Dashboard' }
+    appaStore.isLoading = false
+  }, 300);
+
 })
 
 export default router;

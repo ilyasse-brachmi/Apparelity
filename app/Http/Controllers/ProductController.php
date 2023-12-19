@@ -132,33 +132,34 @@ class ProductController extends Controller
 
     //******************************Search Functions *************************
     public function search(Request $request)
-{
-    $companyName = $request->input('company');
-    $productName = $request->input('product');
+    {
+        $companyName = $request->input('company');
+        $productName = $request->input('product');
 
-    if ($companyName) {
-        $company = Company::where('name', 'like', "%$companyName%")->first();
+        if ($companyName) {
+            $company = Company::where('name', 'like', "%$companyName%")->first();
 
-        if ($company) {
-            $productsCompany = Product::where('company_id', $company->id)->get();
-            $data = [];
-            foreach ($productsCompany as $key => $product) {
-                $data[$key] = (new \App\Models\Product)->convertToArray($product);
+            if ($company) {
+                $productsCompany = Product::where('company_id', $company->id)->get();
+                $data = [];
+                foreach ($productsCompany as $key => $product) {
+                    $data[$key] = (new \App\Models\Product)->convertToArray($product);
+                }
+                return response()->json([
+                    'products' => $data,
+                ]);
             }
-            return response()->json([
-                'products' => $data,
-            ]);
-        }
-        if ($productName) {
-            $products = Product::where('name', 'like', "%$productName%")->get();
-            $data = [];
-            foreach ($products as $key => $product) {
-                $data[$key] = (new \App\Models\Product)->convertToArray($product);
-            }
-            if ($products->isNotEmpty()) {
-                return response()->json($data);
-            } else {
-                return response()->json(['error' => 'Product not found'], 404);
+            if ($productName) {
+                $products = Product::where('name', 'like', "%$productName%")->get();
+                $data = [];
+                foreach ($products as $key => $product) {
+                    $data[$key] = (new \App\Models\Product)->convertToArray($product);
+                }
+                if ($products->isNotEmpty()) {
+                    return response()->json($data);
+                } else {
+                    return response()->json(['error' => 'Product not found'], 404);
+                }
             }
         }
     }
