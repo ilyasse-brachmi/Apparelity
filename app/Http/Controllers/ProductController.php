@@ -14,7 +14,8 @@ use function PHPUnit\Framework\status;
 
 class ProductController extends Controller
 {
-    public function add(Request $request) {
+    public function add(Request $request)
+    {
         $request->validate([
             'name' => ['required', 'string', 'max:40'],
             'price' => ['required', 'string', 'numeric'],
@@ -51,7 +52,8 @@ class ProductController extends Controller
 
     }
 
-    public function edit(Request $request, $id) {
+    public function edit(Request $request, $id)
+    {
         $inputs = $request->all();
         $validator = Validator::make($inputs, [
             'name' => ['required', 'string', 'max:40'],
@@ -133,33 +135,34 @@ class ProductController extends Controller
     {
         $companyName = $request->input('company');
         $productName = $request->input('product');
-
         if ($companyName) {
             $company = Company::where('name', 'like', "%$companyName%")->first();
-
-            if ($company) {
-                $productsCompany = Product::where('company_id', $company->id)->get();
-                $data = [];
-                foreach ($productsCompany as $key => $product) {
-                    $data[$key] = (new \App\Models\Product)->convertToArray($product);
-                }
-                return response()->json($data);
+            $productsCompany = Product::where('company_id', $company->id)->get();
+            $data = [];
+            foreach ($productsCompany as $key => $product) {
+                $data[$key] = (new \App\Models\Product)->convertToArray($product);
             }
-            if ($productName) {
-                $products = Product::where('name', 'like', "%$productName%")->get();
-                $data = [];
-                foreach ($products as $key => $product) {
-                    $data[$key] = (new \App\Models\Product)->convertToArray($product);
-                }
-                if ($products->isNotEmpty()) {
-                    return response()->json($data);
-                } else {
-                    return response()->json(['error' => 'Product not found'], 404);
-                }
+            if ($company) {
+                return response()->json($data);
+            } else {
+                return response()->json(['error' => 'Company not found'], 404);
             }
         }
+        if ($productName) {
+            $products = Product::where('name', 'like', "%$productName%")->get();
+            $data = [];
+            foreach ($products as $key => $product) {
+                $data[$key] = (new \App\Models\Product)->convertToArray($product);
+            }
+            if ($products->isNotEmpty()) {
+                return response()->json($data);
+            } else {
+                return response()->json(['error' => 'Product not found'], 404);
+            }
+        }
+        return response()->json(['error' => 'Please provide a company or product name for search'], 400);
     }
-    
+
     public function searchInCompany($companyId, $nameProduct)
     {
         $company = Company::find($companyId);
@@ -172,7 +175,7 @@ class ProductController extends Controller
             $data[$key] = (new \App\Models\Product)->convertToArray($product);
         }
         if ($products->isNotEmpty()) {
-            return response()->json(['products' => $data]);
+            return response()->json($data);
         } else {
             return response()->json(['error' => 'Product not found for the specified company and name'], 404);
         }
