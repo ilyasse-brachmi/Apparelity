@@ -3,12 +3,19 @@ import { useRouter } from 'vue-router'
 import { useAuth } from '@/stores/auth.store'
 import Swal from 'sweetalert2'
 import { ref } from 'vue';
+import { useAppa } from '@/stores/index.store';
+
+const appaStore = useAppa()
 
 const router = useRouter()
 const store = useAuth()
 const logout = () => {
-  store.logout()
-  router.push('/')
+  appaStore.isLoading = true
+  setTimeout(() => {
+    store.logout()
+    router.push('/')
+    appaStore.isLoading = false
+  }, 900);
   // Swal.fire({
   //     text: 'You are logged out !',
   //     icon: 'success',

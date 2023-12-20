@@ -6,10 +6,11 @@ import { onMounted, ref, watch } from "vue"
 import ImageProduct from "../../images/jacket.png"
 import type { ProductResponse , ProductMarker } from "@/types/index"
 import { $AppAxios } from "@/utils/axiosSingleton"
-import { LMap, LTileLayer, LMarker, LPopup } from "@vue-leaflet/vue-leaflet"
+import { LMap, LTileLayer, LMarker, LPopup, LPolyline } from "@vue-leaflet/vue-leaflet";
 import "leaflet/dist/leaflet.css"
 import Swal from "sweetalert2"
 import router from "@/routes"
+
 const modal = ref(false)
 
 const openModal = (index: number) => {
@@ -83,7 +84,7 @@ const productMarkers: Array<ProductMarker> = [
 		}
 	},
 	{
-		markerCoordonates: [40.413220, -17.219482],
+		markerCoordonates: [18.413220, -5.219482],
 		popUp: {
 			title: 'Country',
 			description: 'this is a description',
@@ -147,6 +148,7 @@ StoreLayout(@NameSearched="searchedName" @sortClicked="sorting")
 																img(:src="marker.popUp.image" class="w-16 h-16 rounded-full")
 															h1(class="font-semibold text-xl") {{ marker.popUp.title }}
 														p {{ marker.popUp.description }}	
+											LPolyline(:latLngs="[productMarkers[0].markerCoordonates, productMarkers[1].markerCoordonates]" :color="'hsl(0, 100%, 50%)'" :lineCap="'butt'")
 			div(v-else class="h-screen flex flex-col items-center pt-[10rem]")
 				p(class="text-2xl tracking-wide font-semibold") Opps... It's empty in here 
 				p(class="text-base text-slate-500") No offers hase been saved yet.

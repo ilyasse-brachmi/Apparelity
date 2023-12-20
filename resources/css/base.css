@@ -12,6 +12,10 @@
 		margin-top: 6rem;
 		margin-right: 1rem;
 	}
+
+	.swal2-container {
+		z-index: 99999999 !important;
+	}
 	/* section {
 		@apply max-w-7xl mx-auto;
 	} */

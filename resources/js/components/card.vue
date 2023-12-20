@@ -11,7 +11,7 @@ defineEmits(['openModal'])
 <template lang="pug">
 div(class="bg-gray-100 rounded p-10 sm:w-[18rem] 2xl:w-[19rem] h-[27rem] transition duration-700")
   div(class="relative max-h-[20rem]")
-    img(v-if="product?.product_image" :src="`/storage/public/${product.product_image.split('public/')[1]}`" alt="Product Image" class="h-full w-full max-h-[15rem] max-w-[15rem] rounded-lg hover:scale-105 cursor-pointer duration-200")
+    img(v-if="product?.product_image" :src="`/storage/public/${product.product_image.split('public/')[1]}`" alt="Product Image" class="h-full w-full max-h-[15rem] max-w-[15rem] min-w-[15rem] min-h-[15rem] rounded-lg hover:scale-105 cursor-pointer duration-200")
     div(v-else class="w-[15rem] h-[15rem] rounded-lg bg-gray-400 flex items-center justify-center")
       p Image not found
     div(class="absolute top-[-1rem] end-[-1rem] flex items-start gap-4 p-2 bg-primary hover:scale-110 duration-200 hover:bg-primary/90 rounded-full")

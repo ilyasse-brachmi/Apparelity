@@ -8,10 +8,11 @@ import { useField, useForm } from 'vee-validate'
 import { useRouter } from "vue-router";
 import * as yup from 'yup';
 import type { UserCompany } from "@/stores/auth.store";
-
+import { useAppa } from '@/stores/index.store';
 
 const router = useRouter()
 const store = useAuth()
+const appaStore = useAppa()
 
 const scheme = computed(() => {
   return yup.object({
@@ -38,18 +39,23 @@ const submit = handleSubmit(async () => {
   const data = { email: email.value, password: password.value }
   await $AppAxios.post('/api/login', data)
   .then(async (response) => {
+    appaStore.isLoading = true
     if(response.data.company)
       await store.setCompany(response.data.company)
-    await store.fetchUser(response.data.token, response.data.user)
-    Swal.fire({
-      text: 'You are logged in !',
-      icon: 'success',
-      toast: true,
-      position: 'top-end',
-      timer: 3000,
-      showConfirmButton: false,
-    })
+      await store.fetchUser(response.data.token, response.data.user)
+      Swal.fire({
+        text: 'You are logged in !',
+        icon: 'success',
+        toast: true,
+        position: 'top-end',
+        timer: 2000,
+        customClass: {
+        container: '.swal2-container ',
+        },
+        showConfirmButton: false,
+      })
     .then(function() {
+      appaStore.isLoading = false
       router.push('/dashboard')
     });
   })
