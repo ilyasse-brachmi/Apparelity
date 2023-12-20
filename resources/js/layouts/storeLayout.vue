@@ -28,7 +28,6 @@ onMounted(async () => {
 	})
 })
 const nameValue = ref('')
-// defineEmits(['NameSearched'])
 const props = defineProps({
 	withSearch :{
 		type: Boolean,
