@@ -5,11 +5,11 @@ import StoreLayout from '@/layouts/storeLayout.vue'
 import { onMounted, ref, watch } from "vue"
 import ImageProduct from "../../images/jacket.png"
 import type { ProductResponse , ProductMarker } from "@/types/index"
-import { $AppAxios } from "@/utils/axiosSingleton";
-import { LMap, LTileLayer, LMarker, LPopup } from "@vue-leaflet/vue-leaflet";
-import "leaflet/dist/leaflet.css";
+import { $AppAxios } from "@/utils/axiosSingleton"
+import { LMap, LTileLayer, LMarker, LPopup } from "@vue-leaflet/vue-leaflet"
+import "leaflet/dist/leaflet.css"
 import Swal from "sweetalert2"
-
+import router from "@/routes"
 const modal = ref(false)
 
 const openModal = (index: number) => {
@@ -23,6 +23,8 @@ selectedSearch.value='company'
 const searchedName = (name: any)=>{
 	nameSearched.value = name
 }
+const nameFromRoute = ref()
+nameFromRoute.value = router.currentRoute.value.query.name
 watch(nameSearched, () => {
 	$AppAxios.get(`/api/product/search?${selectedSearch.value}=${nameSearched.value}`)
 	.then((response) => {
@@ -45,10 +47,31 @@ watch(nameSearched, () => {
 const data = ref([] as Array<ProductResponse>)
 
 onMounted(async () => {
-	$AppAxios.get('/api/product')
-	.then((response) => {
-		data.value = response.data
-	})
+	if(nameFromRoute.value) {
+		$AppAxios.get(`/api/product/search?${selectedSearch.value}=${nameFromRoute.value}`)
+		.then((response) => {
+			data.value = response.data
+		})
+		.catch((e) => {
+			if(e.response) {
+				Swal.fire({
+					text: e.response.data.message || 'Error !!',
+					icon: 'error',
+					toast: true,
+					position: 'top-end',
+					timer: 3000,
+					showConfirmButton: false
+				})
+			}
+		}
+		)
+	}
+	else{
+		$AppAxios.get('/api/product')
+		.then((response) => {
+			data.value = response.data
+		})
+	}
 })
 const productMarkers: Array<ProductMarker> = [
 	{
