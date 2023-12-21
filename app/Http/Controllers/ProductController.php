@@ -143,9 +143,7 @@ class ProductController extends Controller
                 $data[$key] = (new \App\Models\Product)->convertToArray($product);
             }
             if ($company) {
-                return response()->json([
-                    'products' => $data,
-                ]);
+                return response()->json($data);
             } else {
                 return response()->json(['error' => 'Company not found'], 404);
             }
@@ -177,7 +175,7 @@ class ProductController extends Controller
             $data[$key] = (new \App\Models\Product)->convertToArray($product);
         }
         if ($products->isNotEmpty()) {
-            return response()->json(['products' => $data]);
+            return response()->json($data);
         } else {
             return response()->json(['error' => 'Product not found for the specified company and name'], 404);
         }

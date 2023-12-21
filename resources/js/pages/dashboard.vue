@@ -8,19 +8,42 @@ import { $AppAxios } from "@/utils/axiosSingleton"
 import { useAuth } from "@/stores/auth.store"
 import { computed, onMounted, ref, watch } from 'vue'
 import type { ProductResponse, Category } from "@/types/index"
-import Material from '@/components/material.vue'
-
+import Swal from 'sweetalert2'
+// import Material from '@/components/material.vue'
 
 const store = useAuth()
 const data = ref([] as Array<ProductResponse>)
 
 const getProducts = async() => {
-  $AppAxios.get('/api/product')
+  $AppAxios.get(`/api/product/${store.company.id}`)
 	.then((response) => {
 		data.value = response.data
 	})
 }
 
+const nameSearched = ref('' as string)
+const searchedName = (name: any)=>{
+	nameSearched.value = name
+}
+watch(nameSearched, () => {
+	$AppAxios.get(`/api/product/${store.company.id}/search/product=${nameSearched.value}`)
+	.then((response) => {
+		data.value = response.data
+	})
+	.catch((e) => {
+		if(e.response) {
+			Swal.fire({
+				text: e.response.data.message || 'Error !!',
+				icon: 'error',
+				toast: true,
+				position: 'top-end',
+				timer: 3000,
+				showConfirmButton: false
+			})
+		}
+	}
+	)
+})
 onMounted(async () => {
 	getProducts()
 })
@@ -62,7 +85,7 @@ watch(
 )
 </script>
 <template lang="pug">
-StoreLayout(@sortClicked="sorting")
+StoreLayout(@sortClicked="sorting" @NameSearched="searchedName")
   template(v-slot:addBtn)
     div(v-if="store.isAuth")
       button(class="border flex items-center gap-2 text-white border-white rounded-lg w-full py-4 px-4 bg-primary hover:shadow-md duration-300 cursor-pointer" @click="openAddModal()") 

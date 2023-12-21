@@ -5,9 +5,11 @@ import StoreLayout from '@/layouts/storeLayout.vue'
 import { onMounted, ref, watch } from "vue"
 import ImageProduct from "../../images/jacket.png"
 import type { ProductResponse , ProductMarker } from "@/types/index"
-import { $AppAxios } from "@/utils/axiosSingleton";
+import { $AppAxios } from "@/utils/axiosSingleton"
 import { LMap, LTileLayer, LMarker, LPopup, LPolyline } from "@vue-leaflet/vue-leaflet";
-import "leaflet/dist/leaflet.css";
+import "leaflet/dist/leaflet.css"
+import Swal from "sweetalert2"
+import router from "@/routes"
 
 const modal = ref(false)
 
@@ -16,13 +18,61 @@ const openModal = (index: number) => {
 	modal.value = true
 }
 
-const data = ref([] as Array<ProductResponse>)
-
-onMounted(async () => {
-	$AppAxios.get('/api/product')
+const nameSearched = ref('' as string)
+const selectedSearch = ref('' as string)
+selectedSearch.value='company'
+const searchedName = (name: any)=>{
+	nameSearched.value = name
+}
+const nameFromRoute = ref()
+nameFromRoute.value = router.currentRoute.value.query.name
+watch(nameSearched, () => {
+	$AppAxios.get(`/api/product/search?${selectedSearch.value}=${nameSearched.value}`)
 	.then((response) => {
 		data.value = response.data
 	})
+	.catch((e) => {
+		if(e.response) {
+			Swal.fire({
+				text: e.response.data.message || 'Error !!',
+				icon: 'error',
+				toast: true,
+				position: 'top-end',
+				timer: 3000,
+				showConfirmButton: false
+			})
+		}
+	}
+	)
+})
+const data = ref([] as Array<ProductResponse>)
+
+onMounted(async () => {
+	if(nameFromRoute.value) {
+		$AppAxios.get(`/api/product/search?${selectedSearch.value}=${nameFromRoute.value}`)
+		.then((response) => {
+			data.value = response.data
+		})
+		.catch((e) => {
+			if(e.response) {
+				Swal.fire({
+					text: e.response.data.message || 'Error !!',
+					icon: 'error',
+					toast: true,
+					position: 'top-end',
+					timer: 3000,
+					showConfirmButton: false
+				})
+			}
+		}
+		)
+	}
+	else{
+		$AppAxios.get('/api/product')
+		.then((response) => {
+			data.value = response.data
+		})
+	}
 })
 const productMarkers: Array<ProductMarker> = [
 	{
@@ -63,7 +113,7 @@ watch(
 )
 </script>
 <template lang="pug">
-StoreLayout(@sortClicked="sorting")
+StoreLayout(@NameSearched="searchedName" @sortClicked="sorting")
 	template(v-slot:cards)
 		.flex.items-center.justify-center.h-full.w-full
 			div(v-if="data.length" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 py-8 h-full")
