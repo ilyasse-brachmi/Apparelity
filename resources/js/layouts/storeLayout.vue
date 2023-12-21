@@ -49,7 +49,6 @@ const clicked = () => {
 }
 const selectedSearch = ref('product')
 const emits = defineEmits(['sortClicked','NameSearched'])
-console.log(router.currentRoute.value.name)
 const storePage = router.currentRoute.value.name=="Store"? true: false
 </script>
 <template lang="pug">
