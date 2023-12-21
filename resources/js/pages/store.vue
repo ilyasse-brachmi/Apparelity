@@ -19,13 +19,15 @@ const openModal = (index: number) => {
 }
 
 const nameSearched = ref('' as string)
-const selectedSearch = ref('' as string)
-selectedSearch.value='company'
-const searchedName = (name: any)=>{
+const selectedSearch = ref('product')
+const searchedName = (name: any,type: any)=>{
+	selectedSearch.value = type
 	nameSearched.value = name
 }
 const nameFromRoute = ref()
+const typeFromRoute = ref()
 nameFromRoute.value = router.currentRoute.value.query.name
+typeFromRoute.value=router.currentRoute.value.query.type
 watch(nameSearched, () => {
 	$AppAxios.get(`/api/product/search?${selectedSearch.value}=${nameSearched.value}`)
 	.then((response) => {
@@ -48,8 +50,8 @@ watch(nameSearched, () => {
 const data = ref([] as Array<ProductResponse>)
 
 onMounted(async () => {
-	if(nameFromRoute.value) {
-		$AppAxios.get(`/api/product/search?${selectedSearch.value}=${nameFromRoute.value}`)
+	if(nameFromRoute.value && typeFromRoute.value) {
+		$AppAxios.get(`/api/product/search?${typeFromRoute.value}=${nameFromRoute.value}`)
 		.then((response) => {
 			data.value = response.data
 		})
