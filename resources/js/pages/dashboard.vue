@@ -6,10 +6,9 @@ import Card from "@/components/card.vue"
 import AppInput from '@/components/AppInput.vue'
 import { $AppAxios } from "@/utils/axiosSingleton"
 import { useAuth } from "@/stores/auth.store"
-import { computed, onMounted, ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import type { ProductResponse, Category } from "@/types/index"
 import Swal from 'sweetalert2'
-// import Material from '@/components/material.vue'
 
 const store = useAuth()
 const data = ref([] as Array<ProductResponse>)
@@ -88,7 +87,7 @@ watch(
 StoreLayout(@sortClicked="sorting" @NameSearched="searchedName")
   template(v-slot:addBtn)
     div(v-if="store.isAuth")
-      button(class="border flex items-center gap-2 text-white border-white rounded-lg w-full py-4 px-4 bg-primary hover:shadow-md duration-300 cursor-pointer" @click="openAddModal()") 
+      a(href="/product"  class="border flex items-center gap-2 text-white border-white rounded-lg w-full py-4 px-4 bg-primary hover:shadow-md duration-300 cursor-pointer") 
         p(class="text-sm").font-semibold Add Product
         Icon(:icon="'gridicons:add-outline'" class="text-2xl")
       AppModal(v-if="addModal" :title="'Add New Product'" @close="addModal = false")

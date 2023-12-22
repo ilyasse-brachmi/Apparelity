@@ -17,32 +17,29 @@ defineProps({
   },
 });
 const test = ref<string[]>([])
+const prodCoordonates = ref<string[]>([])
+const prodSupliar = ref<string[]>([])
 const addItems = (material: ProductMaterial) => {
   store.setCurrentMaterial(material)
 }
-
 const checked = ref(false)
 </script>
 
 <template lang="pug">
 div(v-for="(item,index) in materials" :key="index")
-  div(class="flex items-center gap-x-10")
+  div(class="flex items-center gap-x-10 py-4")
     Icon(icon="ci:arrow-sub-down-right" class="text-primary text-7xl ")
     h1(class="whitespace-nowrap text-primary font-semibold") {{ item.name }}
-    .dz-collapse.dz-collapse-arrow.bg-gray-50(@click="checked = !checked")
-      input(type='radio' name='my-accordion-2' :checked='checked')
-      .dz-collapse-title.text-xl.font-medium
+    div(class="dz-collapse bg-gray-50")
+      input(type="checkbox" v-model="checked")
+      div(class="dz-collapse-title text-xl font-medium flex items-center")
         AppInput(:type="'text'" :labelName="'Material name'" :color="'#1d6795'" v-model="test[index]")
+        Icon(icon="mingcute:down-line" :class="checked ? 'rotate-180' : ''" class="text-3xl text-primary ml-4")
       .dz-collapse-content
-        
-        h1 Adress 
-        h1 Adress 
-        h1 Adress 
-        h1 Adress
-    //- input(v-if="item.opened" type="text" v-model="test[index]" class="border")
+        AppInput(:type="'text'" :labelName="'Coordonates'" :color="'#1d6795'" v-model="prodCoordonates[index]" class="my-6")
+        AppInput(:type="'text'" :labelName="'Suppliar'" :color="'#1d6795'" v-model="prodSupliar[index]" class="my-6")
     div(class="flex items-center justify-center gap-2 text-white")
-      //- Icon(icon="carbon:add-filled" class="text-primary text-3xl cursor-pointer" @click="item.opened = true") Add Material
-      button(v-if="test[index]" type="button" class="p-4 bg-primary rounded-lg" @click="addItems({id: index, order: item.order, name: test[index], opened: false, trace: item.trace, coordonates: '40/31', supplier: 'Apparelity', children: []})") Submit
+      button(v-if="test[index]" type="button" class="p-4 bg-primary rounded-lg" @click="addItems({id: index, order: item.order, name: test[index], opened: false, trace: item.trace, coordonates: prodCoordonates[index], supplier: prodSupliar[index], children: []})") Submit
   div(class="ml-20")
     Nested(v-if="item.children.length" :materials="item.children")
 </template>

@@ -119,7 +119,7 @@ const addMaterial = (material: ProductMaterial, array = [...materials.value] as 
     array.forEach(element => {
       if (element.trace === material.trace) {
         // console.log(element.trace + '---' + material.trace)
-        element.children.push({ id: material.id, order: material.order + 1, name: material.name, children: material.children, opened: material.opened, trace: material.trace + element.children.length + (material.order + 1) })
+        element.children.push({ id: material.id, order: material.order + 1, name: material.name, children: material.children, opened: material.opened, trace: material.trace + element.children.length + (material.order + 1), coordonates: material.coordonates, supplier: material.supplier })
       }
       else {
         console.log('elese')
@@ -170,8 +170,8 @@ const materials = ref<ProductMaterial[]>([
     order: 1,
     trace: '01',
     name: "Final Product",
-    coordonates: '40/39',
-    supplier: 'Apparelity',
+    coordonates: '',
+    supplier: '',
     opened: false,
     children: [
     ]
@@ -193,35 +193,26 @@ watch(
   { deep: true }
 )
 
-const customMaterials = [...materials.value]
-
 const opened = ref(false)
 const content = ref('')
+const newProd = ref({prodCoordonates: '', prodSupliar: ''})
 const selectedCategory = ref('')
 const categories = ref([] as Category[])
+const checked = ref(false)
 
-const addItems = (material: ProductMaterial) => {
-  console.log(material.trace)
-  MaterailStore.setCurrentMaterial(material)
-  opened.value = false
-}
-
-const addMaterials = ref(false)
-const newMaterail = ref({id: 0, children: [], name: '', opened: false, order: 1, coordonates: '40/31', supplier: 'Apparelity', trace: '01'} as ProductMaterial)
-
-const openMaterials = (newMaterail: ProductMaterial) => {
-  if (name.value) {
-    materials.value.push(newMaterail)
-    materials.value[materials.value.length - 1].name = name.value
-    addMaterials.value = true
-  }
-}
+// watch(
+//   () => newProd.value,
+//   (newVal) => {
+//     materials.value[0].coordonates = newVal.prodCoordonates
+//     materials.value[0].supplier = newVal.prodSupliar
+//   },
+//   { deep: true }
+// )
 
 onMounted(async () => {
   await $AppAxios.get('/api/category')
     .then((response: { data: Category[] }) => categories.value = response.data)
 })
-const checked = ref(false)
 </script>
 <template lang="pug">
 div(class="flex items-center justify-center h-screen w-screen py-8")
@@ -256,18 +247,17 @@ div(class="flex items-center justify-center h-screen w-screen py-8")
       div(v-for="item in materials" :key="item.id" class="flex flex-col gap-y-8 items-center justify-center")
         div(class="w-full flex items-center gap-x-4")
           h1(class="whitespace-nowrap text-primary font-semibold") {{ item.name }}
-          .dz-collapse.dz-collapse-arrow.bg-gray-50(@click="checked = !checked")
-            input(type='radio' name='my-accordion-2' :checked='checked')
-            .dz-collapse-title.text-xl.font-medium
+          div(class="dz-collapse bg-gray-50")
+            input(type="checkbox" v-model="checked")
+            div(class="dz-collapse-title text-xl font-medium flex items-center")
               AppInput(:type="'text'" :labelName="'Material name'" :color="'#1d6795'" v-model="content")
+              Icon(icon="mingcute:down-line" :class="checked ? 'rotate-180' : ''" class="text-3xl text-primary ml-4")
             .dz-collapse-content
-              h1 Adress 
-              h1 Adress 
-              h1 Adress 
-              h1 Adress 
+              AppInput(:type="'text'" :labelName="'Coordonates'" :color="'#1d6795'" v-model="newProd.prodCoordonates" class="my-6")
+              AppInput(:type="'text'" :labelName="'Suppliar'" :color="'#1d6795'" v-model="newProd.prodSupliar" class="my-6")
           div(class="flex items-center justify-center gap-2 text-white")
             //- Icon(icon="carbon:add-filled" class="text-primary text-3xl cursor-pointer" @click="item.opened = true") Add Material
-            button(v-if="content" type="button" class="p-4 bg-primary rounded-lg" @click="addMaterial({id: item.id, order: item.order, name: content, opened: false, coordonates: '40/31', supplier: 'Apparelity', trace: item.trace , children: []})") Submit
+            button(v-if="content" type="button" class="p-4 bg-primary rounded-lg" @click="addMaterial({id: item.id, order: item.order, name: content, opened: false, coordonates: prodCoordonates, supplier: prodSupliar, trace: item.trace , children: []})") Submit
         div(class="ml-20")
           Nested(v-if="item.children?.length" :materials="item.children")
     div(class="flex justify-center mt-16")

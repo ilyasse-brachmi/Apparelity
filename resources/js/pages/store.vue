@@ -4,12 +4,17 @@ import Card from "@/components/card.vue"
 import StoreLayout from '@/layouts/storeLayout.vue'
 import { onMounted, ref, watch } from "vue"
 import ImageProduct from "../../images/jacket.png"
-import type { ProductResponse , ProductMarker } from "@/types/index"
-import { $AppAxios } from "@/utils/axiosSingleton"
+import type { ProductResponse , ProductMarker, ProductMaterial, ReverseAdress } from "@/types/index"
+import { $AppAxios } from "@/utils/axiosSingleton";
 import { LMap, LTileLayer, LMarker, LPopup, LPolyline } from "@vue-leaflet/vue-leaflet";
-import "leaflet/dist/leaflet.css"
+import "leaflet/dist/leaflet.css";
+import ShowMaterials from "@/components/showMaterials.vue"
+import { materials } from "@/data/products.data"
+import { getReverseAdress } from "@/composables/useReverseAdress"
 import Swal from "sweetalert2"
 import router from "@/routes"
+
+
 
 const modal = ref(false)
 
@@ -75,6 +80,7 @@ onMounted(async () => {
 			data.value = response.data
 		})
 	}
+	getAllCoordonates(materials.value)
 })
 const productMarkers: Array<ProductMarker> = [
 	{
@@ -94,6 +100,34 @@ const productMarkers: Array<ProductMarker> = [
 		}
 	}
 ]
+
+const reverseAdress = ref([] as Array<ReverseAdress[]>)
+
+const lat = materials.value[0].coordonates[0]
+const lang = materials.value[0].coordonates[1]
+
+watch(
+	() => modal.value,
+	async(newVal) => {
+		if(newVal === true){
+			coordonatesQueries.forEach(async element => {	
+				const result = await getReverseAdress(element[0][0] as number, element[0][1] as number)
+				if(result)
+					reverseAdress.value.push(result)
+			})
+		}
+	}
+)
+const coordonatesQueries: Array<[string | [number, number], ProductMaterial]> = []
+
+const getAllCoordonates = (data: ProductMaterial[]) => {
+	data.forEach(element => {
+		coordonatesQueries.push([element.coordonates, element])
+		if(element.children.length > 0) getAllCoordonates(element.children)
+	});
+}
+
+
 const currProduct = ref({} as ProductResponse)
 const zoom = ref(3)
 const center = ref([47.413220, -1.219482])
@@ -113,6 +147,13 @@ watch(
     }
   }
 )
+
+const closeModal = () => {
+	modal.value = false
+	while (reverseAdress.value.length > 0) {
+  reverseAdress.value.pop();
+}
+}
 </script>
 <template lang="pug">
 StoreLayout(@NameSearched="searchedName" @sortClicked="sorting")
@@ -121,9 +162,9 @@ StoreLayout(@NameSearched="searchedName" @sortClicked="sorting")
 			div(v-if="data.length" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 py-8 h-full")
 				div(v-for="product in data" :key="product.original.id")
 					Card(:product="product.original" @openModal="openModal(product.original.id)")
-				AppModal(v-if="modal" :title="'Product Traceability'" @close="modal = false")
+				AppModal(v-if="modal" :title="'Product Traceability'" @close="closeModal")
 					div(class="grid grid-cols-5 w-full h-full bg-gray-100 ")
-						div(class="col-span-2")
+						div(class="col-span-2 h-full")
 							div(class="w-full p-6 py-6")
 								div(class="min-h-[48.7rem]")
 									div(class="flex justify-center")
@@ -134,23 +175,25 @@ StoreLayout(@NameSearched="searchedName" @sortClicked="sorting")
 										div(class="flex items-center justify-center py-2")
 											h3(class="px-2 py-1 bg-primary/20 text-sm text-primary rounded-full w-fit") {{ currProduct.original.company_name }}
 									div(class="flex justify-center h-full")
-										div(class="w-[24rem] h-[25rem] bg-white shadow-md rounded-xl border-4 my-4 border-primar")
+										ul(class="w-fit h-fit min-w-[17rem] min-h-[27rem] bg-white shadow-md rounded-xl border-4 my-4 px-2 border-primar overflow-auto max-h-[32rem]")
+											li(v-if="reverseAdress.length" v-for="(item, index) in reverseAdress" :key="index" class="bg-gray-100 w-full cursor-pointer hover:bg-primary/10 duration-200 rounded-lg h-full p-4 my-2")
+												div(class="flex items-center justify-between")
+													div(class="flex items-center gap-x-2")
+														h1( class="text-xl font-medium") {{ item[0].components.country }}
+														p(class="text-xl") {{ item[0].annotations.flag }}
+													div(v-if="Math.floor(item[0].geometry.lat) === Math.floor(materials[0].coordonates[0]) && Math.floor(item[0].geometry.lng) === Math.floor(materials[0].coordonates[1])" class="")
+														p(class="text-primary text-xs bg-primary/10 px-2 py-1 border border-primary rounded-full whitespace-nowrap") Product
+												p(class="text-gray-500 text-sm") {{ item[0].formatted }}
+											div(v-else class="w-full h-full min-w-[17rem] min-h-[27rem] flex items-center justify-center bg-white")
+												span(class="dz-loading dz-loading-infinity w-[10rem] text-primary")
 						div(class="col-span-3")
 							//- Exemple
 							div(ref="mapContainer" class="h-full flex items-center justify-center")
 								div(class="w-full h-full")
 									LMap(:useGlobalLeaflet="false" ref="map" v-model:zoom="zoom" :center="center")
 										LTileLayer(url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" layer-type="base" name="OpenStreetMap" :minZoom="minZoom")
-										div(v-for="(marker, index) in productMarkers" :key="index")
-											LMarker(:latLng="marker.markerCoordonates")
-												LPopup(style="width: 15rem; height: 10rem;")
-													div(class="w-[10rem] h-[8rem]")
-														div(class="flex items-center justify-start gap-2")
-															div(class="w-16 h-16 rounded-full border-2 border-black overflow-hidden")
-																img(:src="marker.popUp.image" class="w-16 h-16 rounded-full")
-															h1(class="font-semibold text-xl") {{ marker.popUp.title }}
-														p {{ marker.popUp.description }}	
-											LPolyline(:latLngs="[productMarkers[0].markerCoordonates, productMarkers[1].markerCoordonates]" :color="'hsl(0, 100%, 50%)'" :lineCap="'butt'")
+										div(v-for="(marker, index) in materials" :key="index")
+											ShowMaterials(:materials="materials" :parent-material="'parent'" :image="`/storage/public/${currProduct.original.product_image.split('public/')[1]}`")
 			div(v-else class="h-screen flex flex-col items-center pt-[10rem]")
 				p(class="text-2xl tracking-wide font-semibold") Opps... It's empty in here 
 				p(class="text-base text-slate-500") No offers hase been saved yet.

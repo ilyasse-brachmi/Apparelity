@@ -114,11 +114,11 @@ router.beforeEach((to) => {
   const appaStore = useAppa()
 
   appaStore.isLoading = true
+  if(to.meta.auth === 'Auth' && !store.isAuth) return { name: 'Login' }
+  if(to.meta.auth === 'Guest' && store.isAuth) return { name: 'Dashboard' }
+  if(to.meta.auth === 'Auth' && store.isAuth && !store.hasCompany && to.path !== '/complete-account') return { name: 'CompleteAccount' }
+  if(to.path === '/complete-account' && store.isAuth && store.hasCompany) return { name: 'Dashboard' }
   setTimeout(() => {
-    if(to.meta.auth === 'Auth' && !store.isAuth) return { name: 'Login' }
-    if(to.meta.auth === 'Guest' && store.isAuth) return { name: 'Dashboard' }
-    if(to.meta.auth === 'Auth' && store.isAuth && !store.hasCompany && to.path !== '/complete-account') return { name: 'CompleteAccount' }
-    if(to.path === '/complete-account' && store.isAuth && store.hasCompany) return { name: 'Dashboard' }
     appaStore.isLoading = false
   }, 300);
 

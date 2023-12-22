@@ -65,6 +65,6 @@ Sidebar(:categories="categories" :materials="materials" :sidebarToggle="opened")
 					option(value="product") Product
 					option(value="company") Company
 			Icon(:icon="icon" @click="clicked()" class="text-4xl text-primary cursor-pointer ml-4")
-	div(class="shadow-md bg-gray-50 py-4 w-full h-full")
+	div(class="shadow-md bg-gray-50 py-4 w-full h-fit min-h-[90vh]")
 		slot(name="cards")
 </template>
