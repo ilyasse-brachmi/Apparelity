@@ -15,10 +15,12 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('product_id')->unsigned()->index();
             $table->string('name');
-            $table->string('origin');
-            $table->string('supplier');
+            // $table->string('origin');
+            // $table->string('supplier');
             $table->string('address');
+            $table->bigInteger('material_parent')->unsigned()->nullable(); 
             $table->foreign('product_id')->references('id')->on('product')->onDelete('cascade');
+            $table->foreign('material_parent')->references('id')->on('material')->onDelete('set null'); 
             $table->timestamps();
             $table->softDeletes();
         });

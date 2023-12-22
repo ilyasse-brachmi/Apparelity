@@ -14,7 +14,7 @@ class Company extends Model
     public $timestamps = true;
     protected $table = 'company';
     use Notifiable;
-
+    
     protected $fillable = [
         'id','name', 'address','description','user_id','zipCode','country','city','phone'
     ];

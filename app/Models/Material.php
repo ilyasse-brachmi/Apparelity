@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notifiable;
 class Material extends Model
 {
     use HasFactory;
-
+    
     public $timestamps = true;
 
 
@@ -17,13 +17,13 @@ class Material extends Model
     use Notifiable;
 
     protected $fillable = [
-        'id','name', 'origin','supplier','address','product_id'
+        'id','name','address','product_id'
     ];
 
     public function scopeSelection($query)
     {
 
-        return $query->select('id','name', 'origin','supplier','address');
+        return $query->select('id','name', 'address');
     }
     public function product()
     {
@@ -36,12 +36,19 @@ class Material extends Model
         $data=[
             'id'=>$resource->id,
             'name'=>$resource->name,
-            'origin'=>$resource->origin,
-            'supplier'=>$resource->supplier,
             'address'=>$resource->address,
             'productId'=>$resource->product->id,
             'productName'=>$resource->product->name,
         ];
         return response()->json($data);
+    }
+    public function children()
+    {
+        return $this->hasMany(Material::class, 'material_parent','id');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(Material::class, 'material_parent');
     }
 }
