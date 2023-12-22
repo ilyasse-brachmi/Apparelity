@@ -94,10 +94,13 @@ class ProductController extends Controller
         $rules = [
             'name' => 'required|string',
             'address' => 'required|string',
+            'supplier' => 'required|string',
             'children' => 'sometimes|array',
             'children.*.name' => 'required|string',
             'children.*.address' => 'required|string',
+            'children.*.supplier' => 'required|string',
         ];
+        // dd($materialsData);
         foreach ($materialsData as $materialData) {
             $validator = Validator::make($materialData, $rules);
             if ($validator->fails()) {
@@ -106,6 +109,7 @@ class ProductController extends Controller
             $material = Material::create([
                 'name' => $materialData['name'],
                 'address' => $materialData['address'],
+                'supplier'=> $materialData['supplier'],
                 'product_id' => $product->id,
             ]);
         if (isset($materialData['children']) && is_array($materialData['children'])) {
@@ -118,6 +122,7 @@ class ProductController extends Controller
             $childMaterial = new Material([
                 'name' => $childData['name'],
                 'address' => $childData['address'],
+                'supplier' => $childData['supplier'],
                 'product_id' => $parentMaterial->product_id,
             ]);
             $parentMaterial->children()->save($childMaterial);
