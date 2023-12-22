@@ -42,19 +42,19 @@ class MaterialController extends Controller
         return $data;
     }
 
-    public function addChildren(Material $parentMaterial,array $children){
-        foreach ($children as $childData) {
-            $childMaterial=new Material([
-                'name' =>$childData['name'],
-                'address' =>$childData['address'],
-                'product_id' =>$childData['product_id'],
-            ]);
-            $parentMaterial->children()->save($childMaterial);
-            if (isset($childData['children']) && is_array($childData['children'])) {
-                $this->addChildren($childMaterial, $childData['children']);
-            }
-        }
-    }
+    // public function addChildren(Material $parentMaterial,array $children){
+    //     foreach ($children as $childData) {
+    //         $childMaterial=new Material([
+    //             'name' =>$childData['name'],
+    //             'address' =>$childData['address'],
+    //             'product_id' =>$childData['product_id'],
+    //         ]);
+    //         $parentMaterial->children()->save($childMaterial);
+    //         if (isset($childData['children']) && is_array($childData['children'])) {
+    //             $this->addChildren($childMaterial, $childData['children']);
+    //         }
+    //     }
+    // }
     public function edit(Request $request,$id){
         $material=Material::find($id);
         if(!$material){return response()->json(['success' => false,'error'=>'material not found'],404);}
