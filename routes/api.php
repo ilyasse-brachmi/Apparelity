@@ -42,7 +42,7 @@ Route::get('category',[CategoryController::class,'get']);
 //-----------------------Start Product Controller route-----------------//
 Route::post('product',[ProductController::class,'add']);
 Route::post('product/{id}',[ProductController::class,'edit']);
-Route::delete('product',[ProductController::class,'delete']);
+Route::delete('product/{id}',[ProductController::class,'delete']);
 Route::get('product',[ProductController::class,'get']);
 Route::get('product/search',[ProductController::class,'search']);
 Route::get('product/{company_id}/search/product={nameProduct}', [ProductController::class, 'searchInCompany']);
@@ -51,9 +51,10 @@ Route::get('product/{id}', [ProductController::class, 'getProductCompany']);
 
 //-----------------------Start Material Controller route-----------------//
 Route::post('material',[MaterialController::class,'add']);
-Route::put('material',[MaterialController::class,'edit']);
+Route::put('material/{id}',[MaterialController::class,'edit']);
 Route::delete('material/{id}',[MaterialController::class,'delete']);
 Route::get('material',[MaterialController::class,'get']);
+Route::get('material/{id}',[MaterialController::class,'getMaterials']);
 //-----------------------End Material Controller route-------------//
 
 //-----------------------List of countries-----------------//

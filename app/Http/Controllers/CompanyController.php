@@ -7,25 +7,23 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 class CompanyController extends Controller
 {   
-    public function validateCompanyData(Request $request,$validateUserId = true){
+    public function validateCompanyData(Request $request){
         $rules = [
-            'name' => 'required|string|max:255|unique:company,name',
+            'name' => 'required|string|max:255|unique:company,name,'.$request->id,
             'address' => 'required|string|max:255',
             'description' => 'nullable|string',
             'zipCode' => 'required|string',
             'country' => 'required|string|max:255',
             'city' => 'required|string|max:255',
-            'phone' => 'required|string|max:20'
+            'phone' => 'required|string|max:20',
+            'user_id' => 'unique:company,user_id,' . $request->id
         ];
-        if ($validateUserId) {
-            $rules['user_id'] = 'required|exists:users,id';
-        }
         $validator=Validator::make($request->all(),$rules);
         if($validator->fails()){
             return response()->json(['success'=>false,'errors'=>$validator->errors()],422);
         }
-        $record=Company::where('user_id',$request->user_id)->first();
-        $name=Company::where('name',$request->name)->first();
+        $record=Company::where('user_id',$request->user_id)->where('id', '!=', $request->id)->first();
+        $name=Company::where('name',$request->name)->where('id', '!=', $request->id)->first();
         if($record){
             return response()->json(['success'=>false,'errors'=>['user_id'=>['A record with this user already exists']]],422);
         }else if($name){
@@ -45,7 +43,7 @@ class CompanyController extends Controller
            return response()->json(['success' => true,'data' => $company], 201);
     }
     public function edit(Request $request){
-            $validation=$this->validateCompanyData($request,false);
+            $validation=$this->validateCompanyData($request);
             if ($validation !== null) {
                 return $validation;
             }
