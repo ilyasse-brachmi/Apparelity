@@ -41,7 +41,7 @@ watch(nameSearched, () => {
 	.catch((e) => {
 		if(e.response) {
 			Swal.fire({
-				text: e.response.data.message || 'Error !!',
+				text: e.response.data.error || 'Error !!',
 				icon: 'error',
 				toast: true,
 				position: 'top-end',
@@ -63,7 +63,7 @@ onMounted(async () => {
 		.catch((e) => {
 			if(e.response) {
 				Swal.fire({
-					text: e.response.data.message || 'Error !!',
+					text: e.response.data.error || 'Error !!',
 					icon: 'error',
 					toast: true,
 					position: 'top-end',
@@ -157,6 +157,8 @@ const closeModal = () => {
 </script>
 <template lang="pug">
 StoreLayout(@NameSearched="searchedName" @sortClicked="sorting")
+	//- template(v-slot:default="slotProps")
+	//- 	p {{ slotProps.test + 'blabla'}}
 	template(v-slot:cards)
 		.flex.items-center.justify-center.h-full.w-full
 			div(v-if="data.length" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 py-8 h-full")
