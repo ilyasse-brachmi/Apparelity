@@ -10,7 +10,7 @@ import { LMap, LTileLayer, LMarker, LPopup, LPolyline } from "@vue-leaflet/vue-l
 import "leaflet/dist/leaflet.css";
 import ShowMaterials from "@/components/showMaterials.vue"
 import { materials } from "@/data/products.data"
-import { getReverseAdress } from "@/composables/useReverseAdress"
+import { getReverseAdress } from "@/composables/usegeoCodingAdress"
 import Swal from "sweetalert2"
 import router from "@/routes"
 
@@ -25,9 +25,9 @@ const openModal = (index: number) => {
 
 const nameSearched = ref('' as string)
 const selectedSearch = ref('product')
-const searchedName = (name: any,type: any)=>{
-	selectedSearch.value = type
-	nameSearched.value = name
+const searchedName = (searchData: { name: string; type: string })=>{
+	selectedSearch.value = searchData.type
+	nameSearched.value = searchData.name
 }
 const nameFromRoute = ref()
 const typeFromRoute = ref()
@@ -200,3 +200,4 @@ StoreLayout(@NameSearched="searchedName" @sortClicked="sorting")
 				p(class="text-2xl tracking-wide font-semibold") Opps... It's empty in here 
 				p(class="text-base text-slate-500") No offers hase been saved yet.
 </template>
+@/composables/usegeoCodingAdress

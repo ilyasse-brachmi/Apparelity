@@ -20,7 +20,6 @@ class MaterialSeeder extends Seeder
         Material::create([
             'product_id' => '1',
             'name' => 'Cotton',
-            'origin' => 'Morroco',
             'supplier' => 'test',
             'address' => 'Morroco,fes av bayrouth',
             'created_at' => now(),
@@ -29,7 +28,6 @@ class MaterialSeeder extends Seeder
         Material::create([
             'product_id' => '1',
             'name' => 'material2',
-            'origin' => 'France',
             'supplier' => 'test',
             'address' => 'France,Paris etc',
             'created_at' => now(),
@@ -38,7 +36,6 @@ class MaterialSeeder extends Seeder
         Material::create([
             'product_id' => '2',
             'name' => 'material1',
-            'origin' => 'Tunusie',
             'supplier' => 'test',
             'address' => 'Tunusie,Tunusie etc',
             'created_at' => now(),
@@ -47,7 +44,6 @@ class MaterialSeeder extends Seeder
         Material::create([
             'product_id' => '2',
             'name' => 'material2',
-            'origin' => 'adrabijan',
             'supplier' => 'test',
             'address' => 'adrabijan,adrabijan etc',
             'created_at' => now(),
@@ -56,7 +52,6 @@ class MaterialSeeder extends Seeder
         Material::create([
             'product_id' => '2',
             'name' => 'material3',
-            'origin' => 'Tunusie',
             'supplier' => 'test',
             'address' => 'Tunusie,Tunusie etc',
             'created_at' => now(),

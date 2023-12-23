@@ -2,7 +2,7 @@
 import { ref, type PropType, onMounted } from 'vue';
 import type { ProductMaterial } from "@/types/index"
 import { LMarker, LPopup, LPolyline, LCircleMarker } from "@vue-leaflet/vue-leaflet";
-import { getReverseAdress } from "@/composables/useReverseAdress"
+import { getReverseAdress } from "@/composables/usegeoCodingAdress"
 import type { ReverseAdress } from "@/types/index"
 
 declare type ParentMaterial = 'parent'
@@ -56,4 +56,4 @@ div(v-for="(marker, index) in materials" :key="index" class="")
         //- p(v-else) Coordinates not available  
         LPolyline(v-if="parentMaterial !== 'parent' && parentMaterial.coordonates" :latLngs="[parentMaterial.coordonates, marker.coordonates]" :color="`hsl(0, 100%, ${10 + (marker.order * 15)}%)`" :lineCap="'butt'")
   showMaterials(:materials="marker.children" :parentMaterial="marker")
-</template>
+</template>@/composables/usegeoCodingAdress
