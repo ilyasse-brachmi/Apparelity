@@ -25,23 +25,23 @@ const searchedName = (name: any)=>{
 	nameSearched.value = name
 }
 watch(nameSearched, () => {
-	$AppAxios.get(`/api/product/${store.company.id}/search/product=${nameSearched.value}`)
-	.then((response) => {
-		data.value = response.data
-	})
-	.catch((e) => {
-		if(e.response) {
-			Swal.fire({
-				text: e.response.data.message || 'Error !!',
-				icon: 'error',
-				toast: true,
-				position: 'top-end',
-				timer: 3000,
-				showConfirmButton: false
-			})
-		}
-	}
-	)
+  $AppAxios.get(`/api/product/${store.company.id}/search?product=${nameSearched.value}`)
+  .then((response) => {
+    data.value = response.data
+  })
+  .catch((e) => {
+    if(e.response) {
+      Swal.fire({
+        text: e.response.data.error || 'Error !!',
+        icon: 'error',
+        toast: true,
+        position: 'top-end',
+        timer: 3000,
+        showConfirmButton: false
+      })
+    }
+  }
+  )
 })
 onMounted(async () => {
 	getProducts()

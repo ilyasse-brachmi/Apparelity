@@ -67,4 +67,5 @@ Sidebar(:categories="categories" :materials="materials" :sidebarToggle="opened")
 			Icon(:icon="icon" @click="clicked()" class="text-4xl text-primary cursor-pointer ml-4")
 	div(class="shadow-md bg-gray-50 py-4 w-full h-fit min-h-[90vh]")
 		slot(name="cards")
+		//- slot(name="cards" :test="'test'")
 </template>
