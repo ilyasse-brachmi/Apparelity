@@ -56,4 +56,4 @@ div(v-for="(marker, index) in materials" :key="index" class="")
         //- p(v-else) Coordinates not available  
         LPolyline(v-if="parentMaterial !== 'parent' && parentMaterial.coordonates" :latLngs="[parentMaterial.coordonates, marker.coordonates]" :color="`hsl(0, 100%, ${10 + (marker.order * 15)}%)`" :lineCap="'butt'")
   showMaterials(:materials="marker.children" :parentMaterial="marker")
-</template>@/composables/usegeoCodingAdress
+</template>
