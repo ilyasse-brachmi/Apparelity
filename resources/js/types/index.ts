@@ -24,7 +24,17 @@ export interface Product {
   company_id: number;
   category_id: number;
   company_name: string;
-  category_name: string;
+  category_name: string
+}
+export interface Company {
+  id: number;
+  name: string;
+  address: string;
+  Description: number;
+  zipCode: number;
+  country: string;
+  city: string;
+  phone: string
 }
 
 export interface ProductResponse{
