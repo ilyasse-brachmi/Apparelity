@@ -105,12 +105,17 @@ class MaterialController extends Controller
             return response()->json(['success' => false, 'message' => 'Product not found'], 404);
         }
         $materials = $product->materials()->with('children')->get();
-        $Data = [];
+        $Data = [
+            'product'=>[
+                'id'=>$product->id,
+                'name'=>$product->name,
+                'address'=>$product->address,
+            ]
+        ];
         foreach ($materials as $material) {
             if($material->material_parent===null){
-                $Data[] = $this->buildHierarchy($material,$materials);
+                $Data['product']['children'][] = $this->buildHierarchy($material,$materials);
             }
-           
         }
         return response()->json(['success'=>true,'data'=>$Data],200);
     }
