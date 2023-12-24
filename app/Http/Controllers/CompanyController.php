@@ -64,4 +64,9 @@ class CompanyController extends Controller
         $company=Company::all();
         return response()->json($company);
     }
+
+    public function getOneCompany($id){
+        $company=Company::find($id);
+        return response()->json($company);
+    }
 }

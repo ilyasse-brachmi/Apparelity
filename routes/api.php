@@ -29,6 +29,7 @@ Route::post('company',[CompanyController::class,'add']);
 Route::put('company',[CompanyController::class,'edit']);
 Route::delete('company/{id}',[CompanyController::class,'delete']);
 Route::get('company',[CompanyController::class,'get']);
+Route::get('company/{id}',[CompanyController::class,'getOneCompany']);
 //-----------------------End Company Controller-----------------//
 
 
