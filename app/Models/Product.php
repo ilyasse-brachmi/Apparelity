@@ -17,13 +17,13 @@ class Product extends Model
     protected $table = 'product';
 
     protected $fillable = [
-        'id','name', 'price','description','production_date','company_id','category_id'
+        'id','name', 'price','description','address','production_date','company_id','category_id'
     ];
 
     public function scopeSelection($query)
         {
 
-        return $query->select('id', 'name', 'price','description','production_date');
+        return $query->select('id', 'name','address', 'price','description','production_date');
     }
     public function materials()
     {

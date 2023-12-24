@@ -21,6 +21,7 @@ return new class extends Migration
             $table->decimal('price');
             $table->string('description')->nullable();
             $table->date('production_date');
+            $table->string('address');
                  //*************************image_path we will us mediable************************//
             $table->timestamps();
             $table->softDeletes();
