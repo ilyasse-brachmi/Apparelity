@@ -67,13 +67,14 @@ export interface Category {
 
 export interface ProductMaterial {
   id: number;
-  trace: string;
-  order: number;
+  trace?: string;
+  order?: number;
   name: string;
-  coordonates: [number, number];
-  supplier: string;
+  coordonates?: [number, number];
+  address?: string;
+  supplier?: string;
   children: ProductMaterial[];
-  opened: boolean;
+  opened?: boolean;
 }
 
 export interface GeoCoordonates {

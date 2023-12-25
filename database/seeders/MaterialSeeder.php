@@ -21,7 +21,7 @@ class MaterialSeeder extends Seeder
             'product_id' => '1',
             'name' => 'Cotton',
             'supplier' => 'test',
-            'address' => 'Morroco,fes av bayrouth',
+            'address' => 'Av. Moulay Rachid, Martil 93159',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -29,7 +29,7 @@ class MaterialSeeder extends Seeder
             'product_id' => '1',
             'name' => 'material2',
             'supplier' => 'test',
-            'address' => 'France,Paris etc',
+            'address' => 'Taşpazar, 804. Sk. No:9 D:C, 68100 Merkez/Aksaray, Turquie',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -37,7 +37,7 @@ class MaterialSeeder extends Seeder
             'product_id' => '2',
             'name' => 'material1',
             'supplier' => 'test',
-            'address' => 'Tunusie,Tunusie etc',
+            'address' => '27QR+XH8, Jidka Afgooye, Mogadishu, Somalie',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -45,7 +45,7 @@ class MaterialSeeder extends Seeder
             'product_id' => '2',
             'name' => 'material2',
             'supplier' => 'test',
-            'address' => 'adrabijan,adrabijan etc',
+            'address' => '255 Saint Asaph Street, Christchurch Central City, Christchurch 8011, Nouvelle-Zélande',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -53,7 +53,7 @@ class MaterialSeeder extends Seeder
             'product_id' => '2',
             'name' => 'material3',
             'supplier' => 'test',
-            'address' => 'Tunusie,Tunusie etc',
+            'address' => '1 Chome-1-1 Uchisaiwaicho, Chiyoda City, Tokyo 100-0011, Japon',
             'created_at' => now(),
             'updated_at' => now(),
         ]);

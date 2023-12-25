@@ -25,7 +25,6 @@ watch(
 
 
 const addMaterial = (material: Material, array = [...materials.value] as Material[]) => {
-  console.log(material)
   opened.value = false
   if (array.length) {
     array.forEach(element => {

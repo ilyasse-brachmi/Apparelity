@@ -24,10 +24,6 @@ const maxBounds = latLngBounds([
 	[40.70081290280357, -74.26963806152345],
 	[40.82991732677597, -74.08716201782228]
 ])
-// function zoomUpdated (zoom) {
-// 	console.log(zoom)
-// 	zoom.value = zoom
-// }
 
 function centerUpdated (center) {
 	center.value = center;

@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { ref, type PropType, onMounted } from 'vue';
-import type { ProductMaterial } from "@/types/index"
+import type { ForwardAdress, ProductMaterial } from "@/types/index"
 import { LMarker, LPopup, LPolyline, LCircleMarker } from "@vue-leaflet/vue-leaflet";
-import { getReverseAdress } from "@/composables/usegeoCodingAdress"
-import type { ReverseAdress } from "@/types/index"
+import { getForwardAdress } from "@/composables/usegeoCodingAdress"
 
 declare type ParentMaterial = 'parent'
 
@@ -13,7 +12,7 @@ const props = defineProps({
     required: true
   },
   parentMaterial: {
-    type: Object as PropType<ProductMaterial | ParentMaterial>,
+    type: Array as PropType<[Number, Number]> || String as PropType<ParentMaterial>,
     default: {} as ProductMaterial
   },
   image: {
@@ -22,22 +21,21 @@ const props = defineProps({
   }
 })
 
-const reverseAdress = ref<Array<ReverseAdress[]>>([])
+const forwardAdress = ref<ForwardAdress[]>([])
 
-onMounted(() => {
+onMounted(async () => {
   props.materials.forEach(async (marker, index) => {
-    if (marker.coordonates[0] !== undefined && marker.coordonates[1] !== undefined) {
-      reverseAdress.value[index] = await getReverseAdress(marker.coordonates[0] as number, marker.coordonates[1] as number)
-    }
+    const forwardResult = ref({} as ForwardAdress)
+    forwardResult.value = await getForwardAdress(marker.address!)
+    forwardAdress.value.push(forwardResult.value)
   })
-  console.log("eeeeeeeee" + reverseAdress.value.length)
 })
 
 </script>
 <template lang="pug">
-div(v-for="(marker, index) in materials" :key="index" class="")
-  LCircleMarker(v-if="parentMaterial == 'parent'" :latLng="marker.coordonates" :radius="23" :color="'orange'")
-  LMarker(:latLng="marker.coordonates")
+div(v-for="(marker, index) in forwardAdress" :key="index" class="")
+  LCircleMarker(v-if="parentMaterial == 'parent' && marker.geometry" :latLng="[marker.geometry.lat, marker.geometry.lng]" :radius="23" :color="'orange'")
+  LMarker(v-if="marker.geometry" :latLng="[marker.geometry.lat, marker.geometry.lng]")
     LPopup(style="width: 15rem; height: 10rem;")
       div(class="w-full h-full flex flex-col gap-4")
         div(class="flex items-center justify-start gap-x-2 w-full h-fit")
@@ -46,14 +44,17 @@ div(v-for="(marker, index) in materials" :key="index" class="")
           div(v-else class="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center")
             Icon(icon="academicons:open-materials" class="text-5xl text-primary")
           div(class="flex flex-col justify-start max-w-[10rem]")
-            h1(class="font-semibold text-xl !m-0 w-full text-primary") {{ marker.name }}
-            div(class="flex items-start justify-center gap-x-1 w-full text-base font-semibold")
-              p(class="!m-0 truncate") {{ reverseAdress[index][0].components.country }}
-              p(class="!m-0") {{ reverseAdress[index][0].annotations.flag }}
+            h1(class="font-semibold text-xl !m-0 w-full text-primary") {{ materials[index].name }}
+            div(v-if="marker" class="flex items-start justify-center gap-x-1 w-full text-base font-semibold")
+              p(class="!m-0 truncate") {{ marker.components.country }}
+              p(class="!m-0") {{ marker.annotations.flag }}
         div
-          p(class="!m-0 font-semibold") {{ marker.supplier }}
-          p(class="!m-0 w-full text-gray-500") {{ reverseAdress[index][0].formatted }}
+          p(class="!m-0 font-semibold") {{ materials[index].supplier }}
+          p(v-if="marker" class="!m-0 w-full text-gray-500") {{ marker.formatted }}
+          div(class="flex items-center gap-x-2")
+            p Lat : {{ marker.geometry.lat }}
+            p Lang : {{ marker.geometry.lng }}
         //- p(v-else) Coordinates not available  
-        LPolyline(v-if="parentMaterial !== 'parent' && parentMaterial.coordonates" :latLngs="[parentMaterial.coordonates, marker.coordonates]" :color="`hsl(0, 100%, ${10 + (marker.order * 15)}%)`" :lineCap="'butt'")
-  showMaterials(:materials="marker.children" :parentMaterial="marker")
+        LPolyline(v-if="parentMaterial !== 'parent' && parentMaterial" :latLngs="[parentMaterial, [marker.geometry.lat, marker.geometry.lng]]" :color="`hsl(0, 100%,50%)`" :lineCap="'butt'")
+  showMaterials(:materials="materials[index].children" :parentMaterial="[marker.geometry.lat, marker.geometry.lng]")
 </template>
