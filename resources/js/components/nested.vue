@@ -17,10 +17,13 @@ defineProps({
   },
 });
 const test = ref<string[]>([])
-const prodCoordonates = ref<string[]>([])
-const prodSupliar = ref<string[]>([])
+const prodAddress = ref<string[]>([])
+const prodSupplier = ref<string[]>([])
 const addItems = (material: ProductMaterial) => {
   store.setCurrentMaterial(material)
+  prodAddress.value = []
+  prodSupplier.value = []
+  test.value = []
 }
 const checked = ref(false)
 </script>
@@ -36,10 +39,10 @@ div(v-for="(item,index) in materials" :key="index")
         AppInput(:type="'text'" :labelName="'Material name'" :color="'#1d6795'" v-model="test[index]")
         Icon(icon="mingcute:down-line" :class="checked ? 'rotate-180' : ''" class="text-3xl text-primary ml-4")
       .dz-collapse-content
-        AppInput(:type="'text'" :labelName="'Coordonates'" :color="'#1d6795'" v-model="prodCoordonates[index]" class="my-6")
-        AppInput(:type="'text'" :labelName="'Suppliar'" :color="'#1d6795'" v-model="prodSupliar[index]" class="my-6")
+        AppInput(:type="'text'" :labelName="'Address'" :color="'#1d6795'" v-model="prodAddress[index]" class="my-6")
+        AppInput(:type="'text'" :labelName="'Supplier'" :color="'#1d6795'" v-model="prodSupplier[index]" class="my-6")
     div(class="flex items-center justify-center gap-2 text-white")
-      button(v-if="test[index]" type="button" class="p-4 bg-primary rounded-lg" @click="addItems({id: index, order: item.order, name: test[index], opened: false, trace: item.trace, coordonates: prodCoordonates[index], supplier: prodSupliar[index], children: []})") Submit
+      button(v-if="test[index] && prodAddress[index] && prodSupplier[index]" type="button" class="p-4 bg-primary rounded-lg" @click="addItems({id: index, order: item.order, name: test[index], opened: false, trace: item.trace, address: prodAddress[index], supplier: prodSupplier[index], children: []})") Submit
   div(class="ml-20")
     Nested(v-if="item.children.length" :materials="item.children")
 </template>

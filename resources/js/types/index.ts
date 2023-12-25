@@ -306,3 +306,27 @@ export interface ForwardAdress {
     lng: number;
   };
 };
+
+
+export interface AppProductMaterials{
+  name: string;
+  address: string;
+  supplier: string; 
+}
+
+export interface AppProduct {
+  name: string;
+  price: number;
+  description: string;
+  production_date: string;
+  supplier: string;
+  company_id: number;
+  category_id: number;
+  address: string;
+  image_product: string;
+  order?: number;
+  id?: number;
+  trace?: string;
+  opened?: boolean;
+  children: AppProductMaterials[]
+}

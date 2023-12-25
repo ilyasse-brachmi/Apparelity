@@ -9,10 +9,10 @@ import AppModal from '@/components/AppModal.vue'
 import { useField, useForm } from 'vee-validate'
 import { computed, onMounted, ref, watch } from 'vue'
 import Swal from "sweetalert2"
-import type { ProductMaterial, Category } from "@/types/index"
+import type { ProductMaterial, Category, AppProduct } from "@/types/index"
 import Placeholder from "../../../images/placeholder.jpg"
 import { useMaterial } from '@/stores/material.store';
-
+import { removeProperties } from "@/composables/useFiltredObject"
 
 const store = useAuth()
 const router = useRouter()
@@ -20,6 +20,7 @@ const router = useRouter()
 const scheme = computed(() => {
   return yup.object({
     name: yup.string().required('Name is a required field'),
+    address: yup.string().required('Address is a required field'),
     price: yup.number().typeError('Must be a number').required('Price is a required field'),
     description: yup.string().required('Description is a required field'),
   })
@@ -37,12 +38,18 @@ const {
 const {
   handleChange: priceError,
   value: price
-} = useField<string>('price')
+} = useField<number>('price')
 
 const {
   handleChange: descriptionError,
   value: description
 } = useField<string>('description')
+
+
+const {
+  handleChange: addressError,
+  value: address
+} = useField<string>('address')
 
 
 const date = ref<String>('')
@@ -63,9 +70,10 @@ const onFileSelected = (event) => {
   }
 }
 
-const addProductSubmit = handleSubmit(async () => {
+const addProductSubmit = async () => {
   const formData = new FormData();
 
+  const materialResults = await getMaterials(materials.value)
   formData.append('name', name.value)
   formData.append('price', price.value)
   formData.append('description', description.value)
@@ -73,6 +81,8 @@ const addProductSubmit = handleSubmit(async () => {
   if (selectedFile.value)
     formData.append('image_product', selectedFile.value);
   formData.append('production_date', date.value)
+  formData.append('address', address.value)
+  formData.append('materials', JSON.stringify(materialResults))
   formData.append('category_id', selectedCategory.value)
 
 
@@ -100,7 +110,7 @@ const addProductSubmit = handleSubmit(async () => {
         })
       }
     })
-})
+}
 
 
 const MaterailStore = useMaterial()
@@ -112,79 +122,41 @@ watch(
 
 
 
-const addMaterial = (material: ProductMaterial, array = [...materials.value] as ProductMaterial[]) => {
+const addMaterial = (material: ProductMaterial, array = [...materials.value] as AppProduct[]) => {
   opened.value = false
-  console.log(material.trace)
   if (array.length) {
     array.forEach(element => {
       if (element.trace === material.trace) {
-        // console.log(element.trace + '---' + material.trace)
-        element.children.push({ id: material.id, order: material.order + 1, name: material.name, children: material.children, opened: material.opened, trace: material.trace + element.children.length + (material.order + 1), coordonates: material.coordonates, supplier: material.supplier })
+        element.children.push({ id: material.id, order: material.order + 1, name: material.name, children: material.children, trace: material.trace + element.children.length + (material.order + 1), address: material.address, supplier: material.supplier })
       }
       else {
-        console.log('elese')
         if (element.children.length) {
-          console.log('3ndo')
           addMaterial(material, element.children)
-        }
-        else {
-          console.log('ma3ndo')
-          console.log(element.trace + '---' + material.trace)
-          // element.children.push({ id: element.children.length, order: material.order + 1, name: material.name, children: material.children, opened:material.opened, trace: material.trace + element.children.length + (material.order + 1)  })
         }
       }
     });
   }
-  else console.log('aaaaaaaa')
-  // console.log(materials)
 }
 
-// const addMaterial = (material: ProductMaterial, array = [...materials.value] as ProductMaterial[]) => {
-//   console.log(material)
-//   opened.value = false
-//   if (array.length) {
-//     array.forEach(element => {
-//       if (element.trace === material.trace) {
-//           console.log(element.trace + '---' + material.trace)
-//           element.children.push({ id: element.children.length, order: material.order + 1, name: material.name, children: material.children, opened:material.opened, trace: material.trace + element.children.length + (material.order + 1) })
-//         if (element.children.length) {
-//           console.log('3ndo')
-//           addMaterial(material, element.children)
-//         }
-//         else {
-//           console.log('ma3ndo')
-//           console.log(element.trace + '---' + material.trace)
-//           // element.children.push({ id: element.children.length, order: material.order + 1, name: material.name, children: material.children, opened:material.opened, trace: material.trace + element.children.length + (material.order + 1)  })
-//         }
-//       }
-//     });
-//   }
-//   else console.log('aaaaaaaa')
-//   // console.log(materials)
-// }
-
-
-const materials = ref<ProductMaterial[]>([
+const materials = ref<AppProduct[]>([
   {
     id: 0,
+    category_id: 0,
+    company_id: 0,
+    description: '',
+    image_product: '',
+    price: 0,
+    production_date: "2024-03-14",
     order: 1,
     trace: '01',
     name: "Final Product",
-    coordonates: '',
+    address: '',
     supplier: '',
     opened: false,
     children: [
     ]
   }
-])  // {} as ProductMaterial,
-  // {
-  //   id: 0,
-  //   order: 1,
-  //   trace: '01',
-  //   name: name.value,
-  //   opened: false,
-  //   children: []
-  // }
+])
 watch(
   () => materials.value,
   (newVal) => {
@@ -195,19 +167,20 @@ watch(
 
 const opened = ref(false)
 const content = ref('')
-const newProd = ref({prodCoordonates: '', prodSupliar: ''})
-const selectedCategory = ref('')
+const newProd = ref<{Address: String, Supplier: String}>({Address: '', Supplier: ''})
+const selectedCategory = ref(0)
 const categories = ref([] as Category[])
 const checked = ref(false)
 
-// watch(
-//   () => newProd.value,
-//   (newVal) => {
-//     materials.value[0].coordonates = newVal.prodCoordonates
-//     materials.value[0].supplier = newVal.prodSupliar
-//   },
-//   { deep: true }
-// )
+
+const getMaterials = (array: AppProduct[]) => {
+  array[0].children.forEach(element => {
+    if(element)
+      element = removeProperties(element, ['id', 'order', 'trace', 'opened'])
+  });
+  return array[0].children
+}
+
 
 onMounted(async () => {
   await $AppAxios.get('/api/category')
@@ -231,7 +204,7 @@ div(class="flex items-center justify-center h-screen w-screen py-8")
       div(class="mt-8")
         AppInput(:labelName="'Price'" name="price" :type="'text'" :color="'#1d6795'" :icon="'healthicons:dollar'" @input="priceError" :inputError="errors.price")
       div(class="mt-8")
-        AppInput(:labelName="'Material'" name="material" :type="'text'" :color="'#1d6795'")
+        AppInput(:labelName="'Address'" name="address" :type="'text'" :color="'#1d6795'" @input="addressError" :inputError="errors.address")
       div(class="mt-2")
         label(class="px-2 text-primary text-xs") Production date
         input(type="date" v-model="date" class="w-full p-2 h-[3.6rem] min-h-[3.6rem] cursor-pointer border border-primary rounded-lg")
@@ -240,10 +213,6 @@ div(class="flex items-center justify-center h-screen w-screen py-8")
           option(disabled value="") Select category
           option(v-for="category in categories" :key="category.id" :value="category.id") {{ category.name }}
     div(class="mt-8")
-      button(@click="console.log(materials)") CLICK
-      div(class="")
-        //- button(@click="getData") Get data
-        //- p(v-if="data") {{ data }}
       div(v-for="item in materials" :key="item.id" class="flex flex-col gap-y-8 items-center justify-center")
         div(class="w-full flex items-center gap-x-4")
           h1(class="whitespace-nowrap text-primary font-semibold") {{ item.name }}
@@ -253,11 +222,11 @@ div(class="flex items-center justify-center h-screen w-screen py-8")
               AppInput(:type="'text'" :labelName="'Material name'" :color="'#1d6795'" v-model="content")
               Icon(icon="mingcute:down-line" :class="checked ? 'rotate-180' : ''" class="text-3xl text-primary ml-4")
             .dz-collapse-content
-              AppInput(:type="'text'" :labelName="'Coordonates'" :color="'#1d6795'" v-model="newProd.prodCoordonates" class="my-6")
-              AppInput(:type="'text'" :labelName="'Suppliar'" :color="'#1d6795'" v-model="newProd.prodSupliar" class="my-6")
+              AppInput(:type="'text'" :labelName="'Address'" :color="'#1d6795'" v-model="newProd.Address" class="my-6")
+              AppInput(:type="'text'" :labelName="'Suppliar'" :color="'#1d6795'" v-model="newProd.Supplier" class="my-6")
           div(class="flex items-center justify-center gap-2 text-white")
             //- Icon(icon="carbon:add-filled" class="text-primary text-3xl cursor-pointer" @click="item.opened = true") Add Material
-            button(v-if="content" type="button" class="p-4 bg-primary rounded-lg" @click="addMaterial({id: item.id, order: item.order, name: content, opened: false, coordonates: prodCoordonates, supplier: prodSupliar, trace: item.trace , children: []})") Submit
+            button(v-if="content && newProd.Address && newProd.Supplier" type="button" class="p-4 bg-primary rounded-lg" @click="addMaterial({id: item.id, order: item.order, name: content, opened: false, address: newProd.Address, supplier: newProd.Supplier, trace: item.trace , children: []})") Submit
         div(class="ml-20")
           Nested(v-if="item.children?.length" :materials="item.children")
     div(class="flex justify-center mt-16")

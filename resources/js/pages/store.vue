@@ -147,7 +147,7 @@ StoreLayout(@NameSearched="searchedName" @sortClicked="sorting")
 										div(class="flex items-center justify-center py-2")
 											h3(class="px-2 py-1 bg-primary/20 text-sm text-primary rounded-full w-fit") {{ currProduct.company_name }}
 									div(class="flex justify-center h-full")
-										ul(class="w-fit h-fit min-w-[17rem] bg-white shadow-md rounded-xl border-4 my-4 px-2 border-primary/20 overflow-auto max-h-[32rem]")
+										ul(class="w-fit h-fit min-w-[25rem] bg-white shadow-md rounded-xl border-4 my-4 px-2 border-primary/20 overflow-auto max-h-[32rem]")
 											li(v-if="forwardAdress.length" v-for="(item, index) in forwardAdress" :key="index" class="bg-gray-100 w-full cursor-pointer hover:bg-primary/10 duration-200 rounded-lg h-fit p-4 my-2")
 												div(class="flex items-center justify-between")
 													div(class="flex items-center gap-x-2")
