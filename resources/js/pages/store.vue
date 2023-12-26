@@ -13,8 +13,6 @@ import { getForwardAdress, getReverseAdress } from "@/composables/usegeoCodingAd
 import Swal from "sweetalert2"
 import router from "@/routes"
 
-
-
 const modal = ref(false)
 const curProdMaterials = ref([] as ProductMaterial[]) 
 const openModal = async(product: Product) => {
