@@ -38,9 +38,6 @@ Route::get('/login', function () {
 Route::get('/register', function () {
     return view('welcome');
 });
-Route::get('/example', function () {
-    return view('welcome');
-});
 
 Route::get('/test', function () {
     return view('welcome');

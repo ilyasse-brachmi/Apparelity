@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import StoreLayout from '@/layouts/storeLayout.vue'
 import AppModal from "@/components/AppModal.vue"
-import Exemple from "@/pages/exemple.vue"
 import Card from "@/components/card.vue"
 import AppInput from '@/components/AppInput.vue'
 import { $AppAxios } from "@/utils/axiosSingleton"
@@ -86,10 +85,11 @@ watch(
 <template lang="pug">
 StoreLayout(@sortClicked="sorting" @NameSearched="searchedName")
   template(v-slot:addBtn)
-    div(v-if="store.isAuth")
+    div(v-if="store.isAuth" class="flex items-center gap-x-16")
       a(href="/product"  class="border flex items-center gap-2 text-white border-white rounded-lg w-full py-4 px-4 bg-primary hover:shadow-md duration-300 cursor-pointer") 
         p(class="text-sm").font-semibold Add Product
         Icon(:icon="'gridicons:add-outline'" class="text-2xl")
+      a(href="/store" class="text-primary text-lg duration-200 hover:underline") Store
       AppModal(v-if="addModal" :title="'Add New Product'" @close="addModal = false")
         //- Material(:name="testName")
         //- div(class="flex items-center justify-center h-full py-8")
@@ -135,7 +135,6 @@ StoreLayout(@sortClicked="sorting" @NameSearched="searchedName")
                   div(class="flex justify-center h-full")
                     div(class="w-[24rem] h-[25rem] bg-white shadow-md rounded-xl border-4 my-4 border-primar")
             div(class="col-span-3")
-              Exemple
       div(v-else class="h-screen flex flex-col items-center pt-[10rem]")
         p(class="text-xl tracking-wide font-bold") Opps... It's empty in here 
         p(class="text-base text-slate-500") No offers hase been saved yet.

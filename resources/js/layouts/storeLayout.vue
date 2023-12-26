@@ -59,9 +59,9 @@ Sidebar(:categories="categories" :materials="materials" :sidebarToggle="opened")
 			slot(name="addBtn")
 		div(v-if="withSearch" class="flex justify-center lg:justify-end items-center sm:py-4 px-2 bg-gray-50 z-10")
 			div(class="flex items-center justify-between max-w-[30rem] bg-primary/5 px-1 sm:px-2 lg:px-4 py-0.5 sm:py-2 rounded-lg")
-				input(type="text" @keyup.enter="$emit('NameSearched', {name: nameValue, type: selectedSearch})" v-model="nameValue" placeholder="Search for a Product" class="bg-transparent text-sm sm:text-base md:text-lg outline-none border-none w-full")
+				input(type="text" @keyup.enter="$emit('NameSearched', {name: nameValue, type: selectedSearch})" v-model="nameValue" placeholder="Search for ..." class="bg-transparent text-sm sm:text-base md:text-lg outline-none border-none w-full")
 				//- Icon(icon="tabler:search" class="text-3xl lg:text-4xl mx-2 text-primary cursor-pointer")
-				select(v-if="storePage" class="px-4 py-2 bg-transparent border-0 border-b-2 border-gray-200" v-model="selectedSearch")
+				select(v-if="storePage" class="dz-select" v-model="selectedSearch")
 					option(value="product") Product
 					option(value="company") Company
 			Icon(:icon="icon" @click="clicked()" class="text-4xl text-primary cursor-pointer ml-4")

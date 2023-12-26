@@ -28,7 +28,7 @@ div(id="searchProduct" class="bg-gray-100")
       div(class="flex items-center justify-between w-full px-2 sm:px-4 lg:px-8 py-2 sm:py-4 border-2 border-black rounded-full max-w-[60rem]")
         input(type="text" placeholder="Enter a product or company name" @keyup.enter="search" v-model="nameValue" class="bg-transparent px-4 py-2 text-sm sm:text-base md:text-lg outline-none border-none w-full")
         //- Icon(icon="tabler:search" class="text-4xl text-gray-800 cursor-pointer")
-        select(class="px-4 py-2 bg-transparent border-0 border-b-2 border-gray-200" v-model="selectedSearch")
+        select(class="dz-select rounded-full" v-model="selectedSearch")
           option(value="product") Product
           option(value="company") Company
     p(class="text-center text-gray-500 text-xs sm:text-sm") Enter the product name to inquire about the traceability of its productions raw materials

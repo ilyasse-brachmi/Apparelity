@@ -5,7 +5,6 @@ import Privacy from "./pages/privacy.vue"
 import Terms from "./pages/terms.vue"
 import Login from "./pages/auth/login.vue"
 import Register from "./pages/auth/register.vue"
-import Example from "@/pages/exemple.vue"
 import CompleteAccount from "@/pages/auth/completeAccount.vue"
 import Dashboard from "@/pages/dashboard.vue"
 import Test from "@/pages/test.vue";
@@ -84,14 +83,6 @@ const routes = [
     component: Terms,
     meta: {
       auth: 'Both'
-    }
-  },
-  {
-    path: '/example',
-    name: 'Example',
-    component: Example,
-    meta: {
-      auth: 'Auth'
     }
   },
   {
