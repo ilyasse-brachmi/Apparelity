@@ -11,6 +11,7 @@ import { onMounted, ref, watch } from 'vue'
 import type { ProductResponse , ProductMaterial, Product, ForwardAdress } from "@/types/index"
 import { getForwardAdress, getReverseAdress } from "@/composables/usegeoCodingAdress"
 import Swal from 'sweetalert2'
+import { getObjDepth } from "@/composables/useArrayDepth";
 
 const store = useAuth()
 const data = ref([] as Array<ProductResponse>)
@@ -91,6 +92,8 @@ const closeModal = () => {
 	finalProduct.value = {} as ForwardAdress
 	curProdMaterials.value = []
 	forwardAdress.value = []
+  getObjDepth([] as ForwardAdress[], {} as ForwardAdress, true)
+
 }
 </script>
 <template lang="pug">

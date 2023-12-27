@@ -8,8 +8,8 @@ import { $AppAxios } from "@/utils/axiosSingleton";
 import { LMap, LTileLayer } from "@vue-leaflet/vue-leaflet";
 import "leaflet/dist/leaflet.css";
 import ShowMaterials from "@/components/showMaterials.vue"
-import { materials } from "@/data/products.data"
 import { getForwardAdress, getReverseAdress } from "@/composables/usegeoCodingAdress"
+import { getObjDepth } from "@/composables/useArrayDepth"
 import Swal from "sweetalert2"
 import router from "@/routes"
 
@@ -25,7 +25,6 @@ const openModal = async(product: Product) => {
 	modal.value = true
 	finalProduct.value = await getForwardAdress(curProdMaterials.value[0].address!)
 }
-
 const nameSearched = ref('' as string)
 const selectedSearch = ref('product')
 const searchedName = (searchData: { name: string; type: string })=>{
@@ -123,6 +122,7 @@ const closeModal = () => {
 	finalProduct.value = {} as ForwardAdress
 	curProdMaterials.value = []
 	forwardAdress.value = []
+	getObjDepth([] as ForwardAdress[], {} as ForwardAdress, true)
 }
 </script>
 <template lang="pug">

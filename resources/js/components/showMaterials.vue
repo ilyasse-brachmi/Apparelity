@@ -3,6 +3,7 @@ import { ref, type PropType, onMounted } from 'vue';
 import type { ForwardAdress, ProductMaterial } from "@/types/index"
 import { LMarker, LPopup, LPolyline, LCircleMarker } from "@vue-leaflet/vue-leaflet";
 import { getForwardAdress } from "@/composables/usegeoCodingAdress"
+import { getObjDepth } from "@/composables/useArrayDepth"
 
 declare type ParentMaterial = 'parent'
 
@@ -20,7 +21,6 @@ const props = defineProps({
     required: false
   }
 })
-
 const forwardAdress = ref<ForwardAdress[]>([])
 
 onMounted(async () => {
@@ -55,6 +55,6 @@ div(v-for="(marker, index) in forwardAdress" :key="index" class="")
             p Lat : {{ marker.geometry.lat }}
             p Lang : {{ marker.geometry.lng }}
         //- p(v-else) Coordinates not available  
-        LPolyline(v-if="parentMaterial !== 'parent' && parentMaterial" :latLngs="[parentMaterial, [marker.geometry.lat, marker.geometry.lng]]" :color="`hsl(0, 100%,50%)`" :lineCap="'butt'")
+        LPolyline(v-if="parentMaterial !== 'parent' && parentMaterial" :latLngs="[parentMaterial, [marker.geometry.lat, marker.geometry.lng]]" :color="`hsl(16, 88%,${10 + (getObjDepth(forwardAdress, marker, false) * 15)}%)`" :lineCap="'butt'")
   showMaterials(:materials="materials[index].children" :parentMaterial="[marker.geometry.lat, marker.geometry.lng]")
 </template>
