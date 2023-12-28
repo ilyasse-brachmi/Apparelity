@@ -4,7 +4,7 @@ import { onMounted, ref } from "vue"
 import { $AppAxios } from "@/utils/axiosSingleton";
 import { useAuth } from '@/stores/auth.store'
 import Navbar from '@/components/navbar.vue'
-import type { Category, Material } from "@/types/index"
+import type { Category, Material, ProductResponse } from "@/types/index"
 import router from "@/routes";
 
 const opened = ref(false)
@@ -17,15 +17,17 @@ const openModal = () => {
 	modal.value = true
 }
 const categories = ref([] as Array<Category>)
-const materials = ref([] as Array<Material>)
+const maxPrice = ref(0)
 onMounted(async () => {
 	$AppAxios.get('/api/category')
 		.then((response) => {
 			categories.value = response.data
 	})
-	$AppAxios.get('/api/material')
+	$AppAxios.get('/api/product')
 		.then((response) => {
-			materials.value = response.data.data
+			maxPrice.value = parseInt(response.data.reduce((max: number, item: ProductResponse) => {
+				return (item.original.price > max) ? item.original.price : max
+			}, 0))
 	})
 })
 const nameValue = ref('')
@@ -35,7 +37,6 @@ const props = defineProps({
 		default: true
 	}
 })
-// provide('sidebarToggle', opened.value)
 const icon = ref('iconoir:sort-up')
 const clicked = () => {
 	if(icon.value === 'iconoir:sort-up'){
@@ -53,7 +54,7 @@ const storePage = router.currentRoute.value.name=="Store"? true: false
 </script>
 <template lang="pug">
 Navbar(@sidebar-toggle="sidebarToggle")
-Sidebar(:categories="categories" :materials="materials" :sidebarToggle="opened")
+Sidebar(:categories="categories" :price="maxPrice" :sidebarToggle="opened")
 	div(:class="store.isAuth? 'lg:flex justify-between':''")
 		div(class="flex justify-center items-center py-2 sm:py-4 px-2 bg-gray-50")
 			slot(name="addBtn")

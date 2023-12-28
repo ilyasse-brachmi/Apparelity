@@ -10,7 +10,6 @@ export const getObjDepth = (array: ForwardAdress[], item: ForwardAdress, intiali
       order = order + 1
       prevArray = array
     }
-    console.log(order)
     return order
   }
   else{

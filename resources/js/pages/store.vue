@@ -10,9 +10,12 @@ import "leaflet/dist/leaflet.css";
 import ShowMaterials from "@/components/showMaterials.vue"
 import { getForwardAdress, getReverseAdress } from "@/composables/usegeoCodingAdress"
 import { getObjDepth } from "@/composables/useArrayDepth"
+import { useAppa } from "@/stores/index.store"
 import Swal from "sweetalert2"
 import router from "@/routes"
+import { boolean } from "yup"
 
+const AppaStore = useAppa()
 const modal = ref(false)
 const curProdMaterials = ref([] as ProductMaterial[]) 
 const openModal = async(product: Product) => {
@@ -117,6 +120,55 @@ watch(
   }
 )
 
+const filteredSet = new Set<String>([])
+const filtredPrice = ref(0)
+const filtredCategory = ref(0)
+const filtredData = ref([] as ProductResponse[])
+const foundedFilter = ref({filtred: null as boolean | null, criteria: filteredSet})
+watch(
+	() => AppaStore.filter,
+	(newVal) => {
+		AppaStore.isLoading = true
+		setTimeout(() => {
+			AppaStore.isLoading = false
+		}, 200)
+		if(typeof(newVal.category) == 'number' || typeof(newVal.price) == 'number'){
+			filtredPrice.value = newVal.price !== null ? newVal.price : 0
+			filtredCategory.value = newVal.category !== null ? (newVal.category as number) : 0
+			if(foundedFilter.value.criteria.values.length){
+				if(filtredCategory.value === 0) {
+					filtredData.value =  filtredData.value.filter((item) => item.original.price <= filtredPrice.value)
+				}
+				else if(filtredPrice.value === 0) {
+					filtredData.value =  filtredData.value.filter((item) => item.original.category_id === filtredCategory.value)
+				}
+				else{
+					filtredData.value =  filtredData.value.filter((item) => item.original.category_id === filtredCategory.value && item.original.price <= filtredPrice.value)
+				}
+				foundedFilter.value.filtred = filtredData.value.length > 0 ? true : false
+			}
+			else{
+				if(filtredCategory.value === 0) {
+					filtredData.value =  data.value.filter((item) => item.original.price <= filtredPrice.value)
+				}
+				else if(filtredPrice.value === 0) {
+					filtredData.value =  data.value.filter((item) => item.original.category_id === filtredCategory.value)
+				}
+				else{
+					filtredData.value =  data.value.filter((item) => item.original.category_id === filtredCategory.value && item.original.price <= filtredPrice.value)
+				}
+				foundedFilter.value.filtred = filtredData.value.length > 0 ? true : false
+			}
+		}
+		else{
+			foundedFilter.value.filtred = null
+			foundedFilter.value.criteria.clear()
+		} 
+			
+	},
+	{ deep: true }
+)
+
 const closeModal = () => {
 	modal.value = false
 	finalProduct.value = {} as ForwardAdress
@@ -129,8 +181,8 @@ const closeModal = () => {
 StoreLayout(@NameSearched="searchedName" @sortClicked="sorting")
 	template(v-slot:cards)
 		.flex.items-center.justify-center.h-full.w-full
-			div(v-if="data.length" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 py-8 h-full")
-				div(v-for="product in data" :key="product.original.id")
+			div(v-if="data.length || typeof(foundedFilter.filtred) === 'object'" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 py-8 h-full")
+				div(v-for="product in (typeof(foundedFilter.filtred) === 'boolean' ? filtredData : data)" :key="product.original.id")
 					Card(:product="product.original" @openModal="openModal(product.original)")
 				AppModal(v-if="modal" :title="'Product Traceability'" @close="closeModal")
 					div(class="grid grid-cols-5 w-full h-full bg-gray-100 ")
@@ -163,7 +215,7 @@ StoreLayout(@NameSearched="searchedName" @sortClicked="sorting")
 									LMap(:useGlobalLeaflet="false" ref="map" v-model:zoom="zoom" :center="center")
 										LTileLayer(url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" layer-type="base" name="OpenStreetMap" :minZoom="minZoom")
 										ShowMaterials(:materials="curProdMaterials" :parent-material="'parent'" :image="`/storage/public/${currProduct.product_image.split('public/')[1]}`")
-			div(v-else class="h-screen flex flex-col items-center pt-[10rem]")
+			div(v-if="!data.length || foundedFilter.filtred === false" class="h-screen flex flex-col items-center pt-[10rem]")
 				p(class="text-2xl tracking-wide font-semibold") Opps... It's empty in here 
 				p(class="text-base text-slate-500") No offers hase been saved yet.
 </template>
