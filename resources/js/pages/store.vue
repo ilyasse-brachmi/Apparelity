@@ -3,7 +3,7 @@ import AppModal from "@/components/AppModal.vue"
 import Card from "@/components/card.vue"
 import StoreLayout from '@/layouts/storeLayout.vue'
 import { onMounted, ref, watch } from "vue"
-import type { ProductResponse , ProductMaterial, ReverseAdress, Product, ForwardAdress } from "@/types/index"
+import type { ProductResponse , ProductMaterial, ReverseAdress, Product, ForwardAdress, Category } from "@/types/index"
 import { $AppAxios } from "@/utils/axiosSingleton";
 import { LMap, LTileLayer } from "@vue-leaflet/vue-leaflet";
 import "leaflet/dist/leaflet.css";
@@ -124,13 +124,58 @@ const closeModal = () => {
 	forwardAdress.value = []
 	getObjDepth([] as ForwardAdress[], {} as ForwardAdress, true)
 }
+const categorieClicked = ref<Category>()
+const priceClicked = ref<number>()
+const foo = (clickedCategorie: { id: number; name: string }, clickedPrice: number)=>{
+	if(!(clickedCategorie.id===undefined)) {
+		categorieClicked.value = clickedCategorie
+	}
+	if(clickedPrice!==undefined)
+		priceClicked.value = clickedPrice
+}
+// const noCategorieFound = ref(false)
+const filtred = ref([] as Array<ProductResponse>)
+const filtredData = ref([] as Array<ProductResponse>)
+watch(()=>[priceClicked.value, categorieClicked.value],  (newVal)=> {
+	const [priceVal, categorieVal] = newVal
+	if(priceVal || categorieVal){
+		// console.log(priceVal + "  "+ categorieVal?.id)
+		if(categorieVal?.id!==undefined && categorieVal?.id!==0){
+			// filtred.value.length=0
+			console.log('dkhl l categorie')
+			filtred.value= data.value.filter((productT)=>productT.original.category_id===categorieVal?.id)
+			if(!filtred.value.length){
+				Swal.fire({
+					text: 'No Product found matches the filter !!',
+					icon: 'error',
+					toast: true,
+					position: 'top-end',
+					timer: 3000,
+					showConfirmButton: false
+				})
+				// noCategorieFound.value = true
+				// filtredData.value.length=0
+				// filtred.value.length=0
+			}
+		}
+		if(priceVal!==0 && priceVal!==undefined){
+			console.log('dkhl l price')
+			// if(!noCategorieFound.value) 
+			filtred.value= (filtred.value.length? filtred.value: data.value).filter((productT)=>(productT.original.price<=priceVal))
+			console.log(filtred.value.length)
+		}
+		if(filtred.value.length)
+			filtredData.value=filtred.value
+	}
+})
 </script>
 <template lang="pug">
 StoreLayout(@NameSearched="searchedName" @sortClicked="sorting")
-	template(v-slot:cards)
+	template(v-slot:cards="{categorie:categorieClicked, price: priceClicked}")
+		p {{ foo(categorieClicked, priceClicked) }}
 		.flex.items-center.justify-center.h-full.w-full
 			div(v-if="data.length" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 py-8 h-full")
-				div(v-for="product in data" :key="product.original.id")
+				div(v-for="product in (filtredData.length? filtredData : data)"  :key="product.original.id")
 					Card(:product="product.original" @openModal="openModal(product.original)")
 				AppModal(v-if="modal" :title="'Product Traceability'" @close="closeModal")
 					div(class="grid grid-cols-5 w-full h-full bg-gray-100 ")

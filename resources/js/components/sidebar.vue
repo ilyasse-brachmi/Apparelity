@@ -1,25 +1,26 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import type { Category, Material } from "@/types/index"
+import type { Category } from "@/types/index"
 
 const props = defineProps({
-  materials: {
-    type: Array<Material>,
-    required: true
-  },
-  categories: {
-    type: Array<Category>,
-    required: true
-  },
+	categories: {
+		type: Array<Category>,
+		required: true
+	},
 	sidebarToggle: {
 		type: Boolean,
 		default: false
+	},
+	price: {
+		type: Number,
+		required: true
 	}
 
 })
 const checked = ref(true)
 const priceRange = ref(37)
 const opened = computed(() => props.sidebarToggle)
+defineEmits(['categorieClicked', 'priceClicked'])
 </script>
 <template lang="pug">
 div(class="w-full dz-drawer lg:dz-drawer-open")
@@ -39,24 +40,16 @@ div(class="w-full dz-drawer lg:dz-drawer-open")
 					h1 Categories
 				.dz-collapse-content
 					ul
-						li(v-for="(category, index) in categories" :key="index" class="p-4 cursor-pointer hover:bg-primary/10 duration-200 text-gray-600 hover:scale-x-105 hover:text-primary")
-							h3(class="text-lg" @click="console.log(category)") {{ category.name }}
+						li(v-for="(category, index) in categories" :key="index" @click="$emit('categorieClicked', {id: category.id, name: category.name})" class="p-4 cursor-pointer hover:bg-primary/10 duration-200 text-gray-600 hover:scale-x-105 hover:text-primary")
+							h3(class="text-lg") {{ category.name }}
 			.dz-collapse.dz-collapse-plus.text-primary
 				input(type='checkbox' name='my-accordion-3' :checked="checked")
 				.dz-collapse-title.text-xl.font-medium.border-b-2
-					h1 Materials
+					h1 Price
 				.dz-collapse-content
-					ul
-						li(v-for="(material, index) in materials" :key="index" class="p-4 cursor-pointer hover:bg-primary/10 duration-200 text-gray-600 hover:scale-x-105 hover:text-primary")
-							h3(class="text-lg") {{ material.name }}
-			//- .dz-collapse.dz-collapse-plus.text-primary
-			//- 	input(type='checkbox' name='my-accordion-3' :checked="checked")
-			//- 	.dz-collapse-title.text-xl.font-medium.border-b-2
-			//- 		h1 Price
-			//- 	.dz-collapse-content
-			//- 		div(class="p-4")
-			//- 			div(class="flex items-center justify-center gap-x-2")
-			//- 				h3(class="py-4 text-gray-500") Price range : 
-			//- 				h3.text-gray-500 {{ priceRange }} $
-			//- 			input(type="range" min="0" max="100" value="40" v-model="priceRange" class="dz-range dz-range-primary")
+					div(class="p-4")
+						div(class="flex items-center justify-center gap-x-2")
+							h3(class="py-4 text-gray-500") Price range : 
+							h3.text-gray-500 {{ priceRange }} $
+						input(type="range" min="0" :max="price" value="40" v-model="priceRange" @click="$emit('priceClicked', priceRange)" class="dz-range dz-range-primary")
 </template>
