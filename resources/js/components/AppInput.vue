@@ -18,6 +18,10 @@ const props = defineProps({
     type: String,
     default: "text"
   },
+  value: {
+    type: String || Number,
+    default: ""
+  },
   inputError: {
     type: String,
     required: false
@@ -34,6 +38,7 @@ const passwordIcon = computed(() => typeInput.value === 'text' ? 'ri:eye-off-lin
 const switchType = () => {
   typeInput.value = typeInput.value === 'password' ? 'text' : 'password'
 } 
+const valueInput = ref(props.value)
 const borderColor = computed(() => props.inputError ? 'red' : props.color)
 const copyPastState = (e) => {
   props.enbaleCopyPast === false ? e.preventDefault() : ''
@@ -42,7 +47,7 @@ const copyPastState = (e) => {
 <template lang="pug">
 div.w-full
   div(class="conatiner relative leading-normal w-full" )
-    input(:type="typeInput" @input="$emit('update:modelValue', $event.target.value)" class="p-4 outline-none relative w-full text-black bg-transparent duration-100 z-[9]" @copy="copyPastState" @paste="copyPastState")
+    input(:type="typeInput" :value="valueInput" @input="$emit('update:modelValue', $event.target.value)" class="p-4 outline-none relative w-full text-black bg-transparent duration-100 z-[9]" @copy="copyPastState" @paste="copyPastState")
     p(class="labelInput z-0 text-lg text-gray-400 px-2 absolute top-4 duration-300 whitespace-pre") {{ props.labelName }}
     Icon(v-if="isPassword" :icon="passwordIcon" @click="switchType" class="IconColor absolute end-4 top-4 text-3xl z-[99] cursor-pointer")
     div(v-else)

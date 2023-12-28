@@ -42,12 +42,12 @@ class CompanyController extends Controller
             }
            return response()->json($company);
     }
-    public function edit(Request $request){
+    public function edit($id, Request $request){
             $validation=$this->validateCompanyData($request);
             if ($validation !== null) {
                 return $validation;
             }
-            $company=Company::find($request->id);
+            $company=Company::find($id);
             if(!$company){return response()->json(['success' => false,'error'=>'Company not found'],404);}
             $data = $request->except('user_id');
             $company->update($data);

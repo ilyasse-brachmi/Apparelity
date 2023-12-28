@@ -154,8 +154,6 @@ div(class="w-screen h-screen flex items-center justify-center px-10 md:px-0")
           div(class="mt-4")
             Input(:labelName="'Company Phone'" name="tel" :type="'text'" :icon="'ic:baseline-phone'" :color="'#1d6795'" @input="telError" :inputError="errors.tel")
           div(class="mt-4")
-            Input(:labelName="'Company Email'" name="email" :type="'text'" :icon="'ic:outline-email'" :color="'#1d6795'" @input="mailError" :inputError="errors.email")
-          div(class="mt-4")
             Input(:labelName="'Company Address'" name="address" :type="'text'" :icon="'entypo:address'" :color="'#1d6795'" @input="addressError" :inputError="errors.address")
           div(class="w-full rounded max-w-[40rem] bg-white mt-4 row-span-3 col-span-1 mt-10")
             label(for="description" class="text-primary ml-2 text-lg") Company Description
@@ -166,7 +164,6 @@ div(class="w-screen h-screen flex items-center justify-center px-10 md:px-0")
           div(class="mt-4")
             Input(:labelName="'Zip Code'" name="zip" :type="'text'" :icon="'icon-park-outline:zip'" :color="'#1d6795'" @input="zipError" :inputError="errors.zip")
           div(class="mt-4")
-            //- Input(:labelName="'Country'" name="country" :type="'text'" :icon="'gis:search-country'" :color="'#1d6795'" @input="countryError" :inputError="errors.country")
             select(class="dz-select dz-select-bordered w-full h-[3.6rem] min-h-[3.6rem]" v-model="selectedCountry")
               option(disabled value="") Select Country
               option(v-for="(country,key) in countries" :key="key" :value="country") {{ country.value }}

@@ -194,7 +194,7 @@ StoreLayout(@NameSearched="searchedName" @sortClicked="sorting")
 											img(:src="`/storage/public/${currProduct.product_image.split('public/')[1]}`" class="w-full h-full rounded-full")
 									div(class="px-4")
 										h1(class="text-primary text-center font-semibold text-xl") {{ currProduct.name }}
-										div(class="flex items-center justify-center py-2")
+										informatique textile							div(class="flex items-center justify-center py-2")
 											h3(class="px-2 py-1 bg-primary/20 text-sm text-primary rounded-full w-fit") {{ currProduct.company_name }}
 									div(class="flex justify-center h-full")
 										ul(class="w-fit h-fit min-w-[25rem] bg-white shadow-md rounded-xl border-4 my-4 px-2 border-primary/20 overflow-auto max-h-[32rem]")
