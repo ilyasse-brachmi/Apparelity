@@ -40,7 +40,7 @@ class CompanyController extends Controller
             if(!$company){
                 return response()->json(['success' => false, 'message' => 'Failed to add company'], 500);
             }
-           return response()->json(['success' => true,'data' => $company], 201);
+           return response()->json($company);
     }
     public function edit(Request $request){
             $validation=$this->validateCompanyData($request);
