@@ -77,43 +77,41 @@ header(class="flex items-center justify-between p-4 top-0 bg-gray-100 sticky sha
         li.p-3.text-gray-600(class="hover:font-medium hover:bg-primary/5 px-4 hover:scale-x-105 duration-200 cursor-pointer hover:text-primary" @click="logout")
           a Logout
       AppModal(v-if="modal" :title="'Profile Details'" @close="modal = false")
-        div(class="w-full h-full")
-          div(class="bg-gray-100 w-full p-6 py-6")
-            div(class="min-h-[46rem]")
-              div(class="flex justify-center")
-                div(class="w-[32rem] h-[13rem] bg-white shadow-md rounded-xl border-4 my-4 border-primar")
-                  h1(class="text-primary font-semibold text-xl text-center py-8") Company Owner :
-                  div(class="grid grid-cols-2 gap-y-2 mx-8 text-lg")
-                    label.font-semibold Name :
-                    p {{ store.user.name }}
-                    label.font-semibold E-mail :
-                    p {{ store.user.email }}
-              div(v-if="status==='Display'" class="flex justify-center")
-                div(class="w-[32rem] h-[25rem] bg-white shadow-md rounded-xl border-4 my-4 border-primar")
-                  h1(class="text-primary font-semibold text-xl text-center py-8") Company Details :
-                  div(class="grid grid-cols-2 gap-y-2 mx-8 text-lg")
-                    label.font-semibold Name :
-                    p {{ data.name }}
-                    label.font-semibold Address :
-                    p {{ data.address }}
-                    label.font-semibold Description :
-                    p {{ data.Description? data.Description: 'No Description Available'  }} 
-                    label.font-semibold ZipCode :
-                    p {{ data.zipCode }}
-                    label.font-semibold Country :
-                    p {{ data.country }}
-                    label.font-semibold City :
-                    p {{ data.city }}
-                    label.font-semibold Phone :
-                    p {{ data.phone }}
-              div(v-if="status==='Edit'" class="flex justify-center")
-                div(class="w-[32rem] h-[25rem] bg-white shadow-md rounded-xl border-4 my-4 border-primar")
-                  h1(class="text-primary font-semibold text-xl text-center py-8") Company Details :
-                  div(class="grid grid-cols-2 gap-y-2 mx-8 text-lg")
-                    label.font-semibold Name :
-                    p {{ data.name }}
-                    label.font-semibold Address :
-                    p {{ data.address }}
-              div(class="flex items-center justify-end mb-4")
-                a(@click="edit" class="px-4 md:px-8 lg:px-14 py-2 text-white m-2 bg-primary rounded-md hover:bg-primary/90  hover:shadow-md duration-300 font-semibold") {{ status==="Display"? "Edit": "Done"}}
+        div(class="flex flex-col justify-center px-24 gap-y-10 w-full h-full")
+          div(class="flex justify-center")
+            div(class="w-full h-full bg-white shadow-md rounded-xl border-4 my-4 border-primar")
+              h1(class="text-primary font-semibold text-xl text-center py-8") Company Owner :
+              div(class="grid grid-cols-2 gap-y-2 mx-8 text-lg")
+                label.font-semibold Name :
+                p {{ store.user.name }}
+                label.font-semibold E-mail :
+                p {{ store.user.email }}
+          div(v-if="status==='Display'" class="flex justify-center")
+            div(class="w-full h-full bg-white shadow-md rounded-xl border-4 my-4 border-primar")
+              h1(class="text-primary font-semibold text-xl text-center py-8") Company Details :
+              div(class="grid grid-cols-2 gap-y-2 mx-8 text-lg")
+                label.font-semibold Name :
+                p {{ data.name }}
+                label.font-semibold Address :
+                p {{ data.address }}
+                label.font-semibold Description :
+                p {{ data.Description? data.Description: 'No Description Available'  }} 
+                label.font-semibold ZipCode :
+                p {{ data.zipCode }}
+                label.font-semibold Country :
+                p {{ data.country }}
+                label.font-semibold City :
+                p {{ data.city }}
+                label.font-semibold Phone :
+                p {{ data.phone }}
+          div(v-if="status==='Edit'" class="flex justify-center")
+            div(class="w-full h-full bg-white shadow-md rounded-xl border-4 my-4 border-primar")
+              h1(class="text-primary font-semibold text-xl text-center py-8") Company Details :
+              div(class="grid grid-cols-2 gap-y-2 mx-8 text-lg")
+                label.font-semibold Name :
+                p {{ data.name }}
+                label.font-semibold Address :
+                p {{ data.address }}
+          div(class="flex items-center justify-end mb-4")
+            a(@click="edit" class="px-4 md:px-8 lg:px-14 py-2 text-white m-2 bg-primary rounded-md hover:bg-primary/90  hover:shadow-md duration-300 font-semibold") {{ status==="Display"? "Edit": "Done"}}
 </template>

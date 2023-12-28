@@ -1,6 +1,7 @@
 // axiosInstance.ts
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { useAuth } from "@/stores/auth.store"
 
 // Create a new class to manage the singleton instance
 class AxiosSingleton {
@@ -18,14 +19,14 @@ class AxiosSingleton {
       // },
     });
 
-    // Optionally, you can add interceptors for request and response
     this.axiosInstance.interceptors.request.use(
       (config: AxiosRequestConfig) => {
-        // Do something before request is sent
+        const store = useAuth()
+        // Set Authorization header with the current token
+        config.headers.Authorization = `Bearer ${store.token}`;
         return config;
       },
       (error) => {
-        // Do something with request error
         return Promise.reject(error);
       }
     );

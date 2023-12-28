@@ -40,7 +40,7 @@ div(class="w-full dz-drawer lg:dz-drawer-open")
 				.dz-collapse-content
 					ul
 						li(v-for="(category, index) in categories" :key="index" class="p-4 cursor-pointer hover:bg-primary/10 duration-200 text-gray-600 hover:scale-x-105 hover:text-primary")
-							h3(class="text-lg" @click="console.log(category)") {{ category.name }}
+							h3(class="text-lg") {{ category.name }}
 			.dz-collapse.dz-collapse-plus.text-primary
 				input(type='checkbox' name='my-accordion-3' :checked="checked")
 				.dz-collapse-title.text-xl.font-medium.border-b-2

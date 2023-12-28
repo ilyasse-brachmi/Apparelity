@@ -7,7 +7,6 @@ import Login from "./pages/auth/login.vue"
 import Register from "./pages/auth/register.vue"
 import CompleteAccount from "@/pages/auth/completeAccount.vue"
 import Dashboard from "@/pages/dashboard.vue"
-import Test from "@/pages/test.vue";
 import Product from "@/pages/product/index.vue"
 import { useAuth } from '@/stores/auth.store'
 import { useAppa } from "./stores/index.store";
@@ -65,14 +64,6 @@ const routes = [
     path: '/privacy-policy',
     name: 'PrivacyPolicy',
     component: Privacy,
-    meta: {
-      auth: 'Both'
-    }
-  },
-  {
-    path: '/test',
-    name: 'Test',
-    component: Test,
     meta: {
       auth: 'Both'
     }
