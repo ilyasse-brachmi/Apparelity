@@ -12,7 +12,7 @@ class CompanyController extends Controller
             'name' => 'required|string|max:255|unique:company,name,'.$request->id,
             'address' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'zipCode' => 'required|string',
+            'zipCode' => 'required|numeric',
             'country' => 'required|string|max:255',
             'city' => 'required|string|max:255',
             'phone' => 'required|string|max:20',
