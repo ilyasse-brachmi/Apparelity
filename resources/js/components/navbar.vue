@@ -1,16 +1,20 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useAuth } from '@/stores/auth.store'
 import Swal from 'sweetalert2'
 import AppModal from '@/components/AppModal.vue'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useAppa } from '@/stores/index.store'
 import { $AppAxios } from '@/utils/axiosSingleton'
 import type { Company } from '@/types'
+import _ from 'lodash';
+import { removeProperties } from '@/composables/useFiltredObject'
+
 
 const appaStore = useAppa()
 
 const router = useRouter()
+const route = useRoute()
 const store = useAuth()
 const logout = () => {
   appaStore.isLoading = true
@@ -47,11 +51,28 @@ const openModal = async() => {
 	modal.value = true
 }
 
-const status = ref("Display")
-const edit =()=>{
-  if(status.value==="Display")
-    status.value="Edit"
-  else status.value="Display"
+const submitEdit = () => {
+  Swal.fire({
+  title: "Do you want to save the changes?",
+  showCancelButton: true,
+  confirmButtonText: "Yes",
+}).then(async(result) => {
+  if (result.isConfirmed) {
+    const result = removeProperties(data.value, ['created_at', 'deleted_at', 'updated_at', 'user_id'])
+    await $AppAxios.put('/api/company', result)
+    .then(() => {
+      modal.value = false
+      Swal.fire("Saved!", "", "success");
+    })
+    .catch((e) => {
+      const errorMessages = Object.keys(e.response.data.errors).reduce((acc, key) => {
+        acc[key] = e.response.data.errors[key][0];
+        return acc[key];
+      }, {})
+      Swal.fire("Ooops!", errorMessages as string, "error");
+    })
+  }
+});
 }
 </script>
 <template lang="pug">
@@ -74,44 +95,39 @@ header(class="flex items-center justify-between p-4 top-0 bg-gray-100 sticky sha
       ul.dz-dropdown-content.p-2.shadow-md.bg-gray-100.rounded-lg.w-64.mt-4(tabindex='0' class='z-[1]')
         li.p-3.text-gray-600(class="hover:font-medium hover:bg-primary/5 px-4 hover:scale-x-105 duration-200 cursor-pointer hover:text-primary" @click="openModal")
           a Profile
+        li.p-3.text-gray-600(v-if="route.path!=='/dashboard'" class="hover:font-medium hover:bg-primary/5 px-4 hover:scale-x-105 duration-200 cursor-pointer hover:text-primary" @click="logout")
+          a(href="/dashboard") My Dashboard
         li.p-3.text-gray-600(class="hover:font-medium hover:bg-primary/5 px-4 hover:scale-x-105 duration-200 cursor-pointer hover:text-primary" @click="logout")
           a Logout
       AppModal(v-if="modal" :title="'Profile Details'" @close="modal = false")
-        div(class="flex flex-col justify-center px-24 gap-y-10 w-full h-full")
+        div(class="flex flex-col justify-center px-24 gap-y-10 w-full h-fit")
           div(class="flex justify-center")
-            div(class="w-full h-full bg-white shadow-md rounded-xl border-4 my-4 border-primar")
-              h1(class="text-primary font-semibold text-xl text-center py-8") Company Owner :
-              div(class="grid grid-cols-2 gap-y-2 mx-8 text-lg")
+            div(class="w-full h-full bg-white shadow-md rounded-xl border-4 my-4 border-primar py-8")
+              h1(class="text-primary font-semibold text-xl text-center mb-8") Company Owner :
+              div(class="grid grid-cols-2 gap-y-2 mx-8 text-lg pl-8")
                 label.font-semibold Name :
                 p {{ store.user.name }}
                 label.font-semibold E-mail :
                 p {{ store.user.email }}
-          div(v-if="status==='Display'" class="flex justify-center")
-            div(class="w-full h-full bg-white shadow-md rounded-xl border-4 my-4 border-primar")
-              h1(class="text-primary font-semibold text-xl text-center py-8") Company Details :
-              div(class="grid grid-cols-2 gap-y-2 mx-8 text-lg")
+          div(class="flex justify-center")
+            div(class="w-full h-full bg-white shadow-md rounded-xl border-4 my-4 border-primar py-8")
+              h1(class="text-primary font-semibold text-xl text-center mb-8") Company Details :
+              div(class="grid grid-cols-2 gap-y-2 mx-8 text-lg pl-8")
                 label.font-semibold Name :
-                p {{ data.name }}
+                input(type="text" v-model="data.name" placeholder="Name" class="p-4 border border-gray-400 rounded-lg ")
                 label.font-semibold Address :
-                p {{ data.address }}
+                input(type="text" v-model="data.address" placeholder="Address" class="p-4 border border-gray-400 rounded-lg ")
                 label.font-semibold Description :
-                p {{ data.Description? data.Description: 'No Description Available'  }} 
+                input(type="text" v-model="data.Description" placeholder="Description" class="p-4 border border-gray-400 rounded-lg ")
                 label.font-semibold ZipCode :
-                p {{ data.zipCode }}
+                input(type="text" v-model="data.zipCode" placeholder="Description" class="p-4 border border-gray-400 rounded-lg ")
                 label.font-semibold Country :
-                p {{ data.country }}
+                input(type="text" v-model="data.country" placeholder="Country" class="p-4 border border-gray-400 rounded-lg ")
                 label.font-semibold City :
-                p {{ data.city }}
+                input(type="text" v-model="data.city" placeholder="City" class="p-4 border border-gray-400 rounded-lg ")
                 label.font-semibold Phone :
-                p {{ data.phone }}
-          div(v-if="status==='Edit'" class="flex justify-center")
-            div(class="w-full h-full bg-white shadow-md rounded-xl border-4 my-4 border-primar")
-              h1(class="text-primary font-semibold text-xl text-center py-8") Company Details :
-              div(class="grid grid-cols-2 gap-y-2 mx-8 text-lg")
-                label.font-semibold Name :
-                p {{ data.name }}
-                label.font-semibold Address :
-                p {{ data.address }}
-          div(class="flex items-center justify-end mb-4")
-            a(@click="edit" class="px-4 md:px-8 lg:px-14 py-2 text-white m-2 bg-primary rounded-md hover:bg-primary/90  hover:shadow-md duration-300 font-semibold") {{ status==="Display"? "Edit": "Done"}}
+                input(type="text" v-model="data.phone" placeholder="Phone" class="p-4 border border-gray-400 rounded-lg ")
+          div(class="flex items-center justify-end mb-4 gap-x-4")
+            button(type="button" class="bg-gray-300 text-gray-600 p-4 px-8 rounded-lg font-semibold" @click="modal = false") Cancel
+            button(type="button" class="bg-primary text-white p-4 px-8 rounded-lg font-semibold" @click="submitEdit") Submit
 </template>
