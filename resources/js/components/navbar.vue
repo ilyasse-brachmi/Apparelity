@@ -7,10 +7,13 @@ import { ref, watch } from 'vue'
 import { useAppa } from '@/stores/index.store'
 import { $AppAxios } from '@/utils/axiosSingleton'
 import type { Company } from '@/types'
-import _ from 'lodash';
 import { removeProperties } from '@/composables/useFiltredObject'
+import Logo from "../../images/Logo.png"
+import SmallLogo from "../../images/smallLogo.png"
+import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 
-
+const breakpoints = useBreakpoints(breakpointsTailwind)
+const xs = breakpoints.smaller('lg')
 const appaStore = useAppa()
 
 const router = useRouter()
@@ -80,7 +83,8 @@ header(class="flex items-center justify-between p-4 top-0 bg-gray-100 sticky sha
   .dz-navbar-start
     div(class="flex items-center")
       Icon(icon="mingcute:menu-fill" class="lg:hidden text-2xl cursor-pointer" @click="toggleSidebarEvent")
-      a.dz-btn.dz-btn-ghost.text-xl(href='/') LOGO
+      a.dz-btn.dz-btn-ghost.text-xl(href='/')
+        img(:src="!xs ? Logo : SmallLogo" alt="Apparelity Logo" :class="!xs ? 'w-32' : 'w-10'")
   div(class="dz-navbar-center")
     div(v-if="!store.isAuth")
       a( href="/login" class="px-4 md:px-8 lg:px-14 py-2 text-white m-2 bg-primary rounded-md hover:bg-primary/90  hover:shadow-md duration-300") Sign In
