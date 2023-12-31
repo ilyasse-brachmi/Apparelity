@@ -13,7 +13,6 @@ import { getObjDepth } from "@/composables/useArrayDepth"
 import { useAppa } from "@/stores/index.store"
 import Swal from "sweetalert2"
 import router from "@/routes"
-import { boolean } from "yup"
 
 const AppaStore = useAppa()
 const modal = ref(false)
