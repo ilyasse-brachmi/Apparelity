@@ -30,7 +30,7 @@ export interface Company {
   id: number;
   name: string;
   address: string;
-  Description: number;
+  description: number;
   zipCode: number;
   country: string;
   city: string;

@@ -26,17 +26,14 @@ const logout = () => {
     router.push('/')
     appaStore.isLoading = false
   }, 900);
-  // Swal.fire({
-  //     text: 'You are logged out !',
-  //     icon: 'success',
-  //     toast: true,
-  //     position: 'top-end',
-  //     timer: 2000,
-  //     showConfirmButton: false,
-  //     customClass: {
-  //       container: 'my-swal'
-  //     }
-  //   })
+  Swal.fire({
+      text: 'You are logged out !',
+      icon: 'success',
+      toast: true,
+      position: 'top-end',
+      timer: 2000,
+      showConfirmButton: false,
+    })
 }
 const opened = ref(false)
 const emit = defineEmits(['sidebarToggle'])
@@ -122,7 +119,7 @@ header(class="flex items-center justify-between p-4 top-0 bg-gray-100 sticky sha
                 label.font-semibold Address :
                 input(type="text" v-model="data.address" placeholder="Address" class="p-4 border border-gray-400 rounded-lg ")
                 label.font-semibold Description :
-                input(type="text" v-model="data.Description" placeholder="Description" class="p-4 border border-gray-400 rounded-lg ")
+                input(type="text" v-model="data.description" placeholder="Description" class="p-4 border border-gray-400 rounded-lg ")
                 label.font-semibold ZipCode :
                 input(type="text" v-model="data.zipCode" placeholder="Description" class="p-4 border border-gray-400 rounded-lg ")
                 label.font-semibold Country :
